@@ -1,0 +1,67 @@
+<div class="tab-pane fade show active" id="userProfile">
+  <div class="container">
+    <div class="row flex-lg-nowrap">
+      <div class="col">
+        <div class="row">
+          <div class="col mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="e-profile">
+                  <div class="row">
+                    <div class="col-12 col-sm-auto">
+                      <div class="mx-auto" style="width: 120px;">
+                        <div class="d-flex justify-content-center align-items-center rounded">
+                          <img class="rounded" height="135" width="135" src="{{user?.profileImageUrl}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                      <div class="text-center text-sm-left mb-2 mb-sm-0">
+                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user?.firstName}} {{user?.lastName}}</h4>
+                        <p class="mb-0">{{user?.username}}</p>
+                        <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-muted"><small>Last login:
+                          {{user?.lastLoginDateDisplay | date:'medium'}}</small></div>
+                        <div class="mt-2">
+                          <button class="btn btn-primary" type="button">
+                            <i class="fa fa-fw fa-camera"></i>
+                            <span>Change Photo</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="text-center text-sm-right">
+                        <div class="text-muted"><small>Joined {{user?.joinDate | date:'mediumDate'}}</small></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content pt-3">
+                    <div class="tab-pane active">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3 mb-3">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="px-xl-3">
+                  <button (click)="onLogOut()" class="btn btn-block btn-secondary">
+                    <span>Logout</span>
+                    <i class="fas fa-sign-in-alt ml-1"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title font-weight-bold">Permissions From Role</h6>
+                <h6 *ngFor="let authority of user?.authorities" class="card-text">{{authority}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
