@@ -29,5 +29,8 @@ public class Workout {
     private Date workoutEndDate;
     private Integer capacity;
     private Integer participantsNumber;
+//    @JoinColumn(name = "fitnessClubId", referencedColumnName = "id")
+//    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+//    private FitnessClub fitnessClub;
 
 }

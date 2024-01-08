@@ -1,8 +1,7 @@
 package com.gymsystem.gms.listener;
 
-import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserPrincipal;
-import com.gymsystem.gms.service.LoginAttemptService;
+import com.gymsystem.gms.service.Impl.LoginAttemptServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class AuthSuccessListener {
 
     @Autowired
-    private LoginAttemptService loginAttemptService;
+    private LoginAttemptServiceImpl loginAttemptService;
 
     @EventListener
     public void onAuthSuccess(AuthenticationSuccessEvent event){

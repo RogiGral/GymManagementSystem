@@ -33,6 +33,6 @@ public class User implements Serializable {
     private String role; //ROLE_USER{ read, edit }, ROLE_ADMIN {delete}
     private String[] authorities;
     private boolean isActive;
-
     private boolean isNotLocked;
+
 }

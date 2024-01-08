@@ -30,16 +30,20 @@ import static java.util.Arrays.stream;
 public class JWTTokenProvider {
 
     @Value("${jwt.secret}")
-    private String secret;
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private String jwtSecretKey;
 
     public String generateJwtToken(UserPrincipal userPrincipal) {
         String[] claims = getClaimsFromUser(userPrincipal);
-        //LOGGER.error(secret);
         return JWT.create().withIssuer(GYM_POWER).withAudience(GYM_ADMINISTRATION)
                 .withIssuedAt(new Date()).withSubject(userPrincipal.getUsername())
                 .withArrayClaim(AUTHORITIES, claims).withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(secret.getBytes()));
+                .sign(HMAC512(jwtSecretKey.getBytes()));
+    }
+    public String generateJwtRefreshToken (UserPrincipal userPrincipal){
+        return JWT.create().withIssuer(GYM_POWER).withAudience(GYM_ADMINISTRATION)
+                .withIssuedAt(new Date()).withSubject(userPrincipal.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME))
+                .sign(HMAC512(jwtSecretKey.getBytes()));
     }
 
     public List<GrantedAuthority> getAuthorities(String token) {
@@ -74,10 +78,10 @@ public class JWTTokenProvider {
         return verifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);
     }
 
-    private com.auth0.jwt.interfaces.JWTVerifier getJWTVerifier() {
+    private JWTVerifier getJWTVerifier() {
         JWTVerifier verifier;
         try {
-            Algorithm algorithm = HMAC512(secret);
+            Algorithm algorithm = HMAC512(jwtSecretKey);
             verifier = JWT.require(algorithm).withIssuer(GYM_POWER).build();
         }catch (JWTVerificationException exception) {
             throw new JWTVerificationException(TOKEN_CANNOT_BE_VERIFIED);

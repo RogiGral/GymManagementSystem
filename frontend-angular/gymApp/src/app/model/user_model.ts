@@ -32,5 +32,13 @@ export class User {
 
 }
 
+export class UserResetPassword {
+  public email: string;
+
+  constructor() {
+    this.email = '';
+  }
+}
+
 
 

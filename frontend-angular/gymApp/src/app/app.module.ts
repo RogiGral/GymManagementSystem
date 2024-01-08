@@ -18,6 +18,7 @@ import { MainComponent } from './main/main.component';
 import { WorkoutComponent } from './workout/workout.component';
 import { MembershipComponent } from './membership/membership.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MainComponent,
     WorkoutComponent,
     MembershipComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -9,11 +9,13 @@ import {UserProfileComponent} from "./user-profile/user-profile.component";
 import {WorkoutComponent} from "./workout/workout.component";
 import {MembershipComponent} from "./membership/membership.component";
 import {MainComponent} from "./main/main.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'landing-page', component: LandingPageComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
   {
     path: 'dashboard', component: MainComponent, canActivate: [AuthenticationGuard], children: [
       {path: 'users', component: UserComponent, canActivate: [AuthenticationGuard]},

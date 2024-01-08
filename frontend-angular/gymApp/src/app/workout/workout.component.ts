@@ -79,14 +79,15 @@ export class WorkoutComponent implements OnInit {
     this.clickButton('openWorkoutInfo');
   }
 
-  public onAddNewWorkout(workutForm: NgForm): void {
-    const formData = this.workoutService.createWorkoutFormDate(workutForm.value);
+  public onAddNewWorkout(workoutForm: NgForm): void {
+    const formData = this.workoutService.createWorkoutFormDate(workoutForm.value);
+    console.log(formData)
     this.subscriptions.push(
       this.workoutService.addWorkout(formData).subscribe(
         (response: IWorkout) => {
           this.clickButton('new-workout-close');
           this.getWorkouts(false);
-          workutForm.reset();
+          workoutForm.reset();
           this.sendNotification(NotificationType.SUCCESS, `${response.workoutName}  added successfully`);
         },
         (errorResponse: HttpErrorResponse) => {

@@ -4,7 +4,7 @@
 <!--      <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2" ngModel-->
 <!--             (ngModelChange)="searchWorkout(searchInput.value)" type="search" placeholder="Search users...">-->
 <!--    </form>-->
-    <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#addWorkoutModal">
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addWorkoutModal" *ngIf="isAdminOrCoach">
       <i class="fa fa-plus"></i>New Workout
     </button>
   </div>
@@ -56,7 +56,7 @@
 </button>
 
 
-<!-- modal user info -->
+<!-- modal workout info -->
 <div class="modal fade bd-example-modal-lg" id="viewWorkoutModal" tabindex="-1" role="dialog" aria-labelledby=""
      aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -73,19 +73,19 @@
           <div class="card">
             <ul class="list-group list-group-flush">
               <li class="list-group-item"></li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right">Workout name</i>{{selectedWorkout?.workoutName}}
+              <li class="list-group-item"><b class="float-right">Workout name</b>{{selectedWorkout?.workoutName}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.roomNumber}}
+              <li class="list-group-item"><b class="float-right">Room number</b>{{selectedWorkout?.roomNumber}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.workoutStartDate}}
+              <li class="list-group-item"><b class="float-right">Workout Start Date</b>{{selectedWorkout?.workoutStartDate}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.workoutEndDate}}
+              <li class="list-group-item"><b class="float-right">Workout End date</b>{{selectedWorkout?.workoutEndDate}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.trainerUsername}}
+              <li class="list-group-item"><b class="float-right">Trainer</b>{{selectedWorkout?.trainerUsername}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.capacity}}
+              <li class="list-group-item"><b class="float-right">Capacity</b>{{selectedWorkout?.capacity}}
               </li>
-              <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedWorkout?.participantsNumber}}
+              <li class="list-group-item"><b class="float-right">Participants signed</b>{{selectedWorkout?.participantsNumber}}
               </li>
             </ul>
           </div>
@@ -98,13 +98,13 @@
   </div>
 </div>
 
-<!-- model add user -->
+<!-- model add workout -->
 <div class="modal draggable fade bd-example-modal-lg" id="addWorkoutModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center">New User</h5>
+        <h5 class="modal-title text-center">New Workout</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -133,11 +133,11 @@
               <input type="number" name="participantsNumber" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="workoutStartDate">Participants Number</label>
+              <label for="workoutStartDate">Workout start date</label>
               <input type="date" name="workoutStartDate" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="workoutEndDate">Participants Number</label>
+              <label for="workoutEndDate">Workout end date</label>
               <input type="date" name="workoutEndDate" required ngModel class="form-control">
             </div>
 

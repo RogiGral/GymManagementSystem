@@ -28,7 +28,7 @@ export class WorkoutService {
 
   createWorkoutFormDate(workout: IWorkout): FormData {
     const formData = new FormData();
-    formData.append('name', workout.workoutName);
+    formData.append('workoutName', workout.workoutName);
     formData.append('trainerUsername', workout.trainerUsername);
     formData.append('roomNumber', workout.roomNumber.toString());
     formData.append('workoutStartDate', workout.workoutStartDate.toString());

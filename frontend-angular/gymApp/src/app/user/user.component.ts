@@ -22,9 +22,11 @@ export class UserComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   public selectedUser: User;
   public users: User[];
+  public user: User;
   public editUser = new User();
   private profileImage: any;
   private fileName: any;
+  private currentUsername: string;
 
   constructor(private  userService: UserService,
               private notificationService: NotificationService,
@@ -32,6 +34,7 @@ export class UserComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true)
   }
 
@@ -82,6 +85,31 @@ export class UserComponent implements OnInit {
         }
       )
     );
+  }
+
+  public onUpdateUser(): void {
+    const formData = this.userService.createUserFormDate(this.currentUsername, this.editUser, this.profileImage);
+    this.subscriptions.push(
+      this.userService.updateUser(formData).subscribe(
+        (response: User) => {
+          this.clickButton('closeEditUserModalButton');
+          this.getUsers(false);
+          this.fileName = null;
+          this.profileImage = null;
+          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} updated successfully`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.profileImage = null;
+        }
+      )
+    );
+  }
+
+  public onEditUser(editUser: User): void {
+    this.editUser = editUser;
+    this.currentUsername = editUser.username;
+    this.clickButton('openUserEdit');
   }
 
   public searchUsers(searchTerm: string): void {

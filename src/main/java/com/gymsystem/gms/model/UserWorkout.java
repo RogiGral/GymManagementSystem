@@ -25,6 +25,6 @@ public class UserWorkout {
     private User userId;
 
     @JoinColumn(name = "workoutId", referencedColumnName = "id")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Workout workoutId;
 }
