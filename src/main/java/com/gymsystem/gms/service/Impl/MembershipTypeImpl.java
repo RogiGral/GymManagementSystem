@@ -33,23 +33,27 @@ public class MembershipTypeImpl implements MembershipTypeService {
     }
 
     @Override
-    public MembershipType addMembershipType(String name, Long price, Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
+    public MembershipType addMembershipType(String name, String description, String type, Long price, Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
         checkIfNameIsUnique(name);
         MembershipType membershipType = checkIfMembershipTypeExists(name,price);
         membershipType.setName(name);
         membershipType.setPrice(price);
         membershipType.setNumberOfMonths(numberOfMonths);
+        membershipType.setDescription(description);
+        membershipType.setType(type);
         membershipTypeRepository.save(membershipType);
         return membershipType;
     }
 
     @Override
-    public MembershipType updateMembershipType(String oldName, String newName, Long newPrice, Integer newNumberOfMonths ) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
+    public MembershipType updateMembershipType(String oldName, String newName , String newDescription, String newType , Long newPrice, Integer newNumberOfMonths ) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
         checkIfNameIsUnique(newName);
         MembershipType membershipType = findMembershipTypeByName(oldName);
         membershipType.setName(newName);
         membershipType.setPrice(newPrice);
         membershipType.setNumberOfMonths(newNumberOfMonths);
+        membershipType.setDescription(newDescription);
+        membershipType.setType(newType);
         membershipTypeRepository.save(membershipType);
         return membershipType;
     }

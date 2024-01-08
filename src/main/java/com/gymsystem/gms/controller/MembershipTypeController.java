@@ -35,17 +35,21 @@ public class MembershipTypeController extends ExceptionHandling {
 
     @PostMapping("/add")
     public ResponseEntity<MembershipType> addNewMembershipType( @RequestParam("name") String name,
+                                                                @RequestParam("description") String description,
+                                                                @RequestParam("type") String type,
                                                                 @RequestParam("price") Long price,
                                                                 @RequestParam("numberOfMonths")Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
-        MembershipType membershipType = membershipTypeService.addMembershipType(name,price,numberOfMonths);
+        MembershipType membershipType = membershipTypeService.addMembershipType(name,description,type,price,numberOfMonths);
         return new ResponseEntity<>(membershipType, OK);
     }
     @PostMapping("/update")
     public ResponseEntity<MembershipType> updateMembershipType( @RequestParam("oldName") String oldName,
                                                                 @RequestParam("newName") String newName,
+                                                                @RequestParam("newDescription") String newDescription,
+                                                                @RequestParam("newType") String newType,
                                                                 @RequestParam("newPrice") Long newPrice,
                                                                 @RequestParam("numberOfMonths")Integer numberOfMonths) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
-        MembershipType membershipType = membershipTypeService.updateMembershipType(oldName,newName,newPrice,numberOfMonths);
+        MembershipType membershipType = membershipTypeService.updateMembershipType(oldName,newName,newDescription,newType,newPrice,numberOfMonths);
         return new ResponseEntity<>(membershipType, OK);
     }
     @DeleteMapping("/delete/{id}")

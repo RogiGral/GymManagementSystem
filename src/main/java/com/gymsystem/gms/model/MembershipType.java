@@ -20,6 +20,8 @@ public class MembershipType {
     @Column(nullable = false, updatable = false)
     private Long id;
     private String name;
+    private String description;
+    private String type;
     private Long price;
     private Integer numberOfMonths;
 
