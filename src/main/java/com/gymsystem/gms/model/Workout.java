@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -25,8 +26,8 @@ public class Workout {
     private String workoutName;
     private String trainerUsername;
     private String roomNumber;
-    private Date workoutStartDate;
-    private Date workoutEndDate;
+    private LocalDateTime workoutStartDate;
+    private LocalDateTime workoutEndDate;
     private Integer capacity;
     private Integer participantsNumber;
 //    @JoinColumn(name = "fitnessClubId", referencedColumnName = "id")

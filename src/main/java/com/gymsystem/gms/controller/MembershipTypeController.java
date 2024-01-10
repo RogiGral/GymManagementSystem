@@ -44,10 +44,10 @@ public class MembershipTypeController extends ExceptionHandling {
     }
     @PostMapping("/update")
     public ResponseEntity<MembershipType> updateMembershipType( @RequestParam("oldName") String oldName,
-                                                                @RequestParam("newName") String newName,
-                                                                @RequestParam("newDescription") String newDescription,
-                                                                @RequestParam("newType") String newType,
-                                                                @RequestParam("newPrice") Long newPrice,
+                                                                @RequestParam("name") String newName,
+                                                                @RequestParam("description") String newDescription,
+                                                                @RequestParam("type") String newType,
+                                                                @RequestParam("price") Long newPrice,
                                                                 @RequestParam("numberOfMonths")Integer numberOfMonths) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
         MembershipType membershipType = membershipTypeService.updateMembershipType(oldName,newName,newDescription,newType,newPrice,numberOfMonths);
         return new ResponseEntity<>(membershipType, OK);

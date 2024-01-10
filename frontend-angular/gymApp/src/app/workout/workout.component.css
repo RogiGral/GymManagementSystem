@@ -1,0 +1,15 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd; /* Add a 1px border to the table */
+}
+
+th, td {
+  text-align: center; /* Center the text within cells */
+  padding: 8px; /* Add padding for better readability */
+  border: 1px solid #ddd; /* Add a 1px border to cells */
+}
+
+th {
+  background-color: #f2f2f2; /* Add a background color to header cells if needed */
+}

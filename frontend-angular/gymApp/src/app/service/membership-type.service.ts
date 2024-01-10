@@ -27,8 +27,9 @@ export class MembershipTypeService {
     return this.http.delete<CustomHttpResponse>(`${this.host}/membershipType/delete/${id}`)
   }
 
-  createMembershipTypeFormDate(membershipType: IMembershipType): FormData {
+  createMembershipTypeFormDate(oldMembershipTypeName:any, membershipType: IMembershipType): FormData {
     const formData = new FormData();
+    formData.append('oldName', oldMembershipTypeName);
     formData.append('name', membershipType.name);
     formData.append('description', membershipType.description);
     formData.append('type', membershipType.type);

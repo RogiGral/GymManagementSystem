@@ -47,7 +47,9 @@ public class MembershipTypeImpl implements MembershipTypeService {
 
     @Override
     public MembershipType updateMembershipType(String oldName, String newName , String newDescription, String newType , Long newPrice, Integer newNumberOfMonths ) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
-        checkIfNameIsUnique(newName);
+        if(!oldName.equals(newName)){
+            checkIfNameIsUnique(newName);
+        }
         MembershipType membershipType = findMembershipTypeByName(oldName);
         membershipType.setName(newName);
         membershipType.setPrice(newPrice);

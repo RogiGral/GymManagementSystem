@@ -22,9 +22,9 @@ public class UserWorkout {
     private Long id;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
-    private User userId;
+    private User user;
 
     @JoinColumn(name = "workoutId", referencedColumnName = "id")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Workout workoutId;
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    private Workout workout;
 }

@@ -8,9 +8,9 @@ import {IMembershipType} from "../model/membership_model";
 import {Subscription} from "rxjs";
 import {NotificationType} from "../enum/notification-type.enum";
 import {HttpErrorResponse} from "@angular/common/http";
-import {IWorkout} from "../model/workout_model";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {NgForm} from "@angular/forms";
+import {IWorkout} from "../model/workout_model";
 
 @Component({
   selector: 'app-membership',
@@ -22,7 +22,9 @@ export class MembershipComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   public refreshing: boolean;
   public memberships: IMembershipType[];
-  public selectedMembership: IMembershipType;
+  public selectedMembershipType: IMembershipType;
+  private currentMembershipType: any;
+  public editMembershipType = new IMembershipType();
 
   constructor(
     private membershipTypeService: MembershipTypeService,
@@ -53,7 +55,7 @@ export class MembershipComponent implements OnInit {
     );
   }
 
-  public onDeleteMembership(id: number): void {
+  public onDeleteMembershipType(id: number): void {
     this.subscriptions.push(
       this.membershipTypeService.deleteMembershipType(id).subscribe(
         (response: CustomHttpResponse) => {
@@ -67,8 +69,8 @@ export class MembershipComponent implements OnInit {
     );
   }
 
-  public onAddNewMembership(newMembership: NgForm): void {
-    const formData = this.membershipTypeService.createMembershipTypeFormDate(newMembership.value);
+  public onAddNewMembershipType(newMembership: NgForm): void {
+    const formData = this.membershipTypeService.createMembershipTypeFormDate(null,newMembership.value);
     this.subscriptions.push(
       this.membershipTypeService.addMembershipType(formData).subscribe(
         (response: IMembershipType) => {
@@ -82,10 +84,31 @@ export class MembershipComponent implements OnInit {
       )
     );
   }
+  public onUpdateMembershipType(): void {
+    const formData = this.membershipTypeService.createMembershipTypeFormDate(this.currentMembershipType, this.editMembershipType);
+    this.subscriptions.push(
+      this.membershipTypeService.updateMembershipType(formData).subscribe(
+        (response: IMembershipType) => {
+          this.clickButton('closeEditMembershipTypeModalButton');
+          this.getMemberships(false);
+          this.sendNotification(NotificationType.SUCCESS, `${response.type} updated successfully`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+        }
+      )
+    );
+  }
+
+  public onEditMembershipType(editMembershipType: IMembershipType): void {
+    this.editMembershipType = editMembershipType;
+    this.currentMembershipType = editMembershipType.name;
+    this.clickButton('openMembershipTypeEdit');
+  }
 
   public onSelectMembership(selectedUser: IMembershipType): void {
-    this.selectedMembership = selectedUser;
-    this.clickButton('openMembershipInfo');
+    this.selectedMembershipType = selectedUser;
+    this.clickButton('openMembershipTypeInfo');
   }
 
   public saveNewMembership(): void {

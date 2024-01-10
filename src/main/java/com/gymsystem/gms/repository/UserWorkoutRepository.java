@@ -12,9 +12,12 @@ import java.util.List;
 
 @Repository
 public interface UserWorkoutRepository extends JpaRepository<UserWorkout,Long> {
-    @Query(value = "SELECT * FROM user_workout WHERE user_id = :username",nativeQuery = true)
-    List<UserWorkout> findAllByUserId(@Param("username") Long username);
+    @Query(value = "SELECT * FROM user_workout WHERE user_id = :userId",nativeQuery = true)
+    List<UserWorkout> findAllByUserId(@Param("userId") Long userId);
 
     UserWorkout findUserWorkoutById(Long id);
-    UserWorkout findUserWorkoutByUserIdAndWorkoutId(User user, Workout workout);
+    UserWorkout findUserWorkoutByUserAndWorkout(User user, Workout workout);
+
+    @Query(value = "SELECT * FROM user_workout WHERE workout_id = :workoutId",nativeQuery = true)
+    List<UserWorkout> findAllByWorkoutId(@Param("workoutId") Long workoutId);
 }

@@ -46,12 +46,34 @@
               <div class="card-body">
                 <div class="px-xl-3">
                   <button (click)="onLogOut()" class="btn btn-block btn-secondary">
-                    <span>Logout</span>
+                    <span>Logout </span>
                     <i class="fas fa-sign-in-alt ml-1"></i>
                   </button>
                 </div>
               </div>
             </div>
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="px-xl-3">
+                  <form #newPasswordForm="ngForm" (ngSubmit)="onSetNewPassword(newPasswordForm)">
+                    <div class="form-group">
+                      <label for="oldPassword">Old Password</label>
+                      <input type="text" name="oldPassword" required ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label for="newPassword">New Password</label>
+                      <input type="text" name="newPassword" required ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label for="newPasswordRepeat">New Password Repeat</label>
+                      <input type="text" name="newPasswordRepeat" required ngModel class="form-control">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Change Password</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
             <div class="card">
               <div class="card-body">
                 <h6 class="card-title font-weight-bold">Permissions From Role</h6>
@@ -63,5 +85,5 @@
       </div>
     </div>
   </div>
-
 </div>
+

@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setLastLoginDate(new Date());
             userRepository.save(user);
             UserPrincipal userPrincipal = new UserPrincipal(user);
-            LOGGER.error("user found by username: "+username);
+            LOGGER.info("user found by username: "+username);
             return userPrincipal;
         }
     }
@@ -163,14 +163,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void setNewPassword(String email,String password) throws EmailNotFoundException {
+    public void setNewPassword(String email,String oldPassword,String newPassword) throws EmailNotFoundException, WrongOldPasswordException {
         User user = userRepository.findUserByEmail(email);
         if(user== null){
             throw new EmailNotFoundException(NO_USER_FOUND_BY_EMAIL);
         }
-        user.setPassword(encodedPassword(password));
+        if (!checkOldPassword(user, oldPassword)) {
+            throw new WrongOldPasswordException("Incorrect old password");
+        }
+        user.setPassword(encodedPassword(newPassword));
         userRepository.save(user);
-        LOGGER.info("New user password: " + password);
+        LOGGER.info("New user password: " + newPassword);
     }
 
     @Override
@@ -276,6 +279,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private String encodedPassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    private boolean checkOldPassword(User user, String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
     private String generatePassword() {

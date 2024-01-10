@@ -1,7 +1,7 @@
 package com.gymsystem.gms.constraints;
 
 public class SecurityConstant {
-    public static final long EXPIRATION_TIME = 50*60*1000;
+    public static final long EXPIRATION_TIME = 3 * 60 * 60 * 1000; // change it later to 50 min 50 * 60 * 1000
     public static final long REFRESH_EXPIRATION_TIME = 70*60*1000;
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String JWT_TOKEN_HEADER = "Jwt-Token";

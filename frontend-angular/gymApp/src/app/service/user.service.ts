@@ -25,8 +25,8 @@ export class UserService {
   public resetPassword(email: string): Observable<CustomHttpResponse>{
     return this.http.get<CustomHttpResponse>(`${this.host}/user/resetpassword/${email}`)
   }
-  public setPassword(email: string, password: string): Observable<any>{
-    return this.http.get<any>(`${this.host}/user/setpassword/${email}/${password}`)
+  public setPassword(email: string, oldPassword:string, newPassword: string): Observable<CustomHttpResponse>{
+    return this.http.get<CustomHttpResponse>(`${this.host}/user/setpassword/${email}/${oldPassword}/${newPassword}`)
   }
   public deleteUser(id: number): Observable<CustomHttpResponse>{
     return this.http.delete<CustomHttpResponse>(`${this.host}/user/delete/${id}`)

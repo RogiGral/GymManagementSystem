@@ -17,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -30,30 +32,44 @@ public class WorkoutController extends ExceptionHandling {
     private WorkoutService workoutService;
 
     @PostMapping("/add")
-    //@PreAuthorize("hasAuthority('workout:crud')") //comment for testing
-    public ResponseEntity<Workout> addNewWorkout(@RequestParam("workoutName") String workoutName,
-                                                 @RequestParam("trainerUsername") String trainerUsername,
-                                                 @RequestParam("roomNumber") String roomNumber,
-                                                 @RequestParam("capacity") Integer capacity,
-                                                 @RequestParam("workoutStartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date workoutStartDate,
-                                                 @RequestParam("workoutEndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date workoutEndDate) throws WorkoutDateException, WorkoutExistException, UserNotFoundException {
-        Workout newWorkout = workoutService.createWorkout(workoutName,trainerUsername,roomNumber,capacity,workoutStartDate,workoutEndDate);
-        return new ResponseEntity<>(newWorkout, OK);
-    }
-    @PostMapping("/update")
-    //@PreAuthorize("hasAuthority('workout:crud')") //comment for testing
-    public ResponseEntity<Workout> updateWorkout(@RequestParam("workoutId") Long workoutId,
-                                                 @RequestParam("newWorkoutName") String newWorkoutName,
-                                                 @RequestParam("newTrainerUsername") String newTrainerUsername,
-                                                 @RequestParam("newRoomNumber") String newRoomNumber,
-                                                 @RequestParam("capacity") Integer capacity,
-                                                 @RequestParam("participantsNumber") Integer participantsNumber,
-                                                 @RequestParam("newWorkoutStartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date newWorkoutStartDate,
-                                                 @RequestParam("newWorkoutEndDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date newWorkoutEndDate) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
-        Workout newWorkout = workoutService.updateWorkout(workoutId,newWorkoutName,newTrainerUsername,newRoomNumber,capacity,participantsNumber,newWorkoutStartDate,newWorkoutEndDate);
-        return new ResponseEntity<>(newWorkout, OK);
+    public ResponseEntity<Workout> addNewWorkout(
+            @RequestParam("workoutName") String workoutName,
+            @RequestParam("trainerUsername") String trainerUsername,
+            @RequestParam("roomNumber") String roomNumber,
+            @RequestParam("capacity") Integer capacity,
+            @RequestParam("workoutStartDate") String workoutStartDateTimeString,
+            @RequestParam("workoutEndDate") String workoutEndDateTimeString
+    ) throws WorkoutDateException, WorkoutExistException, UserNotFoundException {
+
+        LocalDateTime workoutStartDate = LocalDateTime.parse(workoutStartDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime workoutEndDate = LocalDateTime.parse(workoutEndDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        Workout newWorkout = workoutService.createWorkout(workoutName, trainerUsername, roomNumber, capacity, workoutStartDate, workoutEndDate);
+        return new ResponseEntity<>(newWorkout, HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<Workout> updateWorkout(
+            @RequestParam("workoutId") Long workoutId,
+            @RequestParam("workoutName") String newWorkoutName,
+            @RequestParam("trainerUsername") String newTrainerUsername,
+            @RequestParam("roomNumber") String newRoomNumber,
+            @RequestParam("capacity") String capacityStr,
+            @RequestParam("participantsNumber") String participantsNumberStr,
+            @RequestParam("workoutStartDate") String newWorkoutStartDateTimeString,
+            @RequestParam("workoutEndDate") String newWorkoutEndDateTimeString
+    ) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
+
+        // Convert string parameters to integers
+        Integer capacity = Integer.parseInt(capacityStr);
+        Integer participantsNumber = Integer.parseInt(participantsNumberStr);
+
+        LocalDateTime newWorkoutStartDate = LocalDateTime.parse(newWorkoutStartDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime newWorkoutEndDate = LocalDateTime.parse(newWorkoutEndDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        Workout newWorkout = workoutService.updateWorkout(workoutId, newWorkoutName, newTrainerUsername, newRoomNumber, capacity, participantsNumber, newWorkoutStartDate, newWorkoutEndDate);
+        return new ResponseEntity<>(newWorkout, HttpStatus.OK);
+    }
     @GetMapping("/list")
     public ResponseEntity<List<Workout>> getAllWorkouts() {
         List<Workout> workouts = workoutService.getWorkouts();

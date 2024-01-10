@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -109,10 +110,11 @@ public class UserController extends ExceptionHandling {
         userService.resetPassword(email);
         return response(OK, EMAIL_SENT + email);
     }
-    @GetMapping("/setpassword/{email}/{password}")
+    @GetMapping("/setpassword/{email}/{oldPassword}/{newPassword}")
     public ResponseEntity<HttpResponse> resetPassword(@PathVariable("email") String email,
-                                                      @PathVariable("password") String password) throws  EmailNotFoundException {
-        userService.setNewPassword(email,password);
+                                                      @PathVariable("oldPassword") String oldPassword,
+                                                      @PathVariable("newPassword") String newPassword) throws EmailNotFoundException, WrongOldPasswordException {
+        userService.setNewPassword(email,oldPassword,newPassword);
         return response(OK, OLD_PASSWORD_CHANGED);
     }
 
@@ -143,13 +145,29 @@ public class UserController extends ExceptionHandling {
     public byte[] getTempProfileImage(@PathVariable("username") String username) throws IOException {
         URL url = new URL(TEMP_PROFILE_IMAGE_BASE_URL + username);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (InputStream inputStream = url.openStream()) {
-            int bytesRead;
-            byte[] chunk = new byte[1024];
-            while((bytesRead = inputStream.read(chunk)) > 0) {
-                byteArrayOutputStream.write(chunk, 0, bytesRead);
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "your-app-name");
+
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (InputStream inputStream = connection.getInputStream()) {
+                    int bytesRead;
+                    byte[] chunk = new byte[1024];
+                    while ((bytesRead = inputStream.read(chunk)) > 0) {
+                        byteArrayOutputStream.write(chunk, 0, bytesRead);
+                    }
+                }
+            } else {
+                System.out.println("HTTP request failed with response code: " + responseCode);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return byteArrayOutputStream.toByteArray();
     }
 

@@ -6,5 +6,12 @@ export class IMembershipType{
   public type: string
   public numberOfMonths: number
 
-  constructor() {}
+  constructor() {
+  this.id = 0
+  this.name = ''
+  this.description = ''
+  this.price = 0
+  this.type = ''
+  this.numberOfMonths = 0
+  }
 }

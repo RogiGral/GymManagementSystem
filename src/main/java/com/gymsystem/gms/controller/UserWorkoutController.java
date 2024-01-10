@@ -34,8 +34,8 @@ public class UserWorkoutController extends ExceptionHandling {
         UserWorkout newUserWorkout = userWorkoutService.addUserToWorkout(userId,workoutId);
         return new ResponseEntity<>(newUserWorkout, OK);
     }
-    @GetMapping("/list")
-    public ResponseEntity<List<UserWorkout>> getAllUserWorkouts(@RequestParam("userId") Long userId) {
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<List<UserWorkout>> getAllUserWorkouts(@PathVariable("userId") Long userId) {
         List<UserWorkout> userWorkouts = userWorkoutService.getAllUserWorkouts(userId);
         return new ResponseEntity<>(userWorkouts, OK);
     }

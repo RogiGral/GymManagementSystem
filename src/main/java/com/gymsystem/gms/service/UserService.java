@@ -19,6 +19,6 @@ public interface UserService {
     User updateUser(String currentUsername,String newFirstName, String newLastName, String newUsername, String newEmail, String role, boolean isNotLocked, boolean isActive, MultipartFile profileFile) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException;
     void deleteUser(Long id) throws IOException;
     void resetPassword(String email) throws EmailNotFoundException;
-    void setNewPassword(String password, String email) throws EmailNotFoundException;
+    void setNewPassword(String email,String oldPassword,String newPassword) throws EmailNotFoundException, WrongOldPasswordException;
     User updateProfileImage(String username, MultipartFile profileImage) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException;
 }

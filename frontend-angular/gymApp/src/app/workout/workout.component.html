@@ -14,7 +14,15 @@
     </button>
   </div>
 </div>
-
+<div class="d-flex align-items-center justify-content-center">
+  <button class="btn btn-outline-info" (click)="removeDay()">
+    <i class="fas fa-minus"></i> Remove Day
+  </button>
+  <input class="btn btn-outline-info mx-2" type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
+  <button class="btn btn-outline-info" (click)="addDay()">
+    <i class="fas fa-plus"></i> Add Day
+  </button>
+</div>
 <table class="table table-hover">
   <thead class="table-borderless">
   <tr class="text-center">
@@ -29,21 +37,48 @@
     <th>Actions</th>
   </tr>
   </thead>
-  <tbody *ngFor="let appWorkout of workouts">
+  <tbody *ngFor="let appWorkout of filteredWorkouts">
   <tr class="text-center">
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.id}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.trainerUsername}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutStartDate}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutEndDate}}</td>
+    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
+    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.capacity}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.participantsNumber}}</td>
     <td class="">
       <div class="btn-group">
-        <button class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
+        <button  class="btn btn-outline-info" (click)="onJoinWorkout(appWorkout)"><i class="fas fa-plus"></i></button>
+        <button [hidden]="!isAdmin" class="btn btn-outline-info" (click)="onEditWorkout(appWorkout)"><i class="fas fa-edit"></i></button>
         <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteWorkout(appWorkout.id)"><i
           class="fas fa-trash"></i></button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<table class="table table-hover">
+  <thead class="table-borderless">
+  <tr class="text-center">
+    <th>Workout name</th>
+    <th>Room number</th>
+    <th>Trainer username</th>
+    <th>Workout start date</th>
+    <th>Workout end date</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody *ngFor="let appUserWorkout of userWorkouts">
+  <tr class="text-center">
+    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutName}}</td>
+    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.roomNumber}}</td>
+    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.trainerUsername}}</td>
+    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutStartDate | date:'medium'}}</td>
+    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutEndDate | date:'medium'}}</td>
+    <td class="">
+      <div class="btn-group">
+        <button class="btn btn-outline-danger" (click)="onLeaveWorkout(appUserWorkout.id)"><i class="fas fa-minus"></i></button>
       </div>
     </td>
   </tr>
@@ -121,8 +156,10 @@
               <input type="text" name="roomNumber" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="trainerUsername">Trainer Username</label>
-              <input type="text" name="trainerUsername" required ngModel class="form-control">
+              <label for="trainerUsername">Trainer username</label>
+              <select name="trainerUsername" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.trainerUsername" class="form-control">
+                <option *ngFor="let trainer of listOfTrainers" [value]="trainer.username">{{ trainer.username }}</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="capacity">Capacity</label>
@@ -134,11 +171,12 @@
             </div>
             <div class="form-group">
               <label for="workoutStartDate">Workout start date</label>
-              <input type="date" name="workoutStartDate" required ngModel class="form-control">
+              <input type="datetime-local" name="workoutStartDate" required ngModel class="form-control">
             </div>
+
             <div class="form-group">
               <label for="workoutEndDate">Workout end date</label>
-              <input type="date" name="workoutEndDate" required ngModel class="form-control">
+              <input type="datetime-local" name="workoutEndDate" required ngModel class="form-control">
             </div>
 
             <button type="submit" style="display: none;" id="new-workout-save"></button>
@@ -150,6 +188,74 @@
         <button type="button" (click)="saveNewWorkout()" [disabled]="newWorkoutForm.invalid" class="btn btn-primary">Save
           changes
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal edit user -->
+<div class="modal draggable fade bd-example-modal-lg" id="editWorkoutModal" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Edit {{editWorkout?.workoutName}}<small [hidden]="isAdmin">
+            (read only)
+          </small></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <form #editWorkoutForm="ngForm">
+            <div class="form-group">
+              <label for="id">Workout id</label>
+              <input type="text" name="id" [disabled]="true" required [(ngModel)]="editWorkout.id" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutName">Workout name</label>
+              <input type="text" name="workoutName" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.workoutName" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="roomNumber">Room number</label>
+              <input type="number" name="roomNumber" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.roomNumber" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="trainerUsername">Trainer username</label>
+              <select name="trainerUsername" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.trainerUsername" class="form-control">
+                <option *ngFor="let trainer of listOfTrainers" [value]="trainer.username">{{ trainer.username }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="capacity">Capacity</label>
+              <input type="number" name="capacity" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.capacity" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="participantsNumber">Participants Number</label>
+              <input type="number" name="participantsNumber" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.participantsNumber" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutStartDate">Workout Start Date</label>
+              <input type="datetime-local" name="workoutStartDate" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.workoutStartDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutEndDate">Workout End Date</label>
+              <input type="datetime-local" name="workoutEndDate" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.workoutEndDate" class="form-control">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditWorkoutModalButton">Close</button>
+        <button type="button" (click)="onUpdateWorkout()" [disabled]="editWorkoutForm.invalid || !isAdminOrCoach" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

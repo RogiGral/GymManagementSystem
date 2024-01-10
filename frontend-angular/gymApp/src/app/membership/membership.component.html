@@ -36,8 +36,8 @@
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.numberOfMonths}}</td>
     <td class="">
       <div class="btn-group">
-        <button class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
-        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteMembership(appMembership.id)"><i
+        <button class="btn btn-outline-info" (click)="onEditMembershipType(appMembership)"><i class="fas fa-edit"></i></button>
+        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteMembershipType(appMembership.id)"><i
           class="fas fa-trash"></i></button>
       </div>
     </td>
@@ -45,18 +45,18 @@
   </tbody>
 </table>
 
-<button [hidden]="true" type="button" id="openMembershipInfo" data-toggle="modal" data-target="#viewMembershipModal">
+<button [hidden]="true" type="button" id="openMembershipTypeInfo" data-toggle="modal" data-target="#viewMembershipTypeModal">
 </button>
-<button [hidden]="true" type="button" id="openMembershipEdit" data-toggle="modal" data-target="#editMembershipModal">
+<button [hidden]="true" type="button" id="openMembershipTypeEdit" data-toggle="modal" data-target="#editMembershipTypeModal">
 </button>
 
 
-<div class="modal fade bd-example-modal-lg" id="viewMembershipModal" tabindex="-1" role="dialog" aria-labelledby=""
+<div class="modal fade bd-example-modal-lg" id="viewMembershipTypeModal" tabindex="-1" role="dialog" aria-labelledby=""
      aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedMembership?.name}}
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedMembershipType?.name}}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -67,15 +67,15 @@
           <div class="card">
             <ul class="list-group list-group-flush">
               <li class="list-group-item"></li>
-              <li class="list-group-item"><b class=" float-right">Name</b>{{selectedMembership?.name}}
+              <li class="list-group-item"><b class=" float-right">Name</b>{{selectedMembershipType?.name}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Description</b>{{selectedMembership?.description}}
+              <li class="list-group-item"><b class=" float-right">Description</b>{{selectedMembershipType?.description}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Type</b>{{selectedMembership?.type}}
+              <li class="list-group-item"><b class=" float-right">Type</b>{{selectedMembershipType?.type}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Price</b>{{selectedMembership?.price}}
+              <li class="list-group-item"><b class=" float-right">Price</b>{{selectedMembershipType?.price}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Duration</b>{{selectedMembership?.numberOfMonths}}
+              <li class="list-group-item"><b class=" float-right">Duration</b>{{selectedMembershipType?.numberOfMonths}}
               </li>
             </ul>
           </div>
@@ -101,7 +101,7 @@
       </div>
       <div class="modal-body">
         <div>
-          <form #newMembershipForm="ngForm" (ngSubmit)="onAddNewMembership(newMembershipForm)" >
+          <form #newMembershipForm="ngForm" (ngSubmit)="onAddNewMembershipType(newMembershipForm)" >
             <div class="form-group">
               <label for="name">Membership Name</label>
               <input type="text" name="name" required ngModel class="form-control">
@@ -136,3 +136,57 @@
   </div>
 </div>
 
+<div class="modal draggable fade bd-example-modal-lg" id="editMembershipTypeModal" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Edit {{editMembershipType?.name}}<small [hidden]="isAdmin">
+          (read only)
+        </small></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <form #editMembershipTypeForm="ngForm">
+            <div class="form-group">
+              <label for="id">Membership Type id</label>
+              <input type="text" name="id" [disabled]="true" required [(ngModel)]="editMembershipType.id" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="name">Membership Type name</label>
+              <input type="text" name="name" [disabled]="true" required [(ngModel)]="editMembershipType.name" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="description">Membership Type description</label>
+              <textarea name="description" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.description" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="price">Membership Type price</label>
+              <input type="number" name="price" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.price" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="type">Membership Type type</label>
+              <input type="text" name="type" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.type" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="numberOfMonths">Number of Months</label>
+              <input type="number" name="numberOfMonths" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.numberOfMonths" class="form-control">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditMembershipTypeModalButton">Close</button>
+        <button type="button" (click)="onUpdateMembershipType()" [disabled]="editMembershipTypeForm.invalid || !isAdminOrCoach" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

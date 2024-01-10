@@ -39,7 +39,6 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     public List<UserWorkout> getAllUserWorkouts(Long userId) {
         return userWorkoutRepository.findAllByUserId(userId);
     }
-
     @Override
     public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
         User user = checkIfUserExists(userId);
@@ -47,8 +46,8 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
         checkIfWorkoutIsFull(workoutId);
         checkIfUserEnterWorkout(userId,workoutId);
         UserWorkout userWorkout = new UserWorkout();
-        userWorkout.setUserId(user);
-        userWorkout.setWorkoutId(workoutRepository.findWorkoutById(workoutId));
+        userWorkout.setUser(user);
+        userWorkout.setWorkout(workoutRepository.findWorkoutById(workoutId));
         userWorkoutRepository.save(userWorkout);
         LOGGER.info("User added to workout");
         return userWorkout;
@@ -57,7 +56,7 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     private void checkIfUserEnterWorkout(Long userId, Long workoutId) throws UserIsAlreadyInWorkoutException {
         User user = userRepository.findUserById(userId);
         Workout workout = workoutRepository.findWorkoutById(workoutId);
-        UserWorkout userWorkout = userWorkoutRepository.findUserWorkoutByUserIdAndWorkoutId(user,workout);
+        UserWorkout userWorkout = userWorkoutRepository.findUserWorkoutByUserAndWorkout(user,workout);
         if(userWorkout!=null){
             throw new UserIsAlreadyInWorkoutException(USER_IS_IN_WORKOUT);
         }
@@ -76,7 +75,7 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     public void deleteUserWorkout(Long userWorkoutId) throws WorkoutNotFoundException {
         checkIfUserWorkoutExists(userWorkoutId);
         UserWorkout userWorkout = userWorkoutRepository.findUserWorkoutById(userWorkoutId);
-        Workout workout = userWorkout.getWorkoutId();
+        Workout workout = userWorkout.getWorkout();
         workout.setParticipantsNumber(workout.getParticipantsNumber()-1);
         userWorkoutRepository.deleteById(userWorkoutId);
     }

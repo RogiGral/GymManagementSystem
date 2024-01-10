@@ -173,13 +173,9 @@
               <label for="authority">Role</label>
               <select name="role" required ngModel="ROLE_USER" class="form-control">
                 <option value="ROLE_USER">USER</option>
-                <option value="ROLE_COACH">HR</option>
+                <option value="ROLE_COACH">COACH</option>
                 <option value="ROLE_ADMIN">ADMIN</option>
               </select>
-            </div>
-            <div class="form-group">
-              <label for="authority">Role</label>
-              <input type="text" name="role" required ngModel="USER" readonly class="form-control">
             </div>
             <fieldset class="form-group">
               <div class="form-check">
@@ -250,10 +246,8 @@
               <label for="authority">Role <small [hidden]="isAdminOrCoach">(read only)</small></label>
               <select name="role" [disabled]="!isAdminOrCoach" required [(ngModel)]="editUser.role" class="form-control">
                 <option value="ROLE_USER">USER</option>
-                <option value="ROLE_HR">HR</option>
-                <option value="ROLE_MANAGER">MANAGER</option>
+                <option value="ROLE_COACH">COACH</option>
                 <option value="ROLE_ADMIN">ADMIN</option>
-                <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
               </select>
             </div>
             <div class="input-group mb-2">

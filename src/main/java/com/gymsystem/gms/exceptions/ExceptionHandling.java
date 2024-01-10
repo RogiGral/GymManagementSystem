@@ -71,6 +71,11 @@ public class ExceptionHandling extends ErrorProperties {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
 
+    @ExceptionHandler(WrongOldPasswordException.class)
+    public ResponseEntity<HttpResponse> wrongOldPasswordException(WrongOldPasswordException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
     @ExceptionHandler(UsernameExistException.class)
     public ResponseEntity<HttpResponse> usernameExistException(UsernameExistException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
