@@ -89,6 +89,10 @@ public class ExceptionHandling extends ErrorProperties {
     public ResponseEntity<HttpResponse> membershipTypeExistException(MembershipTypeExistException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
+    @ExceptionHandler(WorkoutRoomNotFoundException.class)
+    public ResponseEntity<HttpResponse> workoutRoomNotFoundException(WorkoutRoomNotFoundException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
     @ExceptionHandler(MembershipTypeNotFoundException.class)
     public ResponseEntity<HttpResponse> membershipTypeNotFoundException(MembershipTypeNotFoundException exception) {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
