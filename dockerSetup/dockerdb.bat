@@ -26,3 +26,4 @@ echo Creating gymdb database...
 docker exec -it gymdb psql -U postgres -c "create database gymdb;";
 
 echo Script completed.
+timeout /t 10 /nobreak

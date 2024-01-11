@@ -60,7 +60,6 @@ public class WorkoutController extends ExceptionHandling {
             @RequestParam("workoutEndDate") String newWorkoutEndDateTimeString
     ) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
 
-        // Convert string parameters to integers
         Integer capacity = Integer.parseInt(capacityStr);
         Integer participantsNumber = Integer.parseInt(participantsNumberStr);
 

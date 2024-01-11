@@ -27,7 +27,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   public listOfTrainers: User[] = [];
   public userWorkouts: IUserWorkout[];
   public selectedUserWorkout: IWorkout;
-  public selectedDate: string;
+  public selectedDate: string = new Date().toISOString().split('T')[0];
 
   private subscriptions: Subscription[] = [];
   private currentWorkout: number;
@@ -84,8 +84,10 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   onDateChange(): void {
     this.filteredWorkouts = this.workouts.filter(workout => {
-      const workoutStartDate = new Date(workout.workoutStartDate);
-      return workoutStartDate.toISOString().split('T')[0] === this.selectedDate;
+      const workoutStartDate = new Date(workout.workoutStartDate).toLocaleDateString().split('T')[0];
+      const selectedDate = new Date(this.selectedDate).toLocaleDateString().split('T')[0];
+      //return workoutStartDate.toISOString().split('T')[0] === this.selectedDate;
+      return workoutStartDate === selectedDate;
     });
   }
   addDay(): void {
@@ -152,21 +154,63 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   }
 
   public onAddNewWorkout(workoutForm: NgForm): void {
-    const formData = this.workoutService.createWorkoutFormDate(null,workoutForm.value);
-    this.subscriptions.push(
-      this.workoutService.addWorkout(formData).subscribe(
-        (response: IWorkout) => {
-          this.clickButton('new-workout-close');
-          this.getWorkouts(false);
-          workoutForm.reset();
-          this.sendNotification(NotificationType.SUCCESS, `${response.workoutName}  added successfully`);
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+
+    const isCyclical = workoutForm.value.isCyclical;
+    const numberOfCycles = workoutForm.value.numberOfCycles;
+
+    const addWorkoutRecursively = (cycleCount: number) => {
+      if (cycleCount <= numberOfCycles) {
+        if(cycleCount!=0){
+          workoutForm.value.workoutStartDate = this.addDaysToDateString(workoutForm.value.workoutStartDate)
+          workoutForm.value.workoutEndDate = this.addDaysToDateString(workoutForm.value.workoutEndDate)
         }
-      )
-    );
+        const formData = this.workoutService.createWorkoutFormDate(null, workoutForm.value);
+
+        this.subscriptions.push(
+          this.workoutService.addWorkout(formData).subscribe(
+            (response: IWorkout) => {
+              this.sendNotification(NotificationType.SUCCESS, `${response.workoutName} added successfully`);
+              addWorkoutRecursively(cycleCount + 1);
+            },
+            (errorResponse: HttpErrorResponse) => {
+              this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+            }
+          )
+        );
+      } else {
+        this.clickButton('new-workout-close');
+        this.getWorkouts(false);
+        workoutForm.reset();
+      }
+    };
+
+    if (isCyclical) {
+      addWorkoutRecursively(0);
+    } else {
+      const formData = this.workoutService.createWorkoutFormDate(null, workoutForm.value);
+      this.subscriptions.push(
+        this.workoutService.addWorkout(formData).subscribe(
+          (response: IWorkout) => {
+            this.clickButton('new-workout-close');
+            this.getWorkouts(false);
+            workoutForm.reset();
+            this.sendNotification(NotificationType.SUCCESS, `${response.workoutName} added successfully`);
+          },
+          (errorResponse: HttpErrorResponse) => {
+            this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          }
+        )
+      );
+    }
   }
+
+  public addDaysToDateString(originalDateString: string): string {
+    const originalDate = new Date(originalDateString);
+    originalDate.setDate(originalDate.getDate() + 7);
+    const formattedDateString = originalDate.toISOString().slice(0, 16);
+    return formattedDateString;
+  }
+
   public onUpdateWorkout(): void {
     const formData = this.workoutService.createWorkoutFormDate(this.currentWorkout, this.editWorkout);
     this.subscriptions.push(
