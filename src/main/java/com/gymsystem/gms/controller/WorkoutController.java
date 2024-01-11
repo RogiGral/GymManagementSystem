@@ -76,7 +76,7 @@ public class WorkoutController extends ExceptionHandling {
     }
     @DeleteMapping("/delete/{id}")
     //@PreAuthorize("hasAnyAuthority('workout:crud')") //comment for testing
-    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("id") Long id) throws WorkoutNotFoundException {
+    public ResponseEntity<HttpResponse> deleteWorkout(@PathVariable("id") Long id) throws WorkoutNotFoundException {
         workoutService.deleteWorkout(id);
         return response(OK, "WORKOUT_DELETED_SUCCESSFULLY");
     }

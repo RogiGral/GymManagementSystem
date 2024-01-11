@@ -21,15 +21,6 @@ public class WorkoutRoom {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false, updatable = false)
     private Long id;
-    private String workoutName;
-    private String trainerUsername;
-    private String roomNumber;
-    private LocalDateTime workoutStartDate;
-    private LocalDateTime workoutEndDate;
+    private String workoutRoomName;
     private Integer capacity;
-    private Integer participantsNumber;
-//    @JoinColumn(name = "fitnessClubId", referencedColumnName = "id")
-//    @ManyToOne(optional = false,fetch = FetchType.EAGER)
-//    private FitnessClub fitnessClub;
-
 }
