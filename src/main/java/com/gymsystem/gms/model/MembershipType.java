@@ -1,5 +1,6 @@
 package com.gymsystem.gms.model;
 
+import com.gymsystem.gms.enumeration.UnitOfTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ public class MembershipType {
     private String description;
     private String type;
     private Long price;
-    private Integer numberOfMonths;
+    private Integer validityPeriodNumber;
+    private UnitOfTime validityUnitOfTime;
+
 
 
 }

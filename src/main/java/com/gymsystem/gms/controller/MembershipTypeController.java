@@ -38,8 +38,9 @@ public class MembershipTypeController extends ExceptionHandling {
                                                                 @RequestParam("description") String description,
                                                                 @RequestParam("type") String type,
                                                                 @RequestParam("price") Long price,
-                                                                @RequestParam("numberOfMonths")Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
-        MembershipType membershipType = membershipTypeService.addMembershipType(name,description,type,price,numberOfMonths);
+                                                                @RequestParam("validityPeriodNumber")Integer validityPeriodNumber,
+                                                                @RequestParam("validityUnitOfTime")String validityUnitOfTime) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
+        MembershipType membershipType = membershipTypeService.addMembershipType(name,description,type,price,validityPeriodNumber,validityUnitOfTime);
         return new ResponseEntity<>(membershipType, OK);
     }
     @PostMapping("/update")
@@ -48,8 +49,9 @@ public class MembershipTypeController extends ExceptionHandling {
                                                                 @RequestParam("description") String newDescription,
                                                                 @RequestParam("type") String newType,
                                                                 @RequestParam("price") Long newPrice,
-                                                                @RequestParam("numberOfMonths")Integer numberOfMonths) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
-        MembershipType membershipType = membershipTypeService.updateMembershipType(oldName,newName,newDescription,newType,newPrice,numberOfMonths);
+                                                                @RequestParam("validityPeriodNumber")Integer validityPeriodNumber,
+                                                                @RequestParam("validityUnitOfTime")String validityUnitOfTime) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
+        MembershipType membershipType = membershipTypeService.updateMembershipType(oldName,newName,newDescription,newType,newPrice,validityPeriodNumber,validityUnitOfTime);
         return new ResponseEntity<>(membershipType, OK);
     }
     @DeleteMapping("/delete/{id}")

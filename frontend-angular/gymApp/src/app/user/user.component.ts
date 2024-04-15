@@ -170,4 +170,10 @@ export class UserComponent implements OnInit {
     document.getElementById(buttonId)!.click();
   }
 
+  isListUserAdmin(appUser: User) {
+    if(appUser.username === this.authenticationService.getUserFromLocalCache().username){
+      return true;
+    }
+    return false
+  }
 }

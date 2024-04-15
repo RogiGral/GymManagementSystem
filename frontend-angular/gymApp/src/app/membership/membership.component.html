@@ -23,7 +23,7 @@
     <th>Membership description</th>
     <th>Membership type</th>
     <th>Membership price</th>
-    <th>Number of months</th>
+    <th>Validity period</th>
   </tr>
   </thead>
   <tbody *ngFor="let appMembership of memberships ">
@@ -33,7 +33,7 @@
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.description}}</td>
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.type}}</td>
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.price}}$</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.numberOfMonths}}</td>
+    <td (click)="onSelectMembership(appMembership)">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
     <td class="">
       <div class="btn-group">
         <button class="btn btn-outline-info" (click)="onEditMembershipType(appMembership)"><i class="fas fa-edit"></i></button>
@@ -75,7 +75,7 @@
               </li>
               <li class="list-group-item"><b class=" float-right">Price</b>{{selectedMembershipType?.price}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Duration</b>{{selectedMembershipType?.numberOfMonths}}
+              <li class="list-group-item"><b class=" float-right">Duration</b>{{selectedMembershipType?.validityPeriodNumber}} {{selectedMembershipType?.validityUnitOfTime}}
               </li>
             </ul>
           </div>
@@ -119,8 +119,16 @@
               <input type="number" name="price" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="numberOfMonths">Membership duration</label>
-              <input type="number" name="numberOfMonths" required ngModel class="form-control">
+              <label for="validityPeriodNumber">Membership duration</label>
+              <input type="number" name="validityPeriodNumber" required ngModel class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="validityUnitOfTime">Membership duration</label>
+              <select name="validityUnitOfTime" required ngModel class="form-control">
+                <option value="DAY">DAY</option>
+                <option value="MONTH">MONTH</option>
+                <option value="YEAR">YEAR</option>
+              </select>
             </div>
             <button type="submit" style="display: none;" id="new-membership-save"></button>
           </form>
@@ -177,8 +185,12 @@
             </div>
 
             <div class="form-group">
-              <label for="numberOfMonths">Number of Months</label>
-              <input type="number" name="numberOfMonths" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.numberOfMonths" class="form-control">
+              <label for="validityPeriodNumber">Number of Months</label>
+              <input type="number" name="validityPeriodNumber" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityPeriodNumber" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="validityUnitOfTime">Number of Months</label>
+              <input type="text" name="numberOfMonths" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityUnitOfTime" class="form-control">
             </div>
           </form>
         </div>

@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface MembershipTypeService {
     List<MembershipType> getMembershipTypes();
-    MembershipType addMembershipType(String name,String description, String type, Long price,Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException;
-    MembershipType updateMembershipType(String oldName,String newName,String newDescription, String newType , Long newPrice,Integer numberOfMonths) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException;
+    MembershipType addMembershipType(String name,String description, String type, Long price,Integer validityPeriodNumber, String validityUnitOfTime) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException;
+    MembershipType updateMembershipType(String oldName,String newName,String newDescription, String newType , Long newPrice,Integer validityPeriodNumber, String validityUnitOfTime) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException;
     MembershipType findMembershipTypeByName(String name) throws MembershipTypeNotFoundException;
     void deleteMembershipType(Long id);
 }

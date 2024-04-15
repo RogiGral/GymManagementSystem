@@ -4,14 +4,16 @@ export class IMembershipType{
   public description: string
   public price: number
   public type: string
-  public numberOfMonths: number
+  public validityPeriodNumber: number
+  public validityUnitOfTime: string
 
   constructor() {
-  this.id = 0
-  this.name = ''
-  this.description = ''
-  this.price = 0
-  this.type = ''
-  this.numberOfMonths = 0
+    this.id = 0
+    this.name = ''
+    this.description = ''
+    this.price = 0
+    this.type = ''
+    this.validityPeriodNumber = 0
+    this.validityUnitOfTime = ''
   }
 }
