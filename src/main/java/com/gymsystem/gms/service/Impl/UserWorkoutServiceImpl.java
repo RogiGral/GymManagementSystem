@@ -42,28 +42,25 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     @Override
     public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
         User user = checkIfUserExists(userId);
-        checkIfWorkoutExists(workoutId);
-        checkIfWorkoutIsFull(workoutId);
-        checkIfUserEnterWorkout(userId,workoutId);
+        Workout workout = checkIfWorkoutExists(workoutId);
+        checkIfWorkoutIsFull(workout);
+        checkIfUserEnterWorkout(user,workout);
         UserWorkout userWorkout = new UserWorkout();
         userWorkout.setUser(user);
-        userWorkout.setWorkout(workoutRepository.findWorkoutById(workoutId));
+        userWorkout.setWorkout(workout);
         userWorkoutRepository.save(userWorkout);
         LOGGER.info("User added to workout");
         return userWorkout;
     }
 
-    private void checkIfUserEnterWorkout(Long userId, Long workoutId) throws UserIsAlreadyInWorkoutException {
-        User user = userRepository.findUserById(userId);
-        Workout workout = workoutRepository.findWorkoutById(workoutId);
+    private void checkIfUserEnterWorkout(User user, Workout workout) throws UserIsAlreadyInWorkoutException {
         UserWorkout userWorkout = userWorkoutRepository.findUserWorkoutByUserAndWorkout(user,workout);
         if(userWorkout!=null){
             throw new UserIsAlreadyInWorkoutException(USER_IS_IN_WORKOUT);
         }
     }
 
-    private void checkIfWorkoutIsFull(Long workoutId) throws WorkoutIsFullException {
-        Workout workout = workoutRepository.findWorkoutById(workoutId);
+    private void checkIfWorkoutIsFull(Workout workout) throws WorkoutIsFullException {
         if(workout.getCapacity() <= workout.getParticipantsNumber()){
             throw new WorkoutIsFullException(WORKOUT_IS_FULL);
         } else {
@@ -87,11 +84,12 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
         }
     }
 
-    private void checkIfWorkoutExists(Long workoutId) throws WorkoutNotFoundException {
+    private Workout checkIfWorkoutExists(Long workoutId) throws WorkoutNotFoundException {
        Workout workout = workoutRepository.findWorkoutById(workoutId);
        if(workout == null){
            throw new WorkoutNotFoundException(WORKOUT_DOES_NOT_EXISTS+workoutId);
        }
+       return workout;
     }
 
     private User checkIfUserExists(Long userId) {
