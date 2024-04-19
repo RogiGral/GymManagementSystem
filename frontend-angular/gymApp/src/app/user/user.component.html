@@ -47,8 +47,8 @@
     </td>
     <td class="">
       <div class="btn-group">
-        <button class="btn btn-outline-info" (click)="onEditUser(appUser)"><i class="fas fa-edit"></i></button>
-        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteUser(appUser.id)"><i
+        <button class="btn btn-outline-info" [disabled]="isListUserAdmin(appUser)" (click)="onEditUser(appUser)"><i class="fas fa-edit"></i></button>
+        <button [hidden]="!isAdmin" [disabled]="isListUserAdmin(appUser)" class="btn btn-outline-danger" (click)="onDeleteUser(appUser.id)"><i
           class="fas fa-trash"></i></button>
       </div>
     </td>

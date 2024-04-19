@@ -1,5 +1,7 @@
 package com.gymsystem.gms.service.Impl;
 
+import com.gymsystem.gms.enumeration.Role;
+import com.gymsystem.gms.enumeration.UnitOfTime;
 import com.gymsystem.gms.exceptions.model.MembershipTypeExistException;
 import com.gymsystem.gms.exceptions.model.MembershipTypeNameNotUniqueException;
 import com.gymsystem.gms.exceptions.model.MembershipTypeNotFoundException;
@@ -33,12 +35,13 @@ public class MembershipTypeImpl implements MembershipTypeService {
     }
 
     @Override
-    public MembershipType addMembershipType(String name, String description, String type, Long price, Integer numberOfMonths) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
+    public MembershipType addMembershipType(String name, String description, String type, Long price, Integer validityPeriodNumber,String validityUnitOfTime) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
         checkIfNameIsUnique(name);
         MembershipType membershipType = checkIfMembershipTypeExists(name,price);
         membershipType.setName(name);
         membershipType.setPrice(price);
-        membershipType.setNumberOfMonths(numberOfMonths);
+        membershipType.setValidityPeriodNumber(validityPeriodNumber);
+        membershipType.setValidityUnitOfTime(getUnitOfTimeEnumName(validityUnitOfTime));
         membershipType.setDescription(description);
         membershipType.setType(type);
         membershipTypeRepository.save(membershipType);
@@ -46,14 +49,15 @@ public class MembershipTypeImpl implements MembershipTypeService {
     }
 
     @Override
-    public MembershipType updateMembershipType(String oldName, String newName , String newDescription, String newType , Long newPrice, Integer newNumberOfMonths ) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
+    public MembershipType updateMembershipType(String oldName, String newName , String newDescription, String newType , Long newPrice, Integer validityPeriodNumber,String validityUnitOfTime) throws MembershipTypeNotFoundException, MembershipTypeNameNotUniqueException {
         if(!oldName.equals(newName)){
             checkIfNameIsUnique(newName);
         }
         MembershipType membershipType = findMembershipTypeByName(oldName);
         membershipType.setName(newName);
         membershipType.setPrice(newPrice);
-        membershipType.setNumberOfMonths(newNumberOfMonths);
+        membershipType.setValidityPeriodNumber(validityPeriodNumber);
+        membershipType.setValidityUnitOfTime(getUnitOfTimeEnumName(validityUnitOfTime));
         membershipType.setDescription(newDescription);
         membershipType.setType(newType);
         membershipTypeRepository.save(membershipType);
@@ -83,6 +87,9 @@ public class MembershipTypeImpl implements MembershipTypeService {
         else{
             return new MembershipType();
         }
+    }
+    private UnitOfTime getUnitOfTimeEnumName(String role) {
+        return UnitOfTime.valueOf(role.toUpperCase());
     }
     private void checkIfNameIsUnique(String name) throws MembershipTypeNameNotUniqueException {
         MembershipType membershipType = membershipTypeRepository.findMembershipTypeByName(name);

@@ -63,8 +63,18 @@ public class UserMembershipImpl implements UserMembershipService {
         userMembership.setMembershipTypeId(membershipType);
 
         Date startDt = new Date();
-        Date endDt = DateUtils.addMonths(startDt,membershipType.getNumberOfMonths());
-
+        Date endDt = new Date();
+        switch (membershipType.getValidityUnitOfTime()){
+            case DAY:
+                endDt = DateUtils.addDays(startDt,membershipType.getValidityPeriodNumber());
+                break;
+            case MONTH:
+                endDt = DateUtils.addMonths(startDt,membershipType.getValidityPeriodNumber());
+                break;
+            case YEAR:
+                endDt = DateUtils.addYears(startDt,membershipType.getValidityPeriodNumber());
+                break;
+        }
         userMembership.setStartDate(startDt);
         userMembership.setEndDate(endDt);
         userMembershipRepository.save(userMembership);

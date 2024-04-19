@@ -34,7 +34,8 @@ export class MembershipTypeService {
     formData.append('description', membershipType.description);
     formData.append('type', membershipType.type);
     formData.append('price', membershipType.price.toString());
-    formData.append('numberOfMonths', membershipType.numberOfMonths.toString());
+    formData.append('validityPeriodNumber', membershipType.validityPeriodNumber.toString());
+    formData.append('validityUnitOfTime', membershipType.validityUnitOfTime.toString());
     return formData;
   }
 }
