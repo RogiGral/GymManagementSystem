@@ -20,7 +20,9 @@ import java.util.Date;
 public class Workout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WORKOUT_SEQ")
+    @SequenceGenerator(name = "WORKOUT_SEQ", sequenceName = "WORKOUT_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
     private String workoutName;

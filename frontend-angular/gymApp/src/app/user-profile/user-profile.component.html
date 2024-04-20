@@ -4,23 +4,23 @@
       <div class="col">
         <div class="row">
           <div class="col mb-3">
-            <div class="card">
+            <div class="card mb-3">
               <div class="card-body">
                 <div class="e-profile">
                   <div class="row">
                     <div class="col-12 col-sm-auto">
                       <div class="mx-auto" style="width: 120px;">
                         <div class="d-flex justify-content-center align-items-center rounded">
-                          <img class="rounded" height="135" width="135" src="{{user?.profileImageUrl}}" alt="">
+                          <img class="rounded" height="135" width="135" [src]="user.profileImageUrl" alt="">
                         </div>
                       </div>
                     </div>
                     <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                       <div class="text-center text-sm-left mb-2 mb-sm-0">
-                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user?.firstName}} {{user?.lastName}}</h4>
-                        <p class="mb-0">{{user?.username}}</p>
-                        <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-muted"><small>Last login:
-                          {{user?.lastLoginDateDisplay | date:'medium'}}</small></div>
+                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user.firstName}} {{user.lastName}}</h4>
+                        <p class="mb-0">@{{user.username}}</p>
+                        <div *ngIf="user.lastLoginDateDisplay" class="text-muted"><small>Last login:
+                          {{user.lastLoginDateDisplay | date:'medium'}}</small></div>
                         <div class="mt-2">
                           <button class="btn btn-primary" type="button">
                             <i class="fa fa-fw fa-camera"></i>
@@ -29,13 +29,49 @@
                         </div>
                       </div>
                       <div class="text-center text-sm-right">
-                        <div class="text-muted"><small>Joined {{user?.joinDate | date:'mediumDate'}}</small></div>
+                        <div class="text-muted"><small>Joined {{user.joinDate | date:'mediumDate'}}</small></div>
                       </div>
                     </div>
                   </div>
                   <div class="tab-content pt-3">
-                    <div class="tab-pane active">
+                    <div class="tab-pane active" *ngIf="userMembership; else noMembership">
+                      <div class="card">
+                        <div class="card-header bg-primary text-white">
+                          <i class="fa fa-id-card"></i> Membership Details
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <strong>Type:</strong> {{userMembership.membershipTypeId.name}}
+                          </h5>
+                          <p class="card-text"><strong>Description:</strong> {{userMembership.membershipTypeId.description}}</p>
+                          <p class="card-text text-danger">
+                            <i class="fa fa-calendar-times-o"></i> Valid till: <strong>{{userMembership.endDate | date:'mediumDate'}}</strong>
+                          </p>
+                          <p>
+                            <span [hidden]="isActive()" class="badge badge-success">Active</span>
+                            <span [hidden]="!isActive()" class="badge badge-danger">Inactive</span>
+                          </p>
+                        </div>
+
+                        <div class="card-footer text-muted">
+                          <button class="btn btn-outline-primary btn-sm" (click)="goToMemberships()">
+                            <i class="fa fa-refresh"></i> Renew Membership
+                          </button>
+                        </div>
+                      </div>
                     </div>
+                    <ng-template #noMembership>
+                      <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> No Membership Found</h4>
+                        <p>You currently do not have any membership. Take advantage of our services by purchasing a membership today!</p>
+                        <hr>
+                        <div class="mb-0">
+                          <button class="btn btn-primary" (click)="goToMemberships()">
+                            <i class="fa fa-plus"></i> Buy Membership
+                          </button>
+                        </div>
+                      </div>
+                    </ng-template>
                   </div>
                 </div>
               </div>

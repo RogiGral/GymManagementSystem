@@ -10,6 +10,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../service/user.service";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {Subscription} from "rxjs";
+import {MembershipService} from "../service/membership.service";
+import {IUserMembership} from "../model/membership_model";
 
 @Component({
   selector: 'app-user-profile',
@@ -18,22 +20,34 @@ import {Subscription} from "rxjs";
 })
 export class UserProfileComponent implements OnInit {
 
+  public userMembership: IUserMembership;
+
   public user: User;
   private subscriptions: Subscription[] = [];
 
   constructor(private notificationService: NotificationService,
               private authenticationService: AuthenticationService,
+              private membershipService: MembershipService,
               private userService: UserService,
               private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.authenticationService.getUserFromLocalCache()
+    this.membershipService.getUserMembership(this.user.id).subscribe(
+      (response: IUserMembership) => {
+        this.userMembership = response
+      }
+    )
   }
 
   public onLogOut(): void {
     this.authenticationService.logOut();
     this.router.navigate(['/login']);
     this.sendNotification(NotificationType.SUCCESS, `You've been successfully logged out`);
+  }
+
+  public goToMemberships(): void{
+    this.router.navigate(['/dashboard/memberships']);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {
@@ -65,5 +79,16 @@ export class UserProfileComponent implements OnInit {
         }
       )
     );
+  }
+
+  isActive() {
+    const todayDate = new Date().toLocaleDateString().split('T')[0];
+    const userMembershipEndDate = new Date(this.userMembership!.endDate).toLocaleDateString().split('T')[0];
+    // checks if today date is before user membership end date
+    if(todayDate>=userMembershipEndDate){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

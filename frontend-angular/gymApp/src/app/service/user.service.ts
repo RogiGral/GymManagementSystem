@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "../model/user_model";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
+import {IUserMembership} from "../model/membership_model";
 
 @Injectable({
   providedIn: 'root'

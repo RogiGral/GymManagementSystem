@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {WorkoutService} from "../service/workout.service";
 import {NotificationService} from "../service/notification.service";
 import {AuthenticationService} from "../service/authentication.service";
 import {Role} from "../enum/role.enum";
-import {MembershipTypeService} from "../service/membership-type.service";
-import {IMembershipType} from "../model/membership_model";
+import {MembershipService} from "../service/membership.service";
+import {IMembershipType, IUserMembership} from "../model/membership_model";
 import {Subscription} from "rxjs";
 import {NotificationType} from "../enum/notification-type.enum";
 import {HttpErrorResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {NgForm} from "@angular/forms";
-import {IWorkout} from "../model/workout_model";
+import {IUserWorkout} from "../model/workout_model";
 
 @Component({
   selector: 'app-membership',
@@ -27,7 +26,7 @@ export class MembershipComponent implements OnInit {
   public editMembershipType = new IMembershipType();
 
   constructor(
-    private membershipTypeService: MembershipTypeService,
+    private membershipService: MembershipService,
     private notificationService: NotificationService,
     private authenticationService: AuthenticationService
   ) { }
@@ -39,7 +38,7 @@ export class MembershipComponent implements OnInit {
   public getMemberships(showNotification: boolean): void {
     this.refreshing = true;
     this.subscriptions.push(
-      this.membershipTypeService.getMembership().subscribe(
+      this.membershipService.getMembership().subscribe(
         (response: IMembershipType[]) => {
           this.memberships = response;
           this.refreshing = false;
@@ -57,7 +56,7 @@ export class MembershipComponent implements OnInit {
 
   public onDeleteMembershipType(id: number): void {
     this.subscriptions.push(
-      this.membershipTypeService.deleteMembershipType(id).subscribe(
+      this.membershipService.deleteMembershipType(id).subscribe(
         (response: CustomHttpResponse) => {
           this.sendNotification(NotificationType.SUCCESS, response.message);
           this.getMemberships(false);
@@ -70,9 +69,9 @@ export class MembershipComponent implements OnInit {
   }
 
   public onAddNewMembershipType(newMembership: NgForm): void {
-    const formData = this.membershipTypeService.createMembershipTypeFormDate(null,newMembership.value);
+    const formData = this.membershipService.createMembershipTypeFormDate(null,newMembership.value);
     this.subscriptions.push(
-      this.membershipTypeService.addMembershipType(formData).subscribe(
+      this.membershipService.addMembershipType(formData).subscribe(
         (response: IMembershipType) => {
           this.getMemberships(false);
           this.clickButton('new-membership-close');
@@ -85,9 +84,9 @@ export class MembershipComponent implements OnInit {
     );
   }
   public onUpdateMembershipType(): void {
-    const formData = this.membershipTypeService.createMembershipTypeFormDate(this.currentMembershipType, this.editMembershipType);
+    const formData = this.membershipService.createMembershipTypeFormDate(this.currentMembershipType, this.editMembershipType);
     this.subscriptions.push(
-      this.membershipTypeService.updateMembershipType(formData).subscribe(
+      this.membershipService.updateMembershipType(formData).subscribe(
         (response: IMembershipType) => {
           this.clickButton('closeEditMembershipTypeModalButton');
           this.getMemberships(false);
@@ -141,5 +140,20 @@ export class MembershipComponent implements OnInit {
 
   private clickButton(buttonId: string): void {
     document.getElementById(buttonId)!.click();
+  }
+
+  onJoinMembership(membershipType: IMembershipType)  {
+    const formData = this.membershipService.createMembershipFormJoinData(this.authenticationService.getUserFromLocalCache(),membershipType)
+    this.subscriptions.push(
+      this.membershipService.joinMembership(formData).subscribe(
+        (response: IUserMembership) => {
+          this.sendNotification(NotificationType.SUCCESS,`${response.userId.username} added successfully to membership: ${response.membershipTypeId.type}`);
+          this.getMemberships(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
   }
 }

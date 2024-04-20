@@ -17,7 +17,9 @@ import javax.persistence.*;
 public class UserWorkout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_WORKOUT_SEQ")
+    @SequenceGenerator(name = "USER_WORKOUT_SEQ", sequenceName = "USER_WORKOUT_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
     @JoinColumn(name = "userId", referencedColumnName = "id")

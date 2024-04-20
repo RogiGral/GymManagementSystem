@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {IMembershipType} from "../model/membership_model";
+import {IMembershipType, IUserMembership} from "../model/membership_model";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {User} from "../model/user_model";
+import {IWorkout} from "../model/workout_model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MembershipTypeService {
+export class MembershipService {
 
   private host = environment.apiUrl
 
@@ -26,6 +28,13 @@ export class MembershipTypeService {
   public deleteMembershipType(id: number): Observable<CustomHttpResponse>{
     return this.http.delete<CustomHttpResponse>(`${this.host}/membershipType/delete/${id}`)
   }
+  public getUserMembership(userId: number): Observable<IUserMembership>{
+    return this.http.get<IUserMembership>(`${this.host}/userMembership/${userId}`);
+  }
+  joinMembership(formData: FormData): Observable<IUserMembership> {
+    return this.http.post<IUserMembership>(`${this.host}/userMembership/add`,formData)
+  }
+
 
   createMembershipTypeFormDate(oldMembershipTypeName:any, membershipType: IMembershipType): FormData {
     const formData = new FormData();
@@ -38,4 +47,12 @@ export class MembershipTypeService {
     formData.append('validityUnitOfTime', membershipType.validityUnitOfTime.toString());
     return formData;
   }
+
+  createMembershipFormJoinData(user: User,membershipType: IMembershipType): FormData {
+    const formData = new FormData();
+    formData.append('membershipTypeId', membershipType.id.toString());
+    formData.append('userId', user.id.toString());
+    return formData;
+  }
+
 }
