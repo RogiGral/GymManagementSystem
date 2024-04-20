@@ -18,7 +18,9 @@ import java.time.LocalDateTime;
 public class WorkoutRoom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WORKOUT_ROOM_SEQ")
+    @SequenceGenerator(name = "WORKOUT_ROOM_SEQ", sequenceName = "WORKOUT_ROOM_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
     private String workoutRoomName;

@@ -18,9 +18,12 @@ import java.util.Date;
 @Table(name = "user_membership")
 public class UserMembership {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_MEMBERSHIP_SEQ")
+    @SequenceGenerator(name = "USER_MEMBERSHIP_SEQ", sequenceName = "USER_MEMBERSHIP_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
+
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private User userId;

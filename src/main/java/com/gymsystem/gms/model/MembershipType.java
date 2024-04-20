@@ -16,8 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "membership_type")
 public class MembershipType {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBERSHIP_TYPE_SEQ")
+    @SequenceGenerator(name = "MEMBERSHIP_TYPE_SEQ", sequenceName = "MEMBERSHIP_TYPE_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
     private String name;

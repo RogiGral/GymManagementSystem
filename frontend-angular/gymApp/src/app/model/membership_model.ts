@@ -1,3 +1,6 @@
+import {User} from "./user_model";
+import {IWorkout} from "./workout_model";
+
 export class IMembershipType{
   public id: number
   public name: string
@@ -17,3 +20,23 @@ export class IMembershipType{
     this.validityUnitOfTime = ''
   }
 }
+
+
+export class IUserMembership {
+  id: number;
+  userId: User;
+  membershipTypeId: IMembershipType;
+  startDate: string;
+  endDate: string;
+
+  constructor() {
+    this.id = 0;
+    this.userId = new User();
+    this.membershipTypeId =  new IMembershipType();
+    this.startDate = '';
+    this.endDate = '';
+  }
+
+}
+
+

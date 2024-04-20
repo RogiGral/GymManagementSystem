@@ -36,6 +36,7 @@
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
     <td class="">
       <div class="btn-group">
+        <button  class="btn btn-outline-info" (click)="onJoinMembership(appMembership)"><i class="fas fa-plus"></i></button>
         <button class="btn btn-outline-info" (click)="onEditMembershipType(appMembership)"><i class="fas fa-edit"></i></button>
         <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteMembershipType(appMembership.id)"><i
           class="fas fa-trash"></i></button>
