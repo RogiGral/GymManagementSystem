@@ -1,6 +1,6 @@
 package com.gymsystem.gms.service.Impl;
 
-import com.gymsystem.gms.enumeration.Role;
+
 import com.gymsystem.gms.enumeration.UnitOfTime;
 import com.gymsystem.gms.exceptions.model.MembershipTypeExistException;
 import com.gymsystem.gms.exceptions.model.MembershipTypeNameNotUniqueException;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static com.gymsystem.gms.constraints.MembershipType.*;
@@ -32,6 +30,11 @@ public class MembershipTypeImpl implements MembershipTypeService {
     @Override
     public List<MembershipType> getMembershipTypes() {
         return membershipTypeRepository.findAll();
+    }
+
+    @Override
+    public MembershipType findMembershipTypeById(Long membershipTypeId) {
+        return membershipTypeRepository.findMembershipTypeById(membershipTypeId);
     }
 
     @Override

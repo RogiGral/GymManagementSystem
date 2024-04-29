@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -29,8 +30,8 @@ import static com.gymsystem.gms.constraints.UserImplConstant.NO_USER_FOUND;
 public class UserMembershipImpl implements UserMembershipService {
 
     UserMembershipRepository userMembershipRepository;
-    UserRepository userRepository;
     MembershipTypeRepository membershipTypeRepository;
+    UserRepository userRepository;
 
     @Autowired
     public UserMembershipImpl(UserMembershipRepository userMembershipRepository, UserRepository userRepository, MembershipTypeRepository membershipTypeRepository) {
@@ -54,9 +55,7 @@ public class UserMembershipImpl implements UserMembershipService {
     }
 
     @Override
-    public UserMembership addUserMembership(Long userId, Long membershipTypeId) throws MembershipTypeNotFoundException, UserNotFoundException, UserMembershipException {
-        User user = checkIfUserExist(userId);
-        MembershipType membershipType = checkIfMembershipTypeExist(membershipTypeId);
+    public UserMembership addUserMembership(User user, MembershipType membershipType) throws UserMembershipException {
         checkIfUserHasMembership(user);
         UserMembership userMembership = new UserMembership();
         userMembership.setUserId(user);

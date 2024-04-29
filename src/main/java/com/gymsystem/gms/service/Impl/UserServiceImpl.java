@@ -6,6 +6,7 @@ import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserPrincipal;
 import com.gymsystem.gms.repository.UserRepository;
 import com.gymsystem.gms.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -202,6 +203,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findUserByUsernameOrEmail(username,email);
     }
 
+    @Override
+    public User findUserById(Long userId) {
+        return userRepository.findUserById(userId);
+    }
+
 
     private String getTemporaryProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
@@ -269,7 +275,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         mailMessage.setTo(email);
         mailMessage.setSubject("Welcome in our gym, here is your password");
         mailMessage.setText("Your password is: "+password);
-
         mailSender.send(mailMessage);
     }
 
@@ -286,7 +291,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private String generatePassword() {
-        return RandomStringUtils.randomAlphanumeric(10);
+        return RandomStringUtils.randomAlphanumeric(25);
     }
 
     private String generateUserId() {

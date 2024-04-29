@@ -24,6 +24,7 @@ export class MembershipComponent implements OnInit {
   public selectedMembershipType: IMembershipType;
   private currentMembershipType: any;
   public editMembershipType = new IMembershipType();
+  public todayDate = new Date();
 
   constructor(
     private membershipService: MembershipService,
@@ -105,9 +106,14 @@ export class MembershipComponent implements OnInit {
     this.clickButton('openMembershipTypeEdit');
   }
 
-  public onSelectMembership(selectedUser: IMembershipType): void {
-    this.selectedMembershipType = selectedUser;
+  public onSelectMembership(selectedMembership: IMembershipType): void {
+    this.selectedMembershipType = selectedMembership;
     this.clickButton('openMembershipTypeInfo');
+  }
+
+  public onPayForMembership(selectedMembership: IMembershipType): void {
+    this.selectedMembershipType = selectedMembership;
+    this.clickButton('openPayForMembership');
   }
 
   public saveNewMembership(): void {
@@ -147,6 +153,7 @@ export class MembershipComponent implements OnInit {
     this.subscriptions.push(
       this.membershipService.joinMembership(formData).subscribe(
         (response: IUserMembership) => {
+          this.clickButton('closePaymentFormButton');
           this.sendNotification(NotificationType.SUCCESS,`${response.userId.username} added successfully to membership: ${response.membershipTypeId.type}`);
           this.getMemberships(false);
         },
@@ -155,5 +162,9 @@ export class MembershipComponent implements OnInit {
         }
       )
     );
+  }
+
+  onSendPaymentForm(paymentForm: NgForm) {
+    this.onJoinMembership(this.selectedMembershipType)
   }
 }

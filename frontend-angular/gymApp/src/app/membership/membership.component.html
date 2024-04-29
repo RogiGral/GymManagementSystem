@@ -36,7 +36,7 @@
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
     <td class="">
       <div class="btn-group">
-        <button  class="btn btn-outline-info" (click)="onJoinMembership(appMembership)"><i class="fas fa-plus"></i></button>
+        <button  class="btn btn-outline-info" (click)="onPayForMembership(appMembership)"><i class="fas fa-plus"></i></button>
         <button class="btn btn-outline-info" (click)="onEditMembershipType(appMembership)"><i class="fas fa-edit"></i></button>
         <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteMembershipType(appMembership.id)"><i
           class="fas fa-trash"></i></button>
@@ -47,6 +47,8 @@
 </table>
 
 <button [hidden]="true" type="button" id="openMembershipTypeInfo" data-toggle="modal" data-target="#viewMembershipTypeModal">
+</button>
+<button [hidden]="true" type="button" id="openPayForMembership" data-toggle="modal" data-target="#payForMembership">
 </button>
 <button [hidden]="true" type="button" id="openMembershipTypeEdit" data-toggle="modal" data-target="#editMembershipTypeModal">
 </button>
@@ -144,7 +146,7 @@
     </div>
   </div>
 </div>
-
+<!-- model edit membership -->
 <div class="modal draggable fade bd-example-modal-lg" id="editMembershipTypeModal" tabindex="-1"
      role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -199,6 +201,120 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditMembershipTypeModalButton">Close</button>
         <button type="button" (click)="onUpdateMembershipType()" [disabled]="editMembershipTypeForm.invalid || !isAdminOrCoach" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal pay membership -->
+<div class="modal draggable fade " id="payForMembership" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Payment form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container d-flex justify-content-center mt-5 mb-5">
+          <div class="row g-3">
+            <div class="col-md-12">
+              <form #paymentForm="ngForm" (ngSubmit)="onSendPaymentForm(paymentForm)" >
+              <span>Payment Method</span>
+              <div class="card">
+                <div class="accordion" id="accordionExample">
+                  <div class="card">
+                    <div class="card-header p-0" id="headingTwo">
+                      <h2 class="mb-0">
+                        <button class="btn btn-light btn-block text-left collapsed p-3 rounded-0 border-bottom-custom" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <span>Paypal</span>
+                            <img src="https://i.imgur.com/7kQEsHU.png" width="30">
+                          </div>
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                      <div class="card-body">
+                        <input type="text" class="form-control" placeholder="Paypal email">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header p-0">
+                      <h2 class="mb-0">
+                        <button class="btn btn-light btn-block text-left p-3 rounded-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <span>Credit card</span>
+                            <div class="icons">
+                              <img src="https://i.imgur.com/2ISgYja.png" width="30">
+                              <img src="https://i.imgur.com/W1vtnOV.png" width="30">
+                              <img src="https://i.imgur.com/35tC99g.png" width="30">
+                              <img src="https://i.imgur.com/2ISgYja.png" width="30">
+                            </div>
+                          </div>
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                      <div class="card-body payment-card-body">
+                        <span class="font-weight-normal card-text">Card Number</span>
+                        <div class="input">
+                          <i class="fa fa-credit-card"></i>
+                          <input type="text" placeholder="0000 0000 0000 0000" name="cardNumber" required ngModel class="form-control">
+                        </div>
+                        <div class="row mt-3 mb-3">
+                          <div class="col-md-6">
+                            <span class="font-weight-normal card-text">Expiry Date</span>
+                            <div class="input">
+                              <i class="fa fa-calendar"></i>
+                              <input type="text" placeholder="MM/YY" name="expiryDate" required ngModel class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <span class="font-weight-normal card-text">CVC/CVV</span>
+                            <div class="input">
+                              <i class="fa fa-lock"></i>
+                              <input type="text" placeholder="000" name="cvc" required ngModel class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <span class="text-muted certificate-text"><i class="fa fa-lock"></i> Your transaction is secured with ssl certificate</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span>Summary</span>
+              <div class="card">
+                <div class="d-flex justify-content-between p-3">
+                  <div class="d-flex flex-column">
+                    <span>Membership type:  {{selectedMembershipType?.name}}</span>
+                  </div>
+                  <div class="mt-1">
+                    <sup class="super-price">{{selectedMembershipType?.price}} $</sup>
+                    <span class="super-month">/{{selectedMembershipType?.validityPeriodNumber}} {{selectedMembershipType?.validityUnitOfTime}}</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between p-3">
+                  <div class="d-flex flex-column">
+                    <span>Membership start date:   <strong>{{todayDate | date}}</strong></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <span>Membership end date:  <strong>{{todayDate | date}}</strong></span>
+                  </div>
+                </div>
+                <div class="p-3">
+                  <button type="submit" id="payment-btn" class="btn btn-primary btn-block payment-button">Pay</button>
+                  <button type="button" id="closePaymentFormButton" class="btn btn-danger btn-block cancel-button" data-dismiss="modal" >Close</button>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
