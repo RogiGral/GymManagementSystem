@@ -39,6 +39,11 @@ public class UserWorkoutController extends ExceptionHandling {
         List<UserWorkout> userWorkouts = userWorkoutService.getAllUserWorkouts(userId);
         return new ResponseEntity<>(userWorkouts, OK);
     }
+    @GetMapping("/list_joined/{workoutId}")
+    public ResponseEntity<List<User>> listAllUsersJoined(@PathVariable("workoutId") Long workoutId) {
+        List<User> users = userWorkoutService.listAllUsersJoined(workoutId);
+        return new ResponseEntity<>(users, OK);
+    }
     @DeleteMapping("/delete/{userWorkoutId}")
     public ResponseEntity<HttpResponse> leaveWorkout(@PathVariable("userWorkoutId") Long userWorkoutId) throws WorkoutNotFoundException {
             userWorkoutService.deleteUserWorkout(userWorkoutId);
