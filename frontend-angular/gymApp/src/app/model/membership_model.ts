@@ -7,6 +7,7 @@ export class IMembershipType{
   public description: string
   public price: number
   public type: string
+  public membershipProductId: string
   public validityPeriodNumber: number
   public validityUnitOfTime: string
 
@@ -16,6 +17,7 @@ export class IMembershipType{
     this.description = ''
     this.price = 0
     this.type = ''
+    this.membershipProductId = ''
     this.validityPeriodNumber = 0
     this.validityUnitOfTime = ''
   }

@@ -4,7 +4,6 @@ import com.gymsystem.gms.filters.JwtAccessDeniedHandler;
 import com.gymsystem.gms.filters.JwtAuthenticationEntryPoint;
 import com.gymsystem.gms.filters.JwtAuthorizationFilter;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +24,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -35,6 +33,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    public SecurityConfiguration(JwtAuthorizationFilter jwtAuthorizationFilter,
+                                 JwtAccessDeniedHandler jwtAccessDeniedHandler,
+                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                                 @Qualifier("userDetailsService")UserDetailsService userDetailsService,
+                                 BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

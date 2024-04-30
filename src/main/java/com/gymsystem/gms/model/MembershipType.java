@@ -23,6 +23,7 @@ public class MembershipType {
     @SequenceGenerator(name = "MEMBERSHIP_TYPE_SEQ", sequenceName = "MEMBERSHIP_TYPE_SEQ", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
+    private String membershipProductId;
     private String name;
     private String description;
     private String type;

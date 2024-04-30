@@ -32,6 +32,7 @@ public class WorkoutController extends ExceptionHandling {
     private WorkoutService workoutService;
 
     @PostMapping("/add")
+    @PreAuthorize("hasAnyAuthority('workout:create')") //comment for testing
     public ResponseEntity<Workout> addNewWorkout(
             @RequestParam("workoutName") String workoutName,
             @RequestParam("trainerUsername") String trainerUsername,
@@ -49,6 +50,7 @@ public class WorkoutController extends ExceptionHandling {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('workout:update')") //comment for testing
     public ResponseEntity<Workout> updateWorkout(
             @RequestParam("workoutId") Long workoutId,
             @RequestParam("workoutName") String newWorkoutName,
@@ -70,12 +72,13 @@ public class WorkoutController extends ExceptionHandling {
         return new ResponseEntity<>(newWorkout, HttpStatus.OK);
     }
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('workout:read')") //comment for testing
     public ResponseEntity<List<Workout>> getAllWorkouts() {
         List<Workout> workouts = workoutService.getWorkouts();
         return new ResponseEntity<>(workouts, OK);
     }
     @DeleteMapping("/delete/{id}")
-    //@PreAuthorize("hasAnyAuthority('workout:crud')") //comment for testing
+    @PreAuthorize("hasAnyAuthority('workout:delete')") //comment for testing
     public ResponseEntity<HttpResponse> deleteWorkout(@PathVariable("id") Long id) throws WorkoutNotFoundException {
         workoutService.deleteWorkout(id);
         return response(OK, "WORKOUT_DELETED_SUCCESSFULLY");

@@ -27,6 +27,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   public listOfTrainers: User[] = [];
   public userWorkouts: IUserWorkout[];
   public selectedUserWorkout: IWorkout;
+  public todayDate: string = new Date().toISOString().split('T')[0];
   public selectedDate: string = new Date().toISOString().split('T')[0];
 
   private subscriptions: Subscription[] = [];
@@ -104,6 +105,13 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.selectedDate = currentDate.toISOString().split('T')[0];
     this.getWorkouts(false)
     this.onDateChange();
+  }
+
+  disableRemoveDayButton(): boolean {
+    if(this.todayDate==this.selectedDate){
+      return true
+    }
+    return  false
   }
 
   public getTrainers(): void {

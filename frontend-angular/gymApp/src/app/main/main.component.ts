@@ -1,27 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Role} from "../enum/role.enum";
 import {AuthenticationService} from "../service/authentication.service";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
+import {MembershipService} from "../service/membership.service";
+import {IUserMembership} from "../model/membership_model";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
 
   private titleSubject = new BehaviorSubject<String>('Welcome');
   public titleAction$ = this.titleSubject.asObservable();
+  public userMembership: IUserMembership;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private authenticationService: AuthenticationService,) { }
+  constructor(private authenticationService: AuthenticationService,
+              private membershipService: MembershipService,) { }
 
   ngOnInit(): void {
+    this.hasUserMembership()
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public changeTitle(title:string): void{
     this.titleSubject.next(title);
   }
 
+  public hasUserMembership()
+  {
+    const userId = this.authenticationService.getUserFromLocalCache().id;
+    this.subscriptions.push(
+      this.membershipService.getUserMembership(userId).subscribe(
+      (response: IUserMembership) => {
+        this.userMembership = response;
+      }
+    ))
+
+  }
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }

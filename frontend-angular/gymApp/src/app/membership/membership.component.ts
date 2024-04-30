@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NotificationService} from "../service/notification.service";
 import {AuthenticationService} from "../service/authentication.service";
 import {Role} from "../enum/role.enum";
@@ -16,7 +16,7 @@ import {IUserWorkout} from "../model/workout_model";
   templateUrl: './membership.component.html',
   styleUrls: ['./membership.component.css']
 })
-export class MembershipComponent implements OnInit {
+export class MembershipComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   public refreshing: boolean;
@@ -24,6 +24,8 @@ export class MembershipComponent implements OnInit {
   public selectedMembershipType: IMembershipType;
   private currentMembershipType: any;
   public editMembershipType = new IMembershipType();
+  public todayDate = new Date();
+  public paymentIntentData: any;
 
   constructor(
     private membershipService: MembershipService,
@@ -33,6 +35,11 @@ export class MembershipComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMemberships(true);
+  }
+
+
+  ngOnDestroy(): void{
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public getMemberships(showNotification: boolean): void {
@@ -105,9 +112,15 @@ export class MembershipComponent implements OnInit {
     this.clickButton('openMembershipTypeEdit');
   }
 
-  public onSelectMembership(selectedUser: IMembershipType): void {
-    this.selectedMembershipType = selectedUser;
+  public onSelectMembership(selectedMembership: IMembershipType): void {
+    this.selectedMembershipType = selectedMembership;
     this.clickButton('openMembershipTypeInfo');
+  }
+
+  public onPayForMembership(selectedMembership: IMembershipType): void {
+    this.selectedMembershipType = selectedMembership;
+    this.createPaymentIntent();
+    this.clickButton('openPayForMembership');
   }
 
   public saveNewMembership(): void {
@@ -143,11 +156,38 @@ export class MembershipComponent implements OnInit {
   }
 
   onJoinMembership(membershipType: IMembershipType)  {
-    const formData = this.membershipService.createMembershipFormJoinData(this.authenticationService.getUserFromLocalCache(),membershipType)
+
+    const formData = this.membershipService.createMembershipFormJoinData(
+      this.authenticationService.getUserFromLocalCache(),
+      membershipType)
+
     this.subscriptions.push(
       this.membershipService.joinMembership(formData).subscribe(
         (response: IUserMembership) => {
+          this.clickButton('closePaymentFormButton');
           this.sendNotification(NotificationType.SUCCESS,`${response.userId.username} added successfully to membership: ${response.membershipTypeId.type}`);
+          this.getMemberships(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        } ,() =>{
+          this.sleep(2000).then(() => { window.location.reload(); });
+        }
+      )
+    );
+  }
+
+  createPaymentIntent()  {
+
+    const formData = this.membershipService.createPaymentIntentFormData("pln",
+      this.selectedMembershipType.price,
+      this.authenticationService.getUserFromLocalCache().userId)
+
+    this.subscriptions.push(
+      this.membershipService.createPaymentIntent(formData).subscribe(
+        (response: string) => {
+          this.paymentIntentData = response
+          this.sendNotification(NotificationType.INFO,`Payment created`);
           this.getMemberships(false);
         },
         (error: HttpErrorResponse) => {
@@ -155,5 +195,50 @@ export class MembershipComponent implements OnInit {
         }
       )
     );
+  }
+  confirmPaymentIntent()  {
+
+    const formData = this.membershipService.setPaymentIntentStatusFormData(this.paymentIntentData.id)
+
+    this.subscriptions.push(
+      this.membershipService.confirmPaymentIntent(formData).subscribe(
+        (response: string) => {
+          this.paymentIntentData = response
+          this.sendNotification(NotificationType.INFO,`Payment confirmed`);
+          this.getMemberships(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
+  }
+
+  cancelPaymentIntent() {
+
+    const formData = this.membershipService.setPaymentIntentStatusFormData(this.paymentIntentData.id)
+
+    this.subscriptions.push(
+      this.membershipService.cancelPaymentIntent(formData).subscribe(
+        (response: string) => {
+          this.paymentIntentData = response
+          this.sendNotification(NotificationType.INFO, `Payment canceled`);
+          this.getMemberships(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
+  }
+
+
+  onSendPaymentForm(paymentForm: NgForm) {
+    this.confirmPaymentIntent();
+    this.onJoinMembership(this.selectedMembershipType)
+  }
+
+  sleep(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

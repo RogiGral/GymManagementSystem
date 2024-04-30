@@ -1,9 +1,5 @@
 <p></p><div class="mb-3 float-right">
   <div class="btn-group mr-2">
-<!--    <form class="form-inline my-2 my-lg-0 justify-content-center">-->
-<!--      <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2" ngModel-->
-<!--             (ngModelChange)="searchWorkout(searchInput.value)" type="search" placeholder="Search users...">-->
-<!--    </form>-->
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addWorkoutModal" *ngIf="isAdminOrCoach">
       <i class="fa fa-plus"></i>New Workout
     </button>
@@ -15,7 +11,7 @@
   </div>
 </div>
 <div class="d-flex align-items-center justify-content-center">
-  <button class="btn btn-outline-info" (click)="removeDay()">
+  <button class="btn btn-outline-info" (click)="removeDay()" [disabled]="disableRemoveDayButton()">
     <i class="fas fa-minus"></i> Remove Day
   </button>
   <input class="btn btn-outline-info mx-2" type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
@@ -23,10 +19,11 @@
     <i class="fas fa-plus"></i> Add Day
   </button>
 </div>
+<a href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Available workouts</a>
 <table class="table table-hover">
   <thead class="table-borderless">
   <tr class="text-center">
-    <th>Id</th>
+    <th [hidden]="!isAdmin">Id</th>
     <th>Workout name</th>
     <th>Room number</th>
     <th>Trainer username</th>
@@ -39,7 +36,7 @@
   </thead>
   <tbody *ngFor="let appWorkout of filteredWorkouts">
   <tr class="text-center">
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.id}}</td>
+    <td [hidden]="!isAdmin" (click)="onSelectWorkout(appWorkout)">{{appWorkout?.id}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
     <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.trainerUsername}}</td>
@@ -58,6 +55,7 @@
   </tr>
   </tbody>
 </table>
+<a href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Your workouts</a>
 <table class="table table-hover">
   <thead class="table-borderless">
   <tr class="text-center">

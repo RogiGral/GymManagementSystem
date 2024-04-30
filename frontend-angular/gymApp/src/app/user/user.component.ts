@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subscription} from "rxjs";
 import {User} from "../model/user_model";
 import {UserService} from "../service/user.service";
@@ -16,7 +16,7 @@ import {CustomHttpResponse} from "../model/custom-http-response_model";
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
 
   public refreshing: boolean;
   private subscriptions: Subscription[] = [];
@@ -36,6 +36,10 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true)
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public getUsers(showNotification: boolean): void {

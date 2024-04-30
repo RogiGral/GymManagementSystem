@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NotificationType} from "../enum/notification-type.enum";
 import {NotificationService} from "../service/notification.service";
 import {AuthenticationService} from "../service/authentication.service";
@@ -18,7 +18,7 @@ import {IUserMembership} from "../model/membership_model";
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
   public userMembership: IUserMembership;
 
@@ -38,6 +38,10 @@ export class UserProfileComponent implements OnInit {
         this.userMembership = response
       }
     )
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public onLogOut(): void {
@@ -90,5 +94,24 @@ export class UserProfileComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  cancelMembership() {
+    this.subscriptions.push(
+      this.membershipService.leaveMembership(this.userMembership.userId.id).subscribe(
+        (response: CustomHttpResponse) => {
+          this.sendNotification(NotificationType.SUCCESS, response.message);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        },() =>{
+          this.sleep(2000).then(() => { window.location.reload(); });
+
+        }
+      )
+    );
+  }
+  sleep(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
