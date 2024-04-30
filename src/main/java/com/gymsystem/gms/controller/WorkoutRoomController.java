@@ -28,6 +28,7 @@ public class WorkoutRoomController extends ExceptionHandling {
     private WorkoutRoomService workoutRoomService;
 
     @PostMapping("/add")
+    //@PreAuthorize("hasAnyAuthority('workoutRoom:create')") //comment for testing
     public ResponseEntity<WorkoutRoom> addNewWorkoutRoom(
             @RequestParam("workoutRoomName") String workoutRoomName,
             @RequestParam("capacity") Integer capacity
@@ -37,6 +38,7 @@ public class WorkoutRoomController extends ExceptionHandling {
     }
 
     @PostMapping("/update")
+    //@PreAuthorize("hasAnyAuthority('workoutRoom:update')") //comment for testing
     public ResponseEntity<WorkoutRoom> updateWorkout(
             @RequestParam("workoutRoomId") Long workoutRoomId,
             @RequestParam("oldWorkoutRoomNme") String oldWorkoutRoomNme,
@@ -47,12 +49,13 @@ public class WorkoutRoomController extends ExceptionHandling {
         return new ResponseEntity<>(newWorkout, HttpStatus.OK);
     }
     @GetMapping("/list")
+    //@PreAuthorize("hasAnyAuthority('workoutRoom:read')") //comment for testing
     public ResponseEntity<List<WorkoutRoom>> getAllWorkouts() {
         List<WorkoutRoom> workoutRooms = workoutRoomService.getWorkoutRooms();
         return new ResponseEntity<>(workoutRooms, OK);
     }
     @DeleteMapping("/delete/{id}")
-    //@PreAuthorize("hasAnyAuthority('workout:crud')") //comment for testing
+    //@PreAuthorize("hasAnyAuthority('workoutRoom:delete')") //comment for testing
     public ResponseEntity<HttpResponse> deleteWorkout(@PathVariable("id") Long id) throws WorkoutRoomNotFoundException {
         workoutRoomService.deleteWorkoutRoom(id);
         return response(OK, "WORKOUT_ROOM_DELETED_SUCCESSFULLY");

@@ -50,8 +50,9 @@ public class UserMembershipController extends ExceptionHandling {
     }
     @PostMapping("/create_payment_intent")
     public ResponseEntity<String> createPaymentIntent(@RequestParam("membershipPrice") Long membershipPrice,
-                                                   @RequestParam("currency") String currency) throws StripeException {
-        PaymentIntent paymentIntent = stripeService.createPaymentIntent(membershipPrice,currency);
+                                                   @RequestParam("currency") String currency,
+                                                    @RequestParam("customerId") String customerId) throws StripeException {
+        PaymentIntent paymentIntent = stripeService.createPaymentIntent(membershipPrice,currency,customerId);
         System.out.println(paymentIntent);
         return new ResponseEntity<>(paymentIntent.toJson(), OK);
     }

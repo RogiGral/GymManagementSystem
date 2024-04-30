@@ -11,7 +11,11 @@
     <div class="col-md-4">
     </div>
   </div>
-
+  <nav *ngIf="userMembership==null" class="navbar navbar-expand-md breadcrumb" style="background-color: #cc0000;">
+    <div class="collapse navbar-collapse justify-content-center" id="membership">
+      User has no membership assigned to his account
+    </div>
+  </nav>
   <!-- nav bar -->
   <nav class="navbar navbar-expand-md breadcrumb">
     <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -20,7 +24,7 @@
           <i  class="fa fa-users"></i>
           Users
         </a>
-        <a  class="nav-item nav-link ml-3" (click)="changeTitle('Workouts')" data-toggle="tab" routerLink="workouts">
+        <a [hidden]="userMembership==null"  class="nav-item nav-link ml-3" (click)="changeTitle('Workouts')" data-toggle="tab" routerLink="workouts">
           <i class='fa fa-male'></i>
           Workouts
         </a>
@@ -39,5 +43,5 @@
       </div>
     </div>
   </nav>
-
   <router-outlet></router-outlet>
+</div>

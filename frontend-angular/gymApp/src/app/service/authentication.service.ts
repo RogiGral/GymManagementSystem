@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http"
 import {Observable} from "rxjs";
 import {User} from "../model/user_model"
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {IUserMembership} from "../model/membership_model";
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +43,15 @@ export class AuthenticationService {
   public addUserToLocalCache(user: User | null): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
+  public addUserMembershipToLocalCache(userMembership: IUserMembership | null): void {
+    localStorage.setItem('userMembership', JSON.stringify(userMembership));
+  }
 
   public getUserFromLocalCache(): User {
     return JSON.parse(localStorage.getItem('user') || '');
+  }
+  public getUserMembershipToLocalCache(): IUserMembership {
+    return JSON.parse(localStorage.getItem('userMembership') || '');
   }
 
   public loadToken(): void {

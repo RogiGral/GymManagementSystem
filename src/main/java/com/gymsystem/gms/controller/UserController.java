@@ -9,6 +9,7 @@ import com.gymsystem.gms.model.Workout;
 import com.gymsystem.gms.service.UserService;
 import com.gymsystem.gms.service.WorkoutService;
 import com.gymsystem.gms.utility.JWTTokenProvider;
+import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +55,7 @@ public class UserController extends ExceptionHandling {
     private JWTTokenProvider tokenProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws EmailExistException, UsernameExistException, UserNotFoundException {
+    public ResponseEntity<User> register(@RequestBody User user) throws EmailExistException, UsernameExistException, UserNotFoundException, StripeException {
         User newUser =  userService.register(user.getFirstName(),user.getLastName(),user.getUsername(),user.getEmail());
         return  new ResponseEntity<>(newUser, HttpStatus.OK);
     }
@@ -73,6 +74,7 @@ public class UserController extends ExceptionHandling {
     }
 
     @PostMapping("/add")
+    //@PreAuthorize("hasAnyAuthority('user:create')")
     public ResponseEntity<User> addNewUser(@RequestParam("firstName") String firstName,
                                            @RequestParam("lastName") String lastName,
                                            @RequestParam("username") String username,
@@ -80,12 +82,13 @@ public class UserController extends ExceptionHandling {
                                            @RequestParam("role") String role,
                                            @RequestParam("isActive") String isActive,
                                            @RequestParam("isNotLocked") String isNonLocked,
-                                           @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws EmailExistException, IOException, NotAnImageFileException, UserNotFoundException, UsernameExistException {
+                                           @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws EmailExistException, IOException, NotAnImageFileException, UserNotFoundException, UsernameExistException, StripeException {
         User newUser = userService.addNewUser(firstName, lastName, username,email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
         return new ResponseEntity<>(newUser, OK);
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('user:update')")
     public ResponseEntity<User> update(@RequestParam("currentUsername") String currentUsername,
                                        @RequestParam("firstName") String firstName,
                                        @RequestParam("lastName") String lastName,
@@ -120,14 +123,9 @@ public class UserController extends ExceptionHandling {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAnyAuthority('user:delete')")
-    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("id") Long id) throws IOException {
+    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("id") Long id) throws IOException, StripeException {
         userService.deleteUser(id);
         return response(OK, USER_DELETED_SUCCESSFULLY);
-    }
-
-    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
-        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),
-                message), httpStatus);
     }
 
     @PostMapping("/updateProfileImage")
@@ -175,6 +173,11 @@ public class UserController extends ExceptionHandling {
         HttpHeaders headers = new HttpHeaders();
         headers.add(JWT_TOKEN_HEADER,tokenProvider.generateJwtToken(userPrincipal));
         return headers;
+    }
+
+    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
+        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),
+                message), httpStatus);
     }
 
     private void authenticate(String username, String password) {

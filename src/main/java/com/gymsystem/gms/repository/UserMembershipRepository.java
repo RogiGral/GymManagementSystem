@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMembershipRepository extends JpaRepository<UserMembership,Long> {
     UserMembership getUserMembershipByUserId(User userId);
-    void deleteUserMembershipByUserId(User userId);
+    void deleteAllByUserId(User userId);
 }

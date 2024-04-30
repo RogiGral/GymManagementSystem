@@ -86,7 +86,7 @@ public class UserMembershipImpl implements UserMembershipService {
         if(user ==  null){
             throw new UserNotFoundException(NO_USER_FOUND);
         }
-        userMembershipRepository.deleteUserMembershipByUserId(user);
+        userMembershipRepository.deleteAllByUserId(user);
     }
 
     private MembershipType checkIfMembershipTypeExist(Long membershipTypeId) throws MembershipTypeNotFoundException {

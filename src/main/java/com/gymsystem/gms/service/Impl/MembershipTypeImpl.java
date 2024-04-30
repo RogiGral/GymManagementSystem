@@ -8,10 +8,20 @@ import com.gymsystem.gms.exceptions.model.MembershipTypeNotFoundException;
 import com.gymsystem.gms.model.MembershipType;
 import com.gymsystem.gms.repository.MembershipTypeRepository;
 import com.gymsystem.gms.service.MembershipTypeService;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Price;
+import com.stripe.model.Product;
+import com.stripe.param.ProductCreateParams;
+import com.stripe.param.ProductUpdateParams;
+import com.stripe.param.common.EmptyParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.gymsystem.gms.constraints.MembershipType.*;
@@ -21,6 +31,14 @@ import static com.gymsystem.gms.constraints.MembershipType.*;
 public class MembershipTypeImpl implements MembershipTypeService {
 
     MembershipTypeRepository membershipTypeRepository;
+
+    @Value("${api.stripe.key}")
+    private String stripeApiKey;
+
+    @PostConstruct
+    public void init(){
+        Stripe.apiKey = stripeApiKey;
+    }
 
     @Autowired
     public MembershipTypeImpl(MembershipTypeRepository membershipTypeRepository) {
@@ -38,7 +56,7 @@ public class MembershipTypeImpl implements MembershipTypeService {
     }
 
     @Override
-    public MembershipType addMembershipType(String name, String description, String type, Long price, Integer validityPeriodNumber,String validityUnitOfTime) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException {
+    public MembershipType addMembershipType(String name, String description, String type, Long price, Integer validityPeriodNumber,String validityUnitOfTime) throws MembershipTypeExistException, MembershipTypeNameNotUniqueException, StripeException {
         checkIfNameIsUnique(name);
         MembershipType membershipType = checkIfMembershipTypeExists(name,price);
         membershipType.setName(name);
@@ -47,6 +65,7 @@ public class MembershipTypeImpl implements MembershipTypeService {
         membershipType.setValidityUnitOfTime(getUnitOfTimeEnumName(validityUnitOfTime));
         membershipType.setDescription(description);
         membershipType.setType(type);
+        membershipType.setMembershipProductId(createProduct(name, description, price).getId());
         membershipTypeRepository.save(membershipType);
         return membershipType;
     }
@@ -77,8 +96,13 @@ public class MembershipTypeImpl implements MembershipTypeService {
     }
 
     @Override
-    public void deleteMembershipType(Long id) {
+    public void deleteMembershipType(Long id) throws StripeException {
+        MembershipType membershipType = membershipTypeRepository.findMembershipTypeById(id);
         membershipTypeRepository.deleteById(id);
+
+        Product product = Product.retrieve(membershipType.getMembershipProductId());
+        ProductUpdateParams params = ProductUpdateParams.builder().setActive(false).build();
+        product.update(params);
     }
 
 
@@ -99,5 +123,19 @@ public class MembershipTypeImpl implements MembershipTypeService {
         if(membershipType !=  null){
             throw new MembershipTypeNameNotUniqueException(MEMBERSHIP_NAME_IS_NOT_UNIQUE);
         }
+    }
+
+    private Product createProduct(String name, String description, Long price) throws StripeException {
+        ProductCreateParams params = ProductCreateParams.builder()
+                .setName(name)
+                .setActive(true)
+                .setDescription(description)
+                .setDefaultPriceData(ProductCreateParams.DefaultPriceData.builder()
+                        .setUnitAmount(price * 100)
+                        .setCurrency("pln")
+                        .build())
+                .build();
+        Product product = Product.create(params);
+        return product;
     }
 }

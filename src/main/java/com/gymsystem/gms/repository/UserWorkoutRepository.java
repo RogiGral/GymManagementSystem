@@ -20,4 +20,6 @@ public interface UserWorkoutRepository extends JpaRepository<UserWorkout,Long> {
 
     @Query(value = "SELECT * FROM user_workout WHERE workout_id = :workoutId",nativeQuery = true)
     List<UserWorkout> findAllByWorkoutId(@Param("workoutId") Long workoutId);
+
+    void deleteAllByUser(User user);
 }

@@ -10,7 +10,6 @@ import {WorkoutComponent} from "./workout/workout.component";
 import {MembershipComponent} from "./membership/membership.component";
 import {MainComponent} from "./main/main.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
-
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},

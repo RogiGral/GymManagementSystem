@@ -4,8 +4,14 @@ import com.gymsystem.gms.enumeration.Role;
 import com.gymsystem.gms.exceptions.model.*;
 import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserPrincipal;
+import com.gymsystem.gms.repository.UserMembershipRepository;
 import com.gymsystem.gms.repository.UserRepository;
+import com.gymsystem.gms.repository.UserWorkoutRepository;
 import com.gymsystem.gms.service.UserService;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import com.stripe.param.CustomerCreateParams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -49,12 +57,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
     private UserRepository userRepository;
+    private UserMembershipRepository userMembershipRepository;
+    private UserWorkoutRepository userWorkoutRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private LoginAttemptServiceImpl loginAttemptService;
 
+    @Value("${api.stripe.key}")
+    private String stripeApiKey;
+
+    @PostConstruct
+    public void init(){
+        Stripe.apiKey = stripeApiKey;
+    }
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptServiceImpl loginAttemptService) {
+    public UserServiceImpl(UserRepository userRepository,UserMembershipRepository userMembershipRepository,UserWorkoutRepository userWorkoutRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptServiceImpl loginAttemptService) {
         this.userRepository = userRepository;
+        this.userWorkoutRepository = userWorkoutRepository;
+        this.userMembershipRepository = userMembershipRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptService = loginAttemptService;
     }
@@ -77,10 +97,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(String firstName, String lastName, String username, String email) throws UsernameNotFoundException, EmailExistException, UsernameExistException, UserNotFoundException {
+    public User register(String firstName, String lastName, String username, String email) throws UsernameNotFoundException, EmailExistException, UsernameExistException, UserNotFoundException, StripeException {
         validateNewUsernameAndEmail(StringUtils.EMPTY,username,email);
         User user = new User();
-        user.setUserId(generateUserId());
+        user.setUserId(generateCustomerId(firstName + lastName, email));
         String password = generatePassword();
         String encodedPassword = encodedPassword(password);
         user.setFirstName(firstName);
@@ -101,12 +121,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
     @Override
-    public User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNotLocked, boolean isActive, MultipartFile profileFile) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException {
+    public User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNotLocked, boolean isActive, MultipartFile profileFile) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException, StripeException {
         validateNewUsernameAndEmail(EMPTY, username, email);
         User user = new User();
         String password = generatePassword();
         String encodedPassword = encodedPassword(password);
-        user.setUserId(generateUserId());
+        user.setUserId(generateCustomerId(firstName + lastName, email));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setJoinDate(new Date());
@@ -125,6 +145,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         LOGGER.info("Email sent to: "+email);
         return user;
     }
+
     @Override
     public User updateUser(String currentUsername, String newFirstName, String newLastName, String newUsername, String newEmail, String role, boolean isNotLocked, boolean isActive, MultipartFile profileFile) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException {
         User currentUser = validateNewUsernameAndEmail(currentUsername, newUsername, newEmail);
@@ -142,11 +163,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void deleteUser(Long id) throws IOException {
+    public void deleteUser(Long id) throws IOException, StripeException {
         User user = userRepository.findUserById(id);
         Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
         FileUtils.deleteDirectory(new File(userFolder.toString()));
+        userMembershipRepository.deleteAllByUserId(user);
+        userWorkoutRepository.deleteAllByUser(user);
         userRepository.deleteById(id);
+        Customer.retrieve(user.getUserId()).delete();
     }
 
     @Override
@@ -294,8 +318,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return RandomStringUtils.randomAlphanumeric(25);
     }
 
-    private String generateUserId() {
-        return RandomStringUtils.randomNumeric(10);
+    private String generateCustomerId(String fullName, String email) throws StripeException {
+        CustomerCreateParams params =
+                CustomerCreateParams.builder()
+                        .setName(fullName)
+                        .setEmail(email)
+                        .build();
+        Customer customer = Customer.create(params);
+        return customer.getId();
     }
 
     private void validateLoginAttempt(User user) {

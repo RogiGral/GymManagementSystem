@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from "../model/user_model";
 import {NotificationService} from "../service/notification.service";
 import {AuthenticationService} from "../service/authentication.service";
@@ -12,7 +12,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   public showLoading: boolean;
   private subscriptions: Subscription[] = [];
@@ -24,6 +24,10 @@ export class RegisterComponent implements OnInit {
     if (this.authenticationService.isUserLoggedIn()) {
       this.router.navigateByUrl('/dashboard');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public onRegister(user: User): void {
@@ -49,10 +53,6 @@ export class RegisterComponent implements OnInit {
     } else {
       this.notificationService.notify(notificationType, 'An error occurred. Please try again.');
     }
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

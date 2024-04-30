@@ -19,7 +19,7 @@
   <thead class="table-borderless">
   <tr class="text-center">
     <th>Photo</th>
-    <th>Id</th>
+    <th [hidden]="!isAdmin">Id</th>
     <th>User ID</th>
     <th>First Name</th>
     <th>Last Name</th>
@@ -35,7 +35,7 @@
       <img height="40" width="40" src="{{appUser?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail"
            alt=""/>
     </td>
-    <td (click)="onSelectUser(appUser)">{{appUser?.id}}</td>
+    <td [hidden]="!isAdmin" (click)="onSelectUser(appUser)">{{appUser?.id}}</td>
     <td (click)="onSelectUser(appUser)">{{appUser?.userId}}</td>
     <td (click)="onSelectUser(appUser)">{{appUser?.firstName}}</td>
     <td (click)="onSelectUser(appUser)">{{appUser?.lastName}}</td>

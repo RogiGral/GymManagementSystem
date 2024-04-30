@@ -31,10 +31,22 @@ export class MembershipService {
   public getUserMembership(userId: number): Observable<IUserMembership>{
     return this.http.get<IUserMembership>(`${this.host}/userMembership/${userId}`);
   }
-  joinMembership(formData: FormData): Observable<IUserMembership> {
+  public joinMembership(formData: FormData): Observable<IUserMembership> {
     return this.http.post<IUserMembership>(`${this.host}/userMembership/add`,formData)
   }
+  public leaveMembership(userId: number): Observable<CustomHttpResponse> {
+    return this.http.delete<CustomHttpResponse>(`${this.host}/userMembership/delete/${userId}`)
+  }
 
+  public createPaymentIntent(formData: FormData): Observable<string> {
+    return this.http.post<string>(`${this.host}/userMembership/create_payment_intent`,formData)
+  }
+  public confirmPaymentIntent(formData: FormData): Observable<string> {
+    return this.http.post<string>(`${this.host}/userMembership/confirm_payment`,formData)
+  }
+  public cancelPaymentIntent(formData: FormData): Observable<string> {
+    return this.http.post<string>(`${this.host}/userMembership/cancel_payment`,formData)
+  }
 
   createMembershipTypeFormDate(oldMembershipTypeName:any, membershipType: IMembershipType): FormData {
     const formData = new FormData();
@@ -52,6 +64,19 @@ export class MembershipService {
     const formData = new FormData();
     formData.append('membershipTypeId', membershipType.id.toString());
     formData.append('userId', user.id.toString());
+    return formData;
+  }
+
+  createPaymentIntentFormData(currency: string, membershipPrice: number,customerId: string): FormData {
+    const formData = new FormData();
+    formData.append('membershipPrice', membershipPrice.toString());
+    formData.append('currency', currency);
+    formData.append('customerId', customerId);
+    return formData;
+  }
+  setPaymentIntentStatusFormData(paymentIntentId: string): FormData {
+    const formData = new FormData();
+    formData.append('paymentIntentId', paymentIntentId);
     return formData;
   }
 

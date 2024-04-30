@@ -18,7 +18,7 @@
 <table class="table table-hover">
   <thead class="table-borderless">
   <tr class="text-center">
-    <th>Id</th>
+    <th [hidden]="!isAdmin" >Id</th>
     <th>Membership name</th>
     <th>Membership description</th>
     <th>Membership type</th>
@@ -28,7 +28,7 @@
   </thead>
   <tbody *ngFor="let appMembership of memberships ">
   <tr class="text-center">
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.id}}</td>
+    <td [hidden]="!isAdmin" (click)="onSelectMembership(appMembership)">{{appMembership?.id}}</td>
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.name}}</td>
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.description}}</td>
     <td (click)="onSelectMembership(appMembership)">{{appMembership?.type}}</td>
@@ -193,7 +193,11 @@
             </div>
             <div class="form-group">
               <label for="validityUnitOfTime">Number of Months</label>
-              <input type="text" name="numberOfMonths" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityUnitOfTime" class="form-control">
+              <select name="validityUnitOfTime" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityUnitOfTime" class="form-control">
+                <option value="DAY">DAY</option>
+                <option value="MONTH">MONTH</option>
+                <option value="YEAR">YEAR</option>
+              </select>
             </div>
           </form>
         </div>
@@ -207,8 +211,7 @@
 </div>
 
 <!-- modal pay membership -->
-<div class="modal draggable fade " id="payForMembership" tabindex="-1"
-     role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal draggable fade" id="payForMembership" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -263,21 +266,25 @@
                         <span class="font-weight-normal card-text">Card Number</span>
                         <div class="input">
                           <i class="fa fa-credit-card"></i>
-                          <input type="text" placeholder="0000 0000 0000 0000" name="cardNumber" required ngModel class="form-control">
+                          <input type="text" placeholder="0000 0000 0000 0000" name="cardNumber" required ngModel class="form-control" #cardNumberInput="ngModel" maxlength="16" pattern="\d{16}">
+                          <span class="help-block" style="color:red;" *ngIf="cardNumberInput.touched && cardNumberInput.invalid">Please enter valid card number</span>
                         </div>
                         <div class="row mt-3 mb-3">
                           <div class="col-md-6">
                             <span class="font-weight-normal card-text">Expiry Date</span>
                             <div class="input">
                               <i class="fa fa-calendar"></i>
-                              <input type="text" placeholder="MM/YY" name="expiryDate" required ngModel class="form-control">
+                              <input type="text" placeholder="MM/YY" name="expiryDate" required ngModel class="form-control" #expiryDateInput="ngModel"  pattern="(0[1-9]|1[0-2])/[0-9]{2}">
+                              <span class="help-block" style="color:red;" *ngIf="expiryDateInput.touched && expiryDateInput.invalid">Please enter valid expiry date</span>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <span class="font-weight-normal card-text">CVC/CVV</span>
                             <div class="input">
                               <i class="fa fa-lock"></i>
-                              <input type="text" placeholder="000" name="cvc" required ngModel class="form-control">
+                              <input type="text" placeholder="000" name="cvc" required ngModel class="form-control" #cvcInput="ngModel" maxlength="3" pattern="\d{3}">
+                              <span class="help-block" style="color:red;" *ngIf="cvcInput.touched && cvcInput.invalid">Please enter valid cvc</span>
+
                             </div>
                           </div>
                         </div>
@@ -308,7 +315,7 @@
                 </div>
                 <div class="p-3">
                   <button type="submit" id="payment-btn" class="btn btn-primary btn-block payment-button">Pay</button>
-                  <button type="button" id="closePaymentFormButton" class="btn btn-danger btn-block cancel-button" data-dismiss="modal" >Close</button>
+                  <button type="button" id="closePaymentFormButton" class="btn btn-danger btn-block cancel-button" data-dismiss="modal" (click)="cancelPaymentIntent()">Close</button>
                 </div>
               </div>
               </form>

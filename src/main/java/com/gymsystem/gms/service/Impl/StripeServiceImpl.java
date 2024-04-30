@@ -28,12 +28,13 @@ public class StripeServiceImpl implements StripeService {
 
 
     @Override
-    public PaymentIntent createPaymentIntent(Long amount, String currency) throws StripeException {
+    public PaymentIntent createPaymentIntent(Long amount, String currency, String customerId) throws StripeException {
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(amount * 100)
                 .setCurrency(currency)
                 .setCaptureMethod(PaymentIntentCreateParams.CaptureMethod.AUTOMATIC)
                 .setPaymentMethod("pm_card_visa")
+                .setCustomer(customerId)
                 .build();
         PaymentIntent paymentIntent = PaymentIntent.create(params);
         return paymentIntent;
@@ -44,7 +45,6 @@ public class StripeServiceImpl implements StripeService {
         PaymentIntent resource = PaymentIntent.retrieve(paymentIntentId);
         PaymentIntentConfirmParams params =
                 PaymentIntentConfirmParams.builder()
-                        .setPaymentMethod("pm_card_visa")
                         .setReturnUrl("https://www.example.com")
                         .build();
         PaymentIntent paymentIntent = resource.confirm(params);
