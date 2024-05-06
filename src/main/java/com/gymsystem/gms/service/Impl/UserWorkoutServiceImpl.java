@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
@@ -43,8 +44,8 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
         User user = checkIfUserExists(userId);
         Workout workout = checkIfWorkoutExists(workoutId);
-        checkIfWorkoutIsFull(workout);
         checkIfUserEnterWorkout(user,workout);
+        checkIfWorkoutIsFull(workout);
         UserWorkout userWorkout = new UserWorkout();
         userWorkout.setUser(user);
         userWorkout.setWorkout(workout);
@@ -75,6 +76,17 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
         Workout workout = userWorkout.getWorkout();
         workout.setParticipantsNumber(workout.getParticipantsNumber()-1);
         userWorkoutRepository.deleteById(userWorkoutId);
+    }
+
+    @Override
+    public List<User> listAllUsersJoined(Long workoutId) {
+        List<UserWorkout> userWorkouts = this.userWorkoutRepository.findAllByWorkoutId(workoutId);
+        List<User> users = new ArrayList<>();
+
+        for (UserWorkout userWorkout : userWorkouts) {
+            users.add(userWorkout.getUser());
+        }
+        return users;
     }
 
     private void checkIfUserWorkoutExists(Long id) throws WorkoutNotFoundException {

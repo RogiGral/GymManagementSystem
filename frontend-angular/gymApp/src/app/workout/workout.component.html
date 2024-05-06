@@ -69,12 +69,12 @@
   </thead>
   <tbody *ngFor="let appUserWorkout of userWorkouts">
   <tr class="text-center">
-    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutName}}</td>
-    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.roomNumber}}</td>
-    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.trainerUsername}}</td>
-    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutStartDate | date:'medium'}}</td>
-    <td (click)="onSelectUserWorkout(appUserWorkout)">{{appUserWorkout?.workout?.workoutEndDate | date:'medium'}}</td>
-    <td class="">
+    <td>{{appUserWorkout?.workout?.workoutName}}</td>
+    <td>{{appUserWorkout?.workout?.roomNumber}}</td>
+    <td>{{appUserWorkout?.workout?.trainerUsername}}</td>
+    <td>{{appUserWorkout?.workout?.workoutStartDate | date:'medium'}}</td>
+    <td>{{appUserWorkout?.workout?.workoutEndDate | date:'medium'}}</td>
+    <td>
       <div class="btn-group">
         <button class="btn btn-outline-danger" (click)="onLeaveWorkout(appUserWorkout.id)"><i class="fas fa-minus"></i></button>
       </div>
@@ -83,11 +83,49 @@
   </tbody>
 </table>
 
+<a [hidden]="!isAdminOrCoach" href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Trainer schedule</a>
+<table [hidden]="!isAdminOrCoach" class="table table-hover">
+  <thead class="table-borderless">
+  <tr class="text-center">
+    <th [hidden]="!isAdmin">Id</th>
+    <th>Workout name</th>
+    <th>Room number</th>
+    <th>Trainer username</th>
+    <th>Workout start date</th>
+    <th>Workout end date</th>
+    <th>Capacity</th>
+    <th>Participants number</th>
+<!--    <th>Actions</th>-->
+  </tr>
+  </thead>
+  <tbody *ngFor="let appWorkout of trainerWorkouts">
+  <tr class="text-center">
+    <td [hidden]="!isAdmin" (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.id}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.trainerUsername}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.capacity}}</td>
+    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.participantsNumber}}</td>
+<!--    <td class="">-->
+<!--      <div class="btn-group">-->
+<!--        <button  class="btn btn-outline-info" (click)="onJoinWorkout(appWorkout)"><i class="fas fa-plus"></i></button>-->
+<!--        <button [hidden]="!isAdmin" class="btn btn-outline-info" (click)="onEditWorkout(appWorkout)"><i class="fas fa-edit"></i></button>-->
+<!--        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteWorkout(appWorkout.id)"><i-->
+<!--          class="fas fa-trash"></i></button>-->
+<!--      </div>-->
+<!--    </td>-->
+  </tr>
+  </tbody>
+</table>
+
 <button [hidden]="true" type="button" id="openWorkoutInfo" data-toggle="modal" data-target="#viewWorkoutModal">
 </button>
 <button [hidden]="true" type="button" id="openWorkoutEdit" data-toggle="modal" data-target="#editWorkoutModal">
 </button>
-
+<button [hidden]="true" type="button" id="openTrainerWorkoutInfo" data-toggle="modal" data-target="#viewTrainerWorkoutModal">
+</button>
 
 <!-- modal workout info -->
 <div class="modal fade bd-example-modal-lg" id="viewWorkoutModal" tabindex="-1" role="dialog" aria-labelledby=""
@@ -123,6 +161,49 @@
             </ul>
           </div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal user joined workout info -->
+<div class="modal fade bd-example-modal-lg" id="viewTrainerWorkoutModal" tabindex="-1" role="dialog" aria-labelledby=""
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="viewTrainerWorkoutModalTitle">{{selectedWorkout?.workoutName}}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table [hidden]="!isAdminOrCoach" class="table table-hover">
+          <thead class="table-borderless">
+          <tr class="text-center">
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Username</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let user of listOfUserJoinedWorkout">
+          <tr class="text-center">
+            <td>{{user?.firstName}}</td>
+            <td>{{user?.lastName}}</td>
+            <td>{{user?.username}}</td>
+            <td class="">
+              <div class="btn-group">
+                <button class="btn btn-outline-info" ><i class="fas fa-plus"></i></button>
+                <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -201,7 +282,7 @@
   </div>
 </div>
 
-<!-- modal edit user -->
+<!-- modal edit workout -->
 <div class="modal draggable fade bd-example-modal-lg" id="editWorkoutModal" tabindex="-1"
      role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">

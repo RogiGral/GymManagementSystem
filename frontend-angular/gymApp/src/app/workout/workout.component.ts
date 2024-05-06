@@ -26,12 +26,16 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   public editWorkout = new IWorkout();
   public listOfTrainers: User[] = [];
   public userWorkouts: IUserWorkout[];
+  public trainerWorkouts: IWorkout[];
   public selectedUserWorkout: IWorkout;
+  public selectedTrainerWorkout: IWorkout;
   public todayDate: string = new Date().toISOString().split('T')[0];
   public selectedDate: string = new Date().toISOString().split('T')[0];
+  public listOfUserJoinedWorkout: User[];
 
   private subscriptions: Subscription[] = [];
   private currentWorkout: number;
+
 
   constructor(
     private workoutService: WorkoutService,
@@ -42,11 +46,20 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getWorkouts(true);
-    this.getTrainers()
+    this.getTrainers();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  public getTrainerWorkouts(): void {
+    const currentDate = new Date();
+    this.trainerWorkouts = this.workouts.filter(workout => {
+      const workoutEndDate = new Date(workout.workoutEndDate); // Converts endDate to a Date object
+      return workout.trainerUsername === this.authenticationService.getUserFromLocalCache().username &&
+        workoutEndDate > currentDate; // Checks if the workout is in the future
+    });
   }
 
   public getWorkouts(showNotification: boolean): void {
@@ -56,6 +69,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
         (response: IWorkout[]) => {
           this.workouts = response;
           this.onDateChange()
+          this.getTrainerWorkouts();
           this.refreshing = false;
           if (showNotification) {
             this.sendNotification(NotificationType.SUCCESS, `${response.length} workout(s) loaded successfully.`);
@@ -80,7 +94,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
         }
       )
     );
-
   }
 
   onDateChange(): void {
@@ -155,6 +168,19 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   public onSelectWorkout(selectedWorkout: IWorkout): void {
     this.selectedWorkout = selectedWorkout;
     this.clickButton('openWorkoutInfo');
+  }
+  public onSelectTrainerWorkout(selectedTrainerWorkout: IWorkout): void {
+    this.selectedTrainerWorkout = selectedTrainerWorkout;
+    this.subscriptions.push(    this.workoutService.listOfUserJoinedWorkout(this.selectedTrainerWorkout.id).subscribe(
+      (response: User[]) => {
+        this.listOfUserJoinedWorkout = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+        this.refreshing = false;
+      }
+    ));
+    this.clickButton('openTrainerWorkoutInfo');
   }
   public onSelectUserWorkout(selectedWorkout: IUserWorkout): void {
     this.selectedUserWorkout = selectedWorkout.workout;
