@@ -36,6 +36,9 @@ export class WorkoutService {
   public deleteUserWorkout(userWorkoutId: number): Observable<CustomHttpResponse>{
     return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userWorkoutId}`)
   }
+  public listOfUserJoinedWorkout(workoutId: number): Observable<User[]>{
+    return this.http.get<User[]>(`${this.host}/user-workout/list_joined/${workoutId}`);
+  }
   createWorkoutFormJoinData(user: User,workout: IWorkout): FormData {
     const formData = new FormData();
     formData.append('workoutId', workout.id.toString());

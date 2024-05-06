@@ -44,8 +44,8 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
         User user = checkIfUserExists(userId);
         Workout workout = checkIfWorkoutExists(workoutId);
-        checkIfWorkoutIsFull(workout);
         checkIfUserEnterWorkout(user,workout);
+        checkIfWorkoutIsFull(workout);
         UserWorkout userWorkout = new UserWorkout();
         userWorkout.setUser(user);
         userWorkout.setWorkout(workout);

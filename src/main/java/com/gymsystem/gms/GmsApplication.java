@@ -1,6 +1,8 @@
 package com.gymsystem.gms;
 
 import com.gymsystem.gms.configuration.SecurityConfiguration;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -24,7 +26,7 @@ import static com.gymsystem.gms.constraints.FileConstant.USER_FOLDER;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @Import(SecurityConfiguration.class)
 @EnableWebSecurity
-public class GmsApplication extends SpringBootServletInitializer {
+public class GmsApplication extends SpringBootServletInitializer{
 
     public static void main(String[] args) {
 
@@ -52,5 +54,4 @@ public class GmsApplication extends SpringBootServletInitializer {
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 }
