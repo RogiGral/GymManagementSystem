@@ -12,6 +12,7 @@ public class Authority {
             "user:read",
             "workout:read",
             "membershipType:read",
+            "workout:read",
             "workout:create",
             "workout:update",
             "workout:delete"

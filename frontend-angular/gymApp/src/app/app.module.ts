@@ -19,6 +19,10 @@ import { WorkoutComponent } from './workout/workout.component';
 import { MembershipComponent } from './membership/membership.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {WorkoutService} from "./service/workout.service";
+import {MembershipService} from "./service/membership.service";
+import {ScoreService} from "./service/score.service";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -38,9 +42,10 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
     AppRoutingModule,
     HttpClientModule,
     NotificationModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
-  providers: [NotificationService, AuthenticationService, UserService,
+  providers: [NotificationService, AuthenticationService, UserService,WorkoutService,MembershipService,ScoreService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })

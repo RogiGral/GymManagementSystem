@@ -1,6 +1,7 @@
 package com.gymsystem.gms.service.Impl;
 
 import com.gymsystem.gms.exceptions.model.UserIsAlreadyInWorkoutException;
+import com.gymsystem.gms.exceptions.model.UserNotFoundException;
 import com.gymsystem.gms.exceptions.model.WorkoutIsFullException;
 import com.gymsystem.gms.exceptions.model.WorkoutNotFoundException;
 import com.gymsystem.gms.model.User;
@@ -41,7 +42,7 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
         return userWorkoutRepository.findAllByUserId(userId);
     }
     @Override
-    public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
+    public UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException, UserNotFoundException {
         User user = checkIfUserExists(userId);
         Workout workout = checkIfWorkoutExists(workoutId);
         checkIfUserEnterWorkout(user,workout);
@@ -79,6 +80,14 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
     }
 
     @Override
+    public void deleteUserWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, UserNotFoundException {
+        User user = checkIfUserExists(userId);
+        Workout workout = checkIfWorkoutExists(workoutId);
+        workout.setParticipantsNumber(workout.getParticipantsNumber()-1);
+        userWorkoutRepository.deleteUserWorkoutByUserAndWorkout(user,workout);
+    }
+
+    @Override
     public List<User> listAllUsersJoined(Long workoutId) {
         List<UserWorkout> userWorkouts = this.userWorkoutRepository.findAllByWorkoutId(workoutId);
         List<User> users = new ArrayList<>();
@@ -104,10 +113,10 @@ public class UserWorkoutServiceImpl implements UserWorkoutService {
        return workout;
     }
 
-    private User checkIfUserExists(Long userId) {
+    private User checkIfUserExists(Long userId) throws UserNotFoundException {
         User user = userRepository.findUserById(userId);
         if(user == null){
-            throw new UsernameNotFoundException("No user found by id: "+userId);
+            throw new UserNotFoundException("No user found by id: "+userId);
         }
         return user;
     }

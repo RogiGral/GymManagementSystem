@@ -1,46 +1,51 @@
 <div class="container">
   <div class="row mb-2 mt-2 text-center">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
-      <h5>
-        PowerHour Gym Management Portal
-      </h5>
+    <div class="col-12">
+      <h5>PowerHour Gym Management Portal</h5>
       <small *ngIf="titleAction$ | async as title">{{ title }}</small>
     </div>
-    <div class="col-md-4">
-    </div>
   </div>
-  <nav *ngIf="userMembership==null" class="navbar navbar-expand-md breadcrumb" style="background-color: #cc0000;">
-    <div class="collapse navbar-collapse justify-content-center" id="membership">
+
+  <!-- Conditionally rendered navbar for no membership -->
+  <nav *ngIf="userMembership==null" class="navbar navbar-expand-md navbar-light" style="background-color: #cc0000;">
+    <div class="navbar-text text-center w-100">
       User has no membership assigned to his account
     </div>
   </nav>
-  <!-- nav bar -->
-  <nav class="navbar navbar-expand-md breadcrumb">
+
+  <!-- Navbar for existing members -->
+  <div *ngIf="userMembership!=null" class="navbar breadcrumb p-0">
+    <div class="navbar-brand px-4" href="#">Gym management tool</div>
+
+    <div (click)="changeTitle('User score')" class="navbar-item px-4" data-toggle="tab">
+      <i class="fa fa-address-card"></i>
+      User workout score: {{ userScore }}
+    </div>
+  </div>
+
+  <!-- Main navigation bar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary breadcrumb">
+    <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarCollapse" data-toggle="collapse" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <div class="nav nav-pills" routerLinkActive="active">
-        <a [hidden]="!isAdminOrCoach" class="nav-item nav-link ml-1" (click)="changeTitle('Users')"  data-toggle="tab" routerLink="users">
-          <i  class="fa fa-users"></i>
-          Users
-        </a>
-        <a [hidden]="userMembership==null"  class="nav-item nav-link ml-3" (click)="changeTitle('Workouts')" data-toggle="tab" routerLink="workouts">
-          <i class='fa fa-male'></i>
-          Workouts
-        </a>
-        <a  class="nav-item nav-link ml-3" (click)="changeTitle('Memberships')"  data-toggle="tab" routerLink="memberships">
-          <i class='fa fa-handshake'></i>
-          Memberships
-        </a>
-        <a [hidden]="!isAdmin" class="nav-item nav-link ml-3" (click)="changeTitle('Settings')" data-toggle="tab" href="#reset-password">
-          <i class="fa fa-cogs"></i>
-          Settings
-        </a>
-        <a class="nav-item nav-link active move-right mr-3" (click)="changeTitle('Welcome')"  data-toggle="tab" routerLink="user_profile">
-          Welcome
-          <i class="fa fa-user"></i>
-        </a>
-      </div>
+      <ul class="navbar-nav nav-pills" routerLinkActive="active">
+        <li [hidden]="!isAdminOrCoach" class="nav-item active px-2">
+          <a (click)="changeTitle('Users')" class="nav-link" data-toggle="tab" routerLink="users"><i class="fa fa-users"></i> Users</a>
+        </li>
+        <li [hidden]="userMembership==null" class="nav-item active px-2">
+          <a (click)="changeTitle('Workouts')" class="nav-link" data-toggle="tab" routerLink="workouts"><i class='fa fa-male'></i> Workouts</a>
+        </li>
+        <li class="nav-item active px-2">
+          <a (click)="changeTitle('Memberships')" class="nav-link" data-toggle="tab" routerLink="memberships"><i class='fa fa-handshake'></i> Memberships</a>
+        </li>
+        <li [hidden]="!isAdmin" class="nav-item active px-2">
+          <a (click)="changeTitle('Settings')" class="nav-link" data-toggle="tab" href="user_profile"><i class="fa fa-cogs"></i> Settings</a>
+        </li>
+        <li class="nav-item move-right active px-2">
+          <a (click)="changeTitle('Welcome')" class="nav-link" data-toggle="tab" routerLink="user_profile"><i class="fa fa-user"></i> Welcome</a>
+        </li>
+      </ul>
     </div>
   </nav>
   <router-outlet></router-outlet>

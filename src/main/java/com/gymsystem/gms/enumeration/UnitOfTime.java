@@ -15,7 +15,7 @@ public enum UnitOfTime {
         this.unitOfTime = unitOfTime;
     }
 
-    public String getAuthorities() {
+    public String getUnitOfTime() {
         return unitOfTime;
     }
 }

@@ -1,3 +1,5 @@
+import {IScore} from "./score_model";
+
 export class User {
   public id: number;
   public userId: string;
@@ -12,6 +14,7 @@ export class User {
   public active: boolean;
   public isNotLocked: boolean;
   public role: string;
+  public score: IScore;
   public authorities: [];
 
   constructor() {
@@ -27,6 +30,7 @@ export class User {
     this.active = false;
     this.isNotLocked = false;
     this.role = '';
+    this.score = new IScore();
     this.authorities = [];
   }
 

@@ -4,6 +4,7 @@ import {AuthenticationService} from "../service/authentication.service";
 import {BehaviorSubject, Subscription} from "rxjs";
 import {MembershipService} from "../service/membership.service";
 import {IUserMembership} from "../model/membership_model";
+import {ScoreService} from "../service/score.service";
 
 @Component({
   selector: 'app-main',
@@ -13,15 +14,18 @@ import {IUserMembership} from "../model/membership_model";
 export class MainComponent implements OnInit, OnDestroy {
 
   private titleSubject = new BehaviorSubject<String>('Welcome');
+  public userScore: number;
   public titleAction$ = this.titleSubject.asObservable();
   public userMembership: IUserMembership;
   private subscriptions: Subscription[] = [];
 
   constructor(private authenticationService: AuthenticationService,
-              private membershipService: MembershipService,) { }
+              private membershipService: MembershipService,
+              private scoreService: ScoreService) { }
 
   ngOnInit(): void {
     this.hasUserMembership()
+    this.getUserScore()
   }
 
   ngOnDestroy(): void {
@@ -43,6 +47,14 @@ export class MainComponent implements OnInit, OnDestroy {
     ))
 
   }
+  private getUserScore() {
+    this.subscriptions.push(
+      this.scoreService.getScore(this.authenticationService.getUserFromLocalCache().username).subscribe(
+        (response: number) => {
+          this.userScore = response;
+        }
+      ))
+  }
   public get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
   }
@@ -58,5 +70,4 @@ export class MainComponent implements OnInit, OnDestroy {
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
   }
-
 }

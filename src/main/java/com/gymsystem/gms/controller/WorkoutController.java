@@ -39,13 +39,14 @@ public class WorkoutController extends ExceptionHandling {
             @RequestParam("roomNumber") String roomNumber,
             @RequestParam("capacity") Integer capacity,
             @RequestParam("workoutStartDate") String workoutStartDateTimeString,
-            @RequestParam("workoutEndDate") String workoutEndDateTimeString
+            @RequestParam("workoutEndDate") String workoutEndDateTimeString,
+            @RequestParam("workoutDifficulty") String workoutDifficulty
     ) throws WorkoutDateException, WorkoutExistException, UserNotFoundException {
 
         LocalDateTime workoutStartDate = LocalDateTime.parse(workoutStartDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         LocalDateTime workoutEndDate = LocalDateTime.parse(workoutEndDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        Workout newWorkout = workoutService.createWorkout(workoutName, trainerUsername, roomNumber, capacity, workoutStartDate, workoutEndDate);
+        Workout newWorkout = workoutService.createWorkout(workoutName, trainerUsername, roomNumber, capacity, workoutStartDate, workoutEndDate,workoutDifficulty);
         return new ResponseEntity<>(newWorkout, HttpStatus.OK);
     }
 
@@ -59,7 +60,8 @@ public class WorkoutController extends ExceptionHandling {
             @RequestParam("capacity") String capacityStr,
             @RequestParam("participantsNumber") String participantsNumberStr,
             @RequestParam("workoutStartDate") String newWorkoutStartDateTimeString,
-            @RequestParam("workoutEndDate") String newWorkoutEndDateTimeString
+            @RequestParam("workoutEndDate") String newWorkoutEndDateTimeString,
+            @RequestParam("workoutDifficulty") String newWorkoutDifficulty
     ) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
 
         Integer capacity = Integer.parseInt(capacityStr);
@@ -68,7 +70,7 @@ public class WorkoutController extends ExceptionHandling {
         LocalDateTime newWorkoutStartDate = LocalDateTime.parse(newWorkoutStartDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         LocalDateTime newWorkoutEndDate = LocalDateTime.parse(newWorkoutEndDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        Workout newWorkout = workoutService.updateWorkout(workoutId, newWorkoutName, newTrainerUsername, newRoomNumber, capacity, participantsNumber, newWorkoutStartDate, newWorkoutEndDate);
+        Workout newWorkout = workoutService.updateWorkout(workoutId, newWorkoutName, newTrainerUsername, newRoomNumber, capacity, participantsNumber, newWorkoutStartDate, newWorkoutEndDate, newWorkoutDifficulty);
         return new ResponseEntity<>(newWorkout, HttpStatus.OK);
     }
     @GetMapping("/list")

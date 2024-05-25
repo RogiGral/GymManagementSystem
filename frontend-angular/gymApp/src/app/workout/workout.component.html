@@ -1,4 +1,4 @@
-<p></p><div class="mb-3 float-right">
+<div class="mb-3 d-flex justify-content-end">
   <div class="btn-group mr-2">
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addWorkoutModal" *ngIf="isAdminOrCoach">
       <i class="fa fa-plus"></i>New Workout
@@ -20,105 +20,110 @@
   </button>
 </div>
 <a href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Available workouts</a>
-<table class="table table-hover">
-  <thead class="table-borderless">
-  <tr class="text-center">
-    <th [hidden]="!isAdmin">Id</th>
-    <th>Workout name</th>
-    <th>Room number</th>
-    <th>Trainer username</th>
-    <th>Workout start date</th>
-    <th>Workout end date</th>
-    <th>Capacity</th>
-    <th>Participants number</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody *ngFor="let appWorkout of filteredWorkouts">
-  <tr class="text-center">
-    <td [hidden]="!isAdmin" (click)="onSelectWorkout(appWorkout)">{{appWorkout?.id}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.trainerUsername}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.capacity}}</td>
-    <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.participantsNumber}}</td>
-    <td class="">
-      <div class="btn-group">
-        <button  class="btn btn-outline-info" (click)="onJoinWorkout(appWorkout)"><i class="fas fa-plus"></i></button>
-        <button [hidden]="!isAdmin" class="btn btn-outline-info" (click)="onEditWorkout(appWorkout)"><i class="fas fa-edit"></i></button>
-        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteWorkout(appWorkout.id)"><i
-          class="fas fa-trash"></i></button>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-borderless">
+    <tr class="text-center">
+      <th [hidden]="!isAdmin" class="d-none d-lg-table-cell">Id</th>
+      <th>Workout name</th>
+      <th>Room number</th>
+      <th class="d-none d-lg-table-cell">Trainer username</th>
+      <th>Workout start date</th>
+      <th>Workout end date</th>
+      <th class="d-none d-md-table-cell">Capacity</th>
+      <th class="d-none d-md-table-cell">Participants number</th>
+      <th class="d-none d-md-table-cell">Workout difficulty</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let appWorkout of filteredWorkouts | paginate: { itemsPerPage: 5, currentPage: currentWorkoutsPage, id:'currentWorkoutsPage' }">
+    <tr class="text-center">
+      <td (click)="onSelectWorkout(appWorkout)" [hidden]="!isAdmin" class="d-none d-lg-table-cell">{{appWorkout?.id}}</td>
+      <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
+      <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
+      <td (click)="onSelectWorkout(appWorkout)" class="d-none d-lg-table-cell">{{appWorkout?.trainerUsername}}</td>
+      <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
+      <td (click)="onSelectWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
+      <td (click)="onSelectWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.capacity}}</td>
+      <td (click)="onSelectWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.participantsNumber}}</td>
+      <td (click)="onSelectWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.workoutDifficulty}}</td>
+      <td class="">
+        <div class="btn-group">
+          <button  (click)="onJoinWorkout(appWorkout)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
+          <button (click)="onEditWorkout(appWorkout)" [hidden]="!isAdmin" class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
+          <button (click)="onDeleteWorkout(appWorkout.id)" [hidden]="!isAdmin" class="btn btn-outline-danger"><i
+            class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="currentWorkoutsPage = $event" id="currentWorkoutsPage"></pagination-controls>
+</div>
 <a href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Your workouts</a>
-<table class="table table-hover">
-  <thead class="table-borderless">
-  <tr class="text-center">
-    <th>Workout name</th>
-    <th>Room number</th>
-    <th>Trainer username</th>
-    <th>Workout start date</th>
-    <th>Workout end date</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody *ngFor="let appUserWorkout of userWorkouts">
-  <tr class="text-center">
-    <td>{{appUserWorkout?.workout?.workoutName}}</td>
-    <td>{{appUserWorkout?.workout?.roomNumber}}</td>
-    <td>{{appUserWorkout?.workout?.trainerUsername}}</td>
-    <td>{{appUserWorkout?.workout?.workoutStartDate | date:'medium'}}</td>
-    <td>{{appUserWorkout?.workout?.workoutEndDate | date:'medium'}}</td>
-    <td>
-      <div class="btn-group">
-        <button class="btn btn-outline-danger" (click)="onLeaveWorkout(appUserWorkout.id)"><i class="fas fa-minus"></i></button>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-borderless">
+    <tr class="text-center">
+      <th>Workout name</th>
+      <th>Room number</th>
+      <th class="d-none d-lg-table-cell">Trainer username</th>
+      <th>Workout start date</th>
+      <th>Workout end date</th>
+      <th class="d-none d-md-table-cell">Workout difficulty</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let appUserWorkout of userWorkouts | paginate: { itemsPerPage: 5, currentPage: currentUserWorkoutsPage, id:'currentUserWorkoutsPage' }">
+    <tr class="text-center">
+      <td>{{appUserWorkout?.workout?.workoutName}}</td>
+      <td>{{appUserWorkout?.workout?.roomNumber}}</td>
+      <td class="d-none d-lg-table-cell">{{appUserWorkout?.workout?.trainerUsername}}</td>
+      <td>{{appUserWorkout?.workout?.workoutStartDate | date:'medium'}}</td>
+      <td>{{appUserWorkout?.workout?.workoutEndDate | date:'medium'}}</td>
+      <td class="d-none d-md-table-cell">{{appUserWorkout?.workout?.workoutDifficulty}}</td>
+      <td>
+        <div class="btn-group">
+          <button (click)="onLeaveWorkout(appUserWorkout.id)" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="currentUserWorkoutsPage = $event" id="currentUserWorkoutsPage"></pagination-controls>
+</div>
 <a [hidden]="!isAdminOrCoach" href="#" tabindex="-1" class="btn btn-info disabled placeholder col-12 justify-content-center" aria-hidden="true">Trainer schedule</a>
-<table [hidden]="!isAdminOrCoach" class="table table-hover">
-  <thead class="table-borderless">
-  <tr class="text-center">
-    <th [hidden]="!isAdmin">Id</th>
-    <th>Workout name</th>
-    <th>Room number</th>
-    <th>Trainer username</th>
-    <th>Workout start date</th>
-    <th>Workout end date</th>
-    <th>Capacity</th>
-    <th>Participants number</th>
-<!--    <th>Actions</th>-->
-  </tr>
-  </thead>
-  <tbody *ngFor="let appWorkout of trainerWorkouts">
-  <tr class="text-center">
-    <td [hidden]="!isAdmin" (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.id}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.trainerUsername}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.capacity}}</td>
-    <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.participantsNumber}}</td>
-<!--    <td class="">-->
-<!--      <div class="btn-group">-->
-<!--        <button  class="btn btn-outline-info" (click)="onJoinWorkout(appWorkout)"><i class="fas fa-plus"></i></button>-->
-<!--        <button [hidden]="!isAdmin" class="btn btn-outline-info" (click)="onEditWorkout(appWorkout)"><i class="fas fa-edit"></i></button>-->
-<!--        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteWorkout(appWorkout.id)"><i-->
-<!--          class="fas fa-trash"></i></button>-->
-<!--      </div>-->
-<!--    </td>-->
-  </tr>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table [hidden]="!isAdminOrCoach" class="table table-hover">
+    <thead class="table-borderless">
+    <tr class="text-center">
+      <th [hidden]="!isAdmin" class="d-none d-lg-table-cell">Id</th>
+      <th>Workout name</th>
+      <th>Room number</th>
+      <th class="d-none d-lg-table-cell">Trainer username</th>
+      <th>Workout start date</th>
+      <th>Workout end date</th>
+      <th class="d-none d-md-table-cell">Capacity</th>
+      <th class="d-none d-md-table-cell">Participants number</th>
+      <th class="d-none d-md-table-cell">Workout difficulty</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let appWorkout of trainerWorkouts | paginate: { itemsPerPage: 5, currentPage: currentTrainerWorkoutsPage, id:'currentTrainerWorkouts'}">
+    <tr class="text-center">
+      <td (click)="onSelectTrainerWorkout(appWorkout)" [hidden]="!isAdmin" class="d-none d-lg-table-cell">{{appWorkout?.id}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutName}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.roomNumber}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)" class="d-none d-lg-table-cell">{{appWorkout?.trainerUsername}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutStartDate | date:'medium'}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)">{{appWorkout?.workoutEndDate | date:'medium'}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.capacity}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.participantsNumber}}</td>
+      <td (click)="onSelectTrainerWorkout(appWorkout)" class="d-none d-md-table-cell">{{appWorkout?.workoutDifficulty}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="currentTrainerWorkoutsPage = $event" id="currentTrainerWorkouts" ></pagination-controls>
+</div>
 
 <button [hidden]="true" type="button" id="openWorkoutInfo" data-toggle="modal" data-target="#viewWorkoutModal">
 </button>
@@ -157,6 +162,8 @@
               <li class="list-group-item"><b class="float-right">Capacity</b>{{selectedWorkout?.capacity}}
               </li>
               <li class="list-group-item"><b class="float-right">Participants signed</b>{{selectedWorkout?.participantsNumber}}
+              </li>
+              <li class="list-group-item"><b class="float-right">Workout Difficulty</b>{{selectedWorkout?.workoutDifficulty}}
               </li>
             </ul>
           </div>
@@ -198,8 +205,8 @@
             <td>{{user?.username}}</td>
             <td class="">
               <div class="btn-group">
-                <button class="btn btn-outline-info" ><i class="fas fa-plus"></i></button>
-                <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                <button (click)="addPoints(user)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
+                <button (click)="removePoints(user)" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
               </div>
             </td>
           </tbody>
@@ -236,7 +243,7 @@
             </div>
             <div class="form-group">
               <label for="trainerUsername">Trainer username</label>
-              <select name="trainerUsername" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.trainerUsername" class="form-control">
+              <select [(ngModel)]="editWorkout.trainerUsername" class="form-control" name="trainerUsername" required>
                 <option *ngFor="let trainer of listOfTrainers" [value]="trainer.username">{{ trainer.username }}</option>
               </select>
             </div>
@@ -266,6 +273,17 @@
             <div class="form-group">
               <label for="numberOfCycles">Number of cycles</label>
               <input type="number" name="numberOfCycles"  ngModel class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label [(ngModel)]="editWorkout.workoutDifficulty" for="workoutDifficulty" required>Workout difficulty</label>
+              <select class="form-control" name="workoutDifficulty">
+                <option value="BEGINNER">BEGINNER</option>
+                <option value="EASY">EASY</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HARD">HARD</option>
+                <option value="VERY_HARD">VERY_HARD</option>
+              </select>
             </div>
 
             <button type="submit" style="display: none;" id="new-workout-save"></button>
@@ -338,6 +356,17 @@
             <div class="form-group">
               <label for="workoutEndDate">Workout End Date</label>
               <input type="datetime-local" name="workoutEndDate" [disabled]="!isAdminOrCoach" required [(ngModel)]="editWorkout.workoutEndDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutDifficulty">Workout difficulty</label>
+              <select [(ngModel)]="editWorkout.workoutDifficulty" [disabled]="!isAdminOrCoach" class="form-control" name="workoutDifficulty" required>
+                  <option value="BEGINNER">BEGINNER</option>
+                  <option value="EASY">EASY</option>
+                  <option value="MEDIUM">MEDIUM</option>
+                  <option value="HARD">HARD</option>
+                  <option value="VERY_HARD">VERY_HARD</option>
+              </select>
             </div>
           </form>
         </div>

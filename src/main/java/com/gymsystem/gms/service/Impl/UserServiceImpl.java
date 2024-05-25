@@ -2,6 +2,7 @@ package com.gymsystem.gms.service.Impl;
 
 import com.gymsystem.gms.enumeration.Role;
 import com.gymsystem.gms.exceptions.model.*;
+import com.gymsystem.gms.model.Score;
 import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserPrincipal;
 import com.gymsystem.gms.repository.UserMembershipRepository;
@@ -124,6 +125,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNotLocked, boolean isActive, MultipartFile profileFile) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException, StripeException {
         validateNewUsernameAndEmail(EMPTY, username, email);
         User user = new User();
+        Score score = new Score();
         String password = generatePassword();
         String encodedPassword = encodedPassword(password);
         user.setUserId(generateCustomerId(firstName + lastName, email));
@@ -138,6 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRole(getRoleEnumName(role).name());
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
         user.setProfileImageUrl(getTemporaryProfileImageUrl(username));
+        user.setScore(score);
         userRepository.save(user);
         saveProfileImage(user, profileFile);
         LOGGER.info("New user password: " + password);

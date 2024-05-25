@@ -6,13 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 @Table(name = "users")
 public class User implements Serializable {
 
@@ -20,7 +19,7 @@ public class User implements Serializable {
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
     @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
-    @Column(nullable = false, updatable = false)
+    @Column(insertable = false, updatable = false, unique = true, nullable = false)
     private Long id;
     private String userId;
     private String firstName;
@@ -33,8 +32,11 @@ public class User implements Serializable {
     private Date lastLoginDate;
     private Date lastLoginDateDisplay;
     private Date joinDate;
-    private String role; //ROLE_USER{ read, edit }, ROLE_ADMIN {delete}
+    private String role;
     private String[] authorities;
+    @JoinColumn(name = "scoreId", referencedColumnName = "id")
+    @OneToOne(optional = false,fetch = FetchType.EAGER, orphanRemoval = true)
+    private Score score;
     private boolean isActive;
     private boolean isNotLocked;
 

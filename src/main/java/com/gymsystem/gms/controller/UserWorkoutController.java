@@ -30,7 +30,7 @@ public class UserWorkoutController extends ExceptionHandling {
 
     @PostMapping("/add")
     public ResponseEntity<UserWorkout> joinWorkout(@RequestParam("userId") Long userId,
-                                                 @RequestParam("workoutId") Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException {
+                                                   @RequestParam("workoutId") Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException, UserNotFoundException {
         UserWorkout newUserWorkout = userWorkoutService.addUserToWorkout(userId,workoutId);
         return new ResponseEntity<>(newUserWorkout, OK);
     }
@@ -48,6 +48,12 @@ public class UserWorkoutController extends ExceptionHandling {
     public ResponseEntity<HttpResponse> leaveWorkout(@PathVariable("userWorkoutId") Long userWorkoutId) throws WorkoutNotFoundException {
             userWorkoutService.deleteUserWorkout(userWorkoutId);
         return response(OK, "USER_LEFT_WORKOUT");
+    }
+    @DeleteMapping("/delete/{userId}/{workoutId}")
+    public ResponseEntity<HttpResponse> removeUserFromWorkout(@PathVariable("userId") Long userId,
+                                                              @PathVariable("workoutId") Long workoutId) throws WorkoutNotFoundException, UserNotFoundException {
+        userWorkoutService.deleteUserWorkout(userId,workoutId);
+        return response(OK, "USER_REMOVED_FROM_WORKOUT");
     }
 
     private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
