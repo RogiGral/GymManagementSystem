@@ -17,7 +17,7 @@
                     </div>
                     <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                       <div class="text-center text-sm-left mb-2 mb-sm-0">
-                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user.firstName}} {{user.lastName}}</h4>
+                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap" style="color: #222222">{{user.firstName}} {{user.lastName}}</h4>
                         <p class="mb-0">@{{user.username}}</p>
                         <div *ngIf="user.lastLoginDateDisplay" class="text-muted"><small>Last login:
                           {{user.lastLoginDateDisplay | date:'medium'}}</small></div>

@@ -1,0 +1,15 @@
+@media (max-width: 576px) {
+  .btn-group {
+    width: 100%;
+    margin-top: 5px;
+  }
+  .btn {
+    width: 100%;
+  }
+  .form-inline input {
+    width: 85%;
+  }
+  .form-inline button {
+    width: 15%;
+  }
+}

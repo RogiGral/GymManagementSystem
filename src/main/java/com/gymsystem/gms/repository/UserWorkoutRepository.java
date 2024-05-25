@@ -22,4 +22,5 @@ public interface UserWorkoutRepository extends JpaRepository<UserWorkout,Long> {
     List<UserWorkout> findAllByWorkoutId(@Param("workoutId") Long workoutId);
 
     void deleteAllByUser(User user);
+    void deleteUserWorkoutByUserAndWorkout(User user, Workout workout);
 }

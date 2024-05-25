@@ -1,6 +1,8 @@
 package com.gymsystem.gms.service.Impl;
 
 import com.gymsystem.gms.enumeration.Role;
+import com.gymsystem.gms.enumeration.UnitOfTime;
+import com.gymsystem.gms.enumeration.WorkoutDifficulty;
 import com.gymsystem.gms.exceptions.model.UserNotFoundException;
 import com.gymsystem.gms.exceptions.model.WorkoutDateException;
 import com.gymsystem.gms.exceptions.model.WorkoutExistException;
@@ -22,6 +24,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.gymsystem.gms.constraints.UserImplConstant.*;
 import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
@@ -46,7 +49,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public Workout createWorkout(String workoutName, String trainerUsername, String roomNumber, Integer capacity, LocalDateTime workoutStartDate, LocalDateTime workoutEndDate) throws WorkoutDateException, WorkoutExistException, UserNotFoundException {
+    public Workout createWorkout(String workoutName, String trainerUsername, String roomNumber, Integer capacity, LocalDateTime workoutStartDate, LocalDateTime workoutEndDate, String workoutDifficulty) throws WorkoutDateException, WorkoutExistException, UserNotFoundException {
         checkIfTrainerExists(trainerUsername);
         validateStartEndDate(workoutStartDate,workoutEndDate);
         checkIfWorkoutExists(StringUtils.EMPTY,workoutName,trainerUsername,roomNumber,workoutStartDate,workoutEndDate);
@@ -58,6 +61,8 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setWorkoutEndDate(workoutEndDate);
         workout.setCapacity(capacity);
         workout.setParticipantsNumber(0);
+        workout.setWorkoutDifficulty(getWorkoutDifficultyEnumName(workoutDifficulty));
+
         workoutRepository.save(workout);
         //wyslij mail do trenera odnosnie treningu; docelowo dodać do kalenarza
         return workout;
@@ -65,7 +70,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     // Todo do poprawy, co w przypadku kiedy poda się nowy workoutName a reszta będzie taka sama;
     //  solution, można zablokowac zmienianie innych danych poza nazwą - nie zbyt pasuje ale zawsze coś
     @Override
-    public Workout updateWorkout(Long id, String newWorkoutName, String newTrainerUsername, String newRoomNumber,Integer newCapacity,Integer newParticipantsNumber, LocalDateTime newWorkoutStartDate, LocalDateTime newWorkoutEndDate) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
+    public Workout updateWorkout(Long id, String newWorkoutName, String newTrainerUsername, String newRoomNumber,Integer newCapacity,Integer newParticipantsNumber, LocalDateTime newWorkoutStartDate, LocalDateTime newWorkoutEndDate, String newWorkoutDifficulty) throws WorkoutDateException, WorkoutExistException, UserNotFoundException, WorkoutNotFoundException {
         checkIfTrainerExists(newTrainerUsername);
         validateStartEndDate(newWorkoutStartDate,newWorkoutEndDate);
         Workout workout = findWorkoutById(id);
@@ -76,6 +81,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setWorkoutEndDate(newWorkoutEndDate);
         workout.setCapacity(newCapacity);
         workout.setParticipantsNumber(newParticipantsNumber);
+        workout.setWorkoutDifficulty(getWorkoutDifficultyEnumName(newWorkoutDifficulty));
         workoutRepository.save(workout);
         return workout;
     }
@@ -129,5 +135,9 @@ public class WorkoutServiceImpl implements WorkoutService {
             }
             return workout;
         }
+    }
+
+    private WorkoutDifficulty getWorkoutDifficultyEnumName(String workoutDifficulty) {
+        return WorkoutDifficulty.valueOf(workoutDifficulty.toUpperCase());
     }
 }

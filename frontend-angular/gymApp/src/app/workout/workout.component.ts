@@ -11,6 +11,8 @@ import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {Role} from "../enum/role.enum";
 import {NgForm} from "@angular/forms";
 import {UserService} from "../service/user.service";
+import {ScoreService} from "../service/score.service";
+
 
 @Component({
   selector: 'app-workout',
@@ -35,13 +37,16 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   private currentWorkout: number;
-
+  public currentWorkoutsPage: number = 1;
+  public currentUserWorkoutsPage: number = 1;
+  public currentTrainerWorkoutsPage: number = 1;
 
   constructor(
     private workoutService: WorkoutService,
     private userService: UserService,
     private notificationService: NotificationService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private scoreService: ScoreService
   ) { }
 
   ngOnInit(): void {
@@ -105,6 +110,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     });
   }
   addDay(): void {
+    this.currentWorkoutsPage = 1;
     const currentDate = new Date(this.selectedDate);
     currentDate.setDate(currentDate.getDate() + 1);
     this.selectedDate = currentDate.toISOString().split('T')[0];
@@ -113,6 +119,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   }
 
   removeDay(): void {
+    this.currentWorkoutsPage = 1;
     const currentDate = new Date(this.selectedDate);
     currentDate.setDate(currentDate.getDate() - 1);
     this.selectedDate = currentDate.toISOString().split('T')[0];
@@ -171,16 +178,22 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   }
   public onSelectTrainerWorkout(selectedTrainerWorkout: IWorkout): void {
     this.selectedTrainerWorkout = selectedTrainerWorkout;
-    this.subscriptions.push(    this.workoutService.listOfUserJoinedWorkout(this.selectedTrainerWorkout.id).subscribe(
-      (response: User[]) => {
-        this.listOfUserJoinedWorkout = response;
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
-        this.refreshing = false;
-      }
-    ));
+    this.getListOfUserJoinedWorkout(this.selectedTrainerWorkout.id)
     this.clickButton('openTrainerWorkoutInfo');
+  }
+
+  onLeaveWorkout(id: number) {
+    this.subscriptions.push(
+      this.workoutService.deleteUserWorkout(id).subscribe(
+        (response: CustomHttpResponse) => {
+          this.sendNotification(NotificationType.SUCCESS, response.message);
+          this.getWorkouts(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
   }
   public onSelectUserWorkout(selectedWorkout: IUserWorkout): void {
     this.selectedUserWorkout = selectedWorkout.workout;
@@ -305,17 +318,65 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  onLeaveWorkout(id: number) {
+  addPoints(user:User) {
+    const workout = this.selectedTrainerWorkout
+    const formData = this.scoreService.createScoreFormData(user.username,100)
     this.subscriptions.push(
-      this.workoutService.deleteUserWorkout(id).subscribe(
+      this.scoreService.addScore(formData).subscribe(
         (response: CustomHttpResponse) => {
           this.sendNotification(NotificationType.SUCCESS, response.message);
-          this.getWorkouts(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      ),
+      this.workoutService.removeUserFromWorkout(user.id,workout.id).subscribe(
+        (response: CustomHttpResponse) => {
+          this.getListOfUserJoinedWorkout(workout.id);
+          this.getTrainerWorkouts();
+          this.sendNotification(NotificationType.SUCCESS, response.message);
         },
         (error: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, error.error.message);
         }
       )
     );
+  }
+
+  removePoints(user:User) {
+    const workout = this.selectedTrainerWorkout;
+    const formData = this.scoreService.createScoreFormData(user.username,100);
+    this.subscriptions.push(
+      this.scoreService.removeScore(formData).subscribe(
+        (response: CustomHttpResponse) => {
+          this.sendNotification(NotificationType.SUCCESS, response.message);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      ),
+      this.workoutService.removeUserFromWorkout(user.id,workout.id).subscribe(
+        (response: CustomHttpResponse) => {
+          this.getListOfUserJoinedWorkout(workout.id);
+          this.getTrainerWorkouts();
+          this.sendNotification(NotificationType.SUCCESS, response.message);
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
+  }
+
+  private getListOfUserJoinedWorkout(workoutId: number){
+    this.subscriptions.push(this.workoutService.listOfUserJoinedWorkout(workoutId).subscribe(
+      (response: User[]) => {
+        this.listOfUserJoinedWorkout = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+        this.refreshing = false;
+      }
+    ));
   }
 }

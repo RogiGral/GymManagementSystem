@@ -9,6 +9,7 @@ export class IWorkout {
   public participantsNumber: number
   public workoutStartDate: any
   public workoutEndDate: any
+  public workoutDifficulty: string
 
 
   constructor() {
@@ -20,6 +21,7 @@ export class IWorkout {
     this.participantsNumber =  0;
     this.workoutStartDate = null;
     this.workoutEndDate = null;
+    this.workoutDifficulty='';
   }
 
 }

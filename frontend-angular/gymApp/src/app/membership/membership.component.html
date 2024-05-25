@@ -1,4 +1,4 @@
-<p></p><div class="mb-3 float-right">
+<div class="mb-3 d-flex justify-content-end">
   <div class="btn-group mr-2">
     <!--    <form class="form-inline my-2 my-lg-0 justify-content-center">-->
     <!--      <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2" ngModel-->
@@ -14,37 +14,39 @@
     </button>
   </div>
 </div>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-borderless">
+    <tr class="text-center">
+      <th [hidden]="!isAdmin" >Id</th>
+      <th>Membership name</th>
+      <th class="d-none d-md-table-cell">Membership description</th>
+      <th>Membership type</th>
+      <th class="d-none d-lg-table-cell">Membership price</th>
+      <th class="d-none d-md-table-cell">Validity period</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let appMembership of memberships ">
+    <tr class="text-center">
+      <td (click)="onSelectMembership(appMembership)" [hidden]="!isAdmin">{{appMembership?.id}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{appMembership?.name}}</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-md-table-cell">{{appMembership?.description}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{appMembership?.type}}</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.price}}$</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
+      <td class="">
+        <div class="btn-group">
+          <button  (click)="onPayForMembership(appMembership)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
+          <button (click)="onEditMembershipType(appMembership)" class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
+          <button (click)="onDeleteMembershipType(appMembership.id)" [hidden]="!isAdmin" class="btn btn-outline-danger"><i
+            class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-<table class="table table-hover">
-  <thead class="table-borderless">
-  <tr class="text-center">
-    <th [hidden]="!isAdmin" >Id</th>
-    <th>Membership name</th>
-    <th>Membership description</th>
-    <th>Membership type</th>
-    <th>Membership price</th>
-    <th>Validity period</th>
-  </tr>
-  </thead>
-  <tbody *ngFor="let appMembership of memberships ">
-  <tr class="text-center">
-    <td [hidden]="!isAdmin" (click)="onSelectMembership(appMembership)">{{appMembership?.id}}</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.name}}</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.description}}</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.type}}</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.price}}$</td>
-    <td (click)="onSelectMembership(appMembership)">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
-    <td class="">
-      <div class="btn-group">
-        <button  class="btn btn-outline-info" (click)="onPayForMembership(appMembership)"><i class="fas fa-plus"></i></button>
-        <button class="btn btn-outline-info" (click)="onEditMembershipType(appMembership)"><i class="fas fa-edit"></i></button>
-        <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteMembershipType(appMembership.id)"><i
-          class="fas fa-trash"></i></button>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
 
 <button [hidden]="true" type="button" id="openMembershipTypeInfo" data-toggle="modal" data-target="#viewMembershipTypeModal">
 </button>

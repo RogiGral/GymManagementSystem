@@ -21,6 +21,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public refreshing: boolean;
   private subscriptions: Subscription[] = [];
   public selectedUser: User;
+  public currentPage: number = 1;
   public users: User[];
   public user: User;
   public editUser = new User();

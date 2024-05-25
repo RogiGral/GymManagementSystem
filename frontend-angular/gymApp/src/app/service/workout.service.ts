@@ -36,6 +36,9 @@ export class WorkoutService {
   public deleteUserWorkout(userWorkoutId: number): Observable<CustomHttpResponse>{
     return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userWorkoutId}`)
   }
+  public removeUserFromWorkout(userId: number, workoutId: number): Observable<CustomHttpResponse>{
+    return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userId}/${workoutId}`)
+  }
   public listOfUserJoinedWorkout(workoutId: number): Observable<User[]>{
     return this.http.get<User[]>(`${this.host}/user-workout/list_joined/${workoutId}`);
   }
@@ -56,6 +59,7 @@ export class WorkoutService {
     formData.append('workoutEndDate', workout.workoutEndDate.toString());
     formData.append('capacity', workout.capacity.toString());
     formData.append('participantsNumber', workout.participantsNumber.toString());
+    formData.append('workoutDifficulty', workout.workoutDifficulty);
     return formData;
   }
 }

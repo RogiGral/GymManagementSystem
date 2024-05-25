@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface UserWorkoutService {
     List<UserWorkout> getAllUserWorkouts(Long userId);
-    UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException;
+    UserWorkout addUserToWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, WorkoutIsFullException, UserIsAlreadyInWorkoutException, UserNotFoundException;
     void deleteUserWorkout(Long userWorkoutId) throws WorkoutNotFoundException;
+    void deleteUserWorkout(Long userId, Long workoutId) throws WorkoutNotFoundException, UserNotFoundException;
     List<User> listAllUsersJoined(Long workoutId);
 }
