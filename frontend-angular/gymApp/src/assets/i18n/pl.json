@@ -1,0 +1,67 @@
+{
+  "NAVBAR": {
+    "GYM_PORTAL_TITLE": "PowerHour narzędzie zarządzania klubem fitness",
+    "NO_MEMBERSHIP_MESSAGE": "Użytkownik nie ma wykupionego członkostwa",
+    "GYM_MANAGEMENT_TOOL": "Narzędzie do zarządzania klubem fitness",
+    "USER_WORKOUT_SCORE": "Punkty POWER",
+    "USERS": "Użytkownicy",
+    "WORKOUTS": "Treningi",
+    "MEMBERSHIPS": "Członkostwa",
+    "SETTINGS": "Ustawienia",
+    "WELCOME": "Witamy",
+    "LANGUAGE": "Język"
+  },
+  "USERS": {
+    "ADD_USER": "Dodaj użytkownika",
+    "EDIT_USER": "Edytuj użytkownika",
+    "DELETE_USER": "Usuń użytkownika",
+    "USER_NAME": "Imię",
+    "USER_SURNAME": "Nazwisko",
+    "USER_EMAIL": "Email",
+    "USER_PHONE": "Telefon",
+    "USER_BIRTHDATE": "Data urodzenia"
+  },
+  "MEMBERSHIPS": {
+    "ADD_MEMBERSHIP": "Dodaj członkostwo",
+    "MEMBERSHIP_NAME": "Nazwa",
+    "MEMBERSHIP_DESCRIPTION": "Opis",
+    "MEMBERSHIP_TYPE": "Typ",
+    "MEMBERSHIP_PRICE": "Cena",
+    "MEMBERSHIP_DURATION": "Czas trwania",
+    "NAME" : {
+      "MEMBERSHIP_NAME_1": "Członkostwo 1",
+      "MEMBERSHIP_NAME_2": "Członkostwo 2",
+      "MEMBERSHIP_NAME_3": "Członkostwo 3",
+      "MEMBERSHIP_NAME_4": "Członkostwo 4",
+      "MEMBERSHIP_NAME_5": "Członkostwo 5"
+    },
+    "TYPE" : {
+      "MEMBERSHIP_TYPE_1": "Typ 1",
+      "MEMBERSHIP_TYPE_2": "Typ 2",
+      "MEMBERSHIP_TYPE_3": "Typ 3",
+      "MEMBERSHIP_TYPE_4": "Typ 4",
+      "MEMBERSHIP_TYPE_5": "Typ 5"
+    },
+    "DURATION_UNIT": {
+      "DAY": "Dzień",
+      "WEEK": "Tydzień",
+      "MONTH": "Miesiąc",
+      "YEAR": "Rok"
+    }
+  },
+  "WORKOUTS": {
+    "ADD_WORKOUT": "Dodaj trening",
+    "EDIT_WORKOUT": "Edytuj trening",
+    "DELETE_WORKOUT": "Usuń trening",
+    "WORKOUT_NAME": "Nazwa",
+    "WORKOUT_DESCRIPTION": "Opis",
+    "WORKOUT_SCORE": "Punkty POWER",
+    "NAME" : {
+      "WORKOUT_NAME_1": "Trening 1",
+      "WORKOUT_NAME_2": "Trening 2",
+      "WORKOUT_NAME_3": "Trening 3",
+      "WORKOUT_NAME_4": "Trening 4",
+      "WORKOUT_NAME_5": "Trening 5"
+    }
+  },
+}

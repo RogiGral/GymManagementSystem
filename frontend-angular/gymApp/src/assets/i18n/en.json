@@ -1,0 +1,14 @@
+{
+  "NAVBAR": {
+    "GYM_PORTAL_TITLE": "PowerHour Gym Management Portal",
+    "NO_MEMBERSHIP_MESSAGE": "User has no membership assigned to his account",
+    "GYM_MANAGEMENT_TOOL": "Gym management tool",
+    "USER_WORKOUT_SCORE": "POWER points",
+    "USERS": "Users",
+    "WORKOUTS": "Workouts",
+    "MEMBERSHIPS": "Memberships",
+    "SETTINGS": "Settings",
+    "WELCOME": "Welcome",
+    "LANGUAGE": "Language"
+  }
+}
