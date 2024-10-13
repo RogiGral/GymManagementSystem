@@ -48,9 +48,9 @@ export class MembershipService {
     return this.http.post<string>(`${this.host}/userMembership/cancel_payment`,formData)
   }
 
-  createMembershipTypeFormDate(oldMembershipTypeName:any, membershipType: IMembershipType): FormData {
+  createMembershipTypeFormDate(oldMembershipTypeName: string, membershipType: IMembershipType): FormData {
     const formData = new FormData();
-    formData.append('oldName', oldMembershipTypeName);
+    oldMembershipTypeName.length > 1? formData.append('oldName', oldMembershipTypeName) : '';
     formData.append('name', membershipType.name);
     formData.append('description', membershipType.description);
     formData.append('type', membershipType.type);

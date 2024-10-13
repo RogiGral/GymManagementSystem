@@ -18,16 +18,16 @@ import {CustomHttpResponse} from "../model/custom-http-response_model";
 })
 export class UserComponent implements OnInit, OnDestroy {
 
-  public refreshing: boolean;
+  public refreshing: boolean = false;
   private subscriptions: Subscription[] = [];
-  public selectedUser: User;
+  public selectedUser: User = new User();
   public currentPage: number = 1;
-  public users: User[];
-  public user: User;
-  public editUser = new User();
-  private profileImage: any;
-  private fileName: any;
-  private currentUsername: string;
+  public users: User[] = [];
+  public user: User = new User();
+  public editUser: User = new User();
+  private profileImage: any = null;
+  private fileName: string = '';
+  private currentUsername: string = '';
 
   constructor(private  userService: UserService,
               private notificationService: NotificationService,
@@ -79,7 +79,7 @@ export class UserComponent implements OnInit, OnDestroy {
         (response: User) => {
           this.clickButton('new-user-close');
           this.getUsers(false);
-          this.fileName = null;
+          this.fileName = '';
           this.profileImage = null;
           userForm.reset();
           this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} added successfully`);
@@ -99,7 +99,7 @@ export class UserComponent implements OnInit, OnDestroy {
         (response: User) => {
           this.clickButton('closeEditUserModalButton');
           this.getUsers(false);
-          this.fileName = null;
+          this.fileName = '';
           this.profileImage = null;
           this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} updated successfully`);
         },

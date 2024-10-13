@@ -15,9 +15,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class MainComponent implements OnInit, OnDestroy {
 
   private titleSubject = new BehaviorSubject<String>('Welcome');
-  public userScore: number;
+  public userScore: number = 0;
   public titleAction$ = this.titleSubject.asObservable();
-  public userMembership: IUserMembership;
+  public userMembership: IUserMembership = new IUserMembership();
   public selectedLanguage: string = 'en';
   private subscriptions: Subscription[] = [];
 
@@ -58,6 +58,7 @@ export class MainComponent implements OnInit, OnDestroy {
   public switchLanguage(lang: string) {
     this.translate.use(lang);
     this.selectedLanguage = lang;
+    console.log(this.selectedLanguage)
   }
 
   public getLanguageIcon(lang: string): string {

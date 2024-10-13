@@ -5,11 +5,15 @@
     "GYM_MANAGEMENT_TOOL": "Narzędzie do zarządzania klubem fitness",
     "USER_WORKOUT_SCORE": "Punkty POWER",
     "USERS": "Użytkownicy",
+    "VALIDATE": "Sprawdź karnet",
     "WORKOUTS": "Treningi",
     "MEMBERSHIPS": "Członkostwa",
     "SETTINGS": "Ustawienia",
     "WELCOME": "Witamy",
-    "LANGUAGE": "Język"
+    "LANGUAGE" : {
+      "EN": "Angielski",
+      "PL": "Polski"
+    }
   },
   "USERS": {
     "ADD_USER": "Dodaj użytkownika",
@@ -29,39 +33,61 @@
     "MEMBERSHIP_PRICE": "Cena",
     "MEMBERSHIP_DURATION": "Czas trwania",
     "NAME" : {
-      "MEMBERSHIP_NAME_1": "Członkostwo 1",
-      "MEMBERSHIP_NAME_2": "Członkostwo 2",
-      "MEMBERSHIP_NAME_3": "Członkostwo 3",
-      "MEMBERSHIP_NAME_4": "Członkostwo 4",
-      "MEMBERSHIP_NAME_5": "Członkostwo 5"
+      "MORNING": "Poranne",
+      "AFTERNOON": "Popołudniowe",
+      "LIFETIME": "Dożywotnie"
     },
     "TYPE" : {
-      "MEMBERSHIP_TYPE_1": "Typ 1",
-      "MEMBERSHIP_TYPE_2": "Typ 2",
-      "MEMBERSHIP_TYPE_3": "Typ 3",
-      "MEMBERSHIP_TYPE_4": "Typ 4",
-      "MEMBERSHIP_TYPE_5": "Typ 5"
+      "MORNING": "Poranne",
+      "AFTERNOON": "Popołudniowe",
+      "LIFETIME": "Dożywotnie"
     },
     "DURATION_UNIT": {
       "DAY": "Dzień",
       "WEEK": "Tydzień",
       "MONTH": "Miesiąc",
       "YEAR": "Rok"
-    }
+    },
+    "CLOSE": "Zamknij",
+    "SAVE": "Zapisz"
   },
   "WORKOUTS": {
-    "ADD_WORKOUT": "Dodaj trening",
+    "TABLE" : {
+      "BUTTON": {
+        "ADD_WORKOUT": "Dodaj trening",
+        "YOUR_WORKOUTS": "Twoje treningi",
+        "TRAINER_SCHEDULE": "Grafik trenera"
+      },
+      "TITLE": {
+        "AVAILABLE_WORKOUTS": "Dostępne treningi",
+        "YOUR_WORKOUTS": "Twoje treningi",
+        "TRAINER_SCHEDULE": "Grafik trenera"
+      },
+      "NAME": "Nazwa",
+      "ROOM_NUMBER": "Numer sali",
+      "START_DATE": "Data rozpoczęcia",
+      "END_DATE": "Data zakończenia",
+      "CAPPACITY": "Pojemność sali",
+      "PARTICIPANTS_NUMBER": "Liczba uczestników",
+      "ACTIONS": "Akcje",
+      "DESCRIPTION": "Opis",
+      "DIFFICULTY" : "Poziom trudności",
+      "TRAINER_USERNAME": "Nick trenera",
+      "CLOSE": "Zamknij",
+      "SAVE": "Zapisz"
+    },
+
     "EDIT_WORKOUT": "Edytuj trening",
     "DELETE_WORKOUT": "Usuń trening",
     "WORKOUT_NAME": "Nazwa",
     "WORKOUT_DESCRIPTION": "Opis",
     "WORKOUT_SCORE": "Punkty POWER",
-    "NAME" : {
-      "WORKOUT_NAME_1": "Trening 1",
-      "WORKOUT_NAME_2": "Trening 2",
-      "WORKOUT_NAME_3": "Trening 3",
-      "WORKOUT_NAME_4": "Trening 4",
-      "WORKOUT_NAME_5": "Trening 5"
+    "DIFFICULTY" : {
+      "BEGINNER": "Początkujący",
+      "EASY": "Łatwy",
+      "MEDIUM": "Średni",
+      "HARD": "Trudny",
+      "VERY_HARD": "Bardzo trudny"
     }
-  },
+  }
 }

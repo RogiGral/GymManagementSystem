@@ -18,7 +18,7 @@
   <table class="table table-hover">
     <thead class="table-borderless">
     <tr class="text-center">
-      <th [hidden]="!isAdmin" >{{ 'MEMBERSHIPS.ID' | translate}}</th>
+      <th [hidden]="!isAdmin" >ID</th>
       <th>{{ 'MEMBERSHIPS.MEMBERSHIP_NAME' | translate}}</th>
       <th class="d-none d-md-table-cell">{{ 'MEMBERSHIPS.MEMBERSHIP_DESCRIPTION' | translate}}</th>
       <th>{{ 'MEMBERSHIPS.MEMBERSHIP_TYPE' | translate}}</th>
@@ -28,12 +28,12 @@
     </thead>
     <tbody *ngFor="let appMembership of memberships ">
     <tr class="text-center">
-      <td (click)="onSelectMembership(appMembership)" [hidden]="!isAdmin">{{appMembership?.id}}</td>
-      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.NAME.' + appMembership?.name | translate}}</td>
-      <td (click)="onSelectMembership(appMembership)" class="d-none d-md-table-cell">{{appMembership?.description}}</td>
-      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.TYPE.' + appMembership?.type | translate}}</td>
-      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.price}}$</td>
-      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.validityPeriodNumber}}{{'MEMBERSHIPS.DURATION_UNIT.' + appMembership?.validityUnitOfTime | translate}}</td>
+      <td (click)="onSelectMembership(appMembership)" [hidden]="!isAdmin">{{appMembership.id}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.NAME.' + appMembership.name | translate}}</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-md-table-cell">{{appMembership.description}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.TYPE.' + appMembership.type | translate}}</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership.price}}$</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership.validityPeriodNumber}} {{'MEMBERSHIPS.DURATION_UNIT.' + appMembership.validityUnitOfTime | translate}}</td>
       <td class="">
         <div class="btn-group">
           <button  (click)="onPayForMembership(appMembership)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
@@ -61,7 +61,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedMembershipType?.name}}
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedMembershipType.name}}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -72,15 +72,15 @@
           <div class="card">
             <ul class="list-group list-group-flush">
               <li class="list-group-item"></li>
-              <li class="list-group-item"><b class=" float-right">Name</b>{{selectedMembershipType?.name}}
+              <li class="list-group-item"><b class=" float-right">{{ 'MEMBERSHIPS.MEMBERSHIP_NAME' | translate}}</b>{{selectedMembershipType.name}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Description</b>{{selectedMembershipType?.description}}
+              <li class="list-group-item"><b class=" float-right">{{ 'MEMBERSHIPS.MEMBERSHIP_DESCRIPTION' | translate}}</b>{{selectedMembershipType.description}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Type</b>{{selectedMembershipType?.type}}
+              <li class="list-group-item"><b class=" float-right">{{ 'MEMBERSHIPS.MEMBERSHIP_TYPE' | translate}}</b>{{selectedMembershipType.type}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Price</b>{{selectedMembershipType?.price}}
+              <li class="list-group-item"><b class=" float-right">{{ 'MEMBERSHIPS.MEMBERSHIP_PRICE' | translate}}</b>{{selectedMembershipType.price}}
               </li>
-              <li class="list-group-item"><b class=" float-right">Duration</b>{{selectedMembershipType?.validityPeriodNumber}} {{selectedMembershipType?.validityUnitOfTime}}
+              <li class="list-group-item"><b class=" float-right">{{ 'MEMBERSHIPS.MEMBERSHIP_DURATION' | translate}}</b>{{selectedMembershipType.validityPeriodNumber}} {{'MEMBERSHIPS.DURATION_UNIT.' + selectedMembershipType.validityUnitOfTime | translate}}
               </li>
             </ul>
           </div>
@@ -108,31 +108,31 @@
         <div>
           <form #newMembershipForm="ngForm" (ngSubmit)="onAddNewMembershipType(newMembershipForm)" >
             <div class="form-group">
-              <label for="name">Membership Name</label>
+              <label for="name">{{ 'MEMBERSHIPS.MEMBERSHIP_NAME' | translate}}</label>
               <input type="text" name="name" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="description">Membership description</label>
+              <label for="description">{{ 'MEMBERSHIPS.MEMBERSHIP_DESCRIPTION' | translate}}</label>
               <input type="text" name="description" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="type">Membership type</label>
+              <label for="type">{{ 'MEMBERSHIPS.MEMBERSHIP_TYPE' | translate}}</label>
               <input type="text" name="type" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="price">Membership price</label>
+              <label for="price">{{ 'MEMBERSHIPS.MEMBERSHIP_PRICE' | translate}}</label>
               <input type="number" name="price" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="validityPeriodNumber">Membership duration</label>
+              <label for="validityPeriodNumber">{{ 'MEMBERSHIPS.MEMBERSHIP_DURATION' | translate}}</label>
               <input type="number" name="validityPeriodNumber" required ngModel class="form-control">
             </div>
             <div class="form-group">
               <label for="validityUnitOfTime">Membership duration</label>
               <select name="validityUnitOfTime" required ngModel class="form-control">
-                <option value="DAY">DAY</option>
-                <option value="MONTH">MONTH</option>
-                <option value="YEAR">YEAR</option>
+                <option value="DAY">{{ 'MEMBERSHIPS.DURATION_UNIT.DAY' | translate}}</option>
+                <option value="MONTH">{{ 'MEMBERSHIPS.DURATION_UNIT.MONTH' | translate}}</option>
+                <option value="YEAR">{{ 'MEMBERSHIPS.DURATION_UNIT.YEAR' | translate}}</option>
               </select>
             </div>
             <button type="submit" style="display: none;" id="new-membership-save"></button>
@@ -140,10 +140,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-membership-close">Close</button>
-        <button type="button" (click)="saveNewMembership()" [disabled]="newMembershipForm.invalid" class="btn btn-primary">Save
-          changes
-        </button>
+        <button class="btn btn-secondary" data-dismiss="modal" id="new-membership-close" type="button">{{ 'MEMBERSHIPS.CLOSE' | translate}}</button>
+        <button (click)="saveNewMembership()" [disabled]="newMembershipForm.invalid" class="btn btn-primary" type="button">{{ 'MEMBERSHIPS.SAVE' | translate}}</button>
       </div>
     </div>
   </div>
@@ -154,7 +152,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center">Edit {{editMembershipType?.name}}<small [hidden]="isAdmin">
+        <h5 class="modal-title text-center">Edit {{editMembershipType.name}}<small [hidden]="isAdmin">
           (read only)
         </small></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -165,17 +163,17 @@
         <div class="">
           <form #editMembershipTypeForm="ngForm">
             <div class="form-group">
-              <label for="id">Membership Type id</label>
+              <label for="id">ID</label>
               <input type="text" name="id" [disabled]="true" required [(ngModel)]="editMembershipType.id" class="form-control">
             </div>
 
             <div class="form-group">
-              <label for="name">Membership Type name</label>
+              <label for="name">{{ 'MEMBERSHIPS.MEMBERSHIP_NAME' | translate}}</label>
               <input type="text" name="name" [disabled]="true" required [(ngModel)]="editMembershipType.name" class="form-control">
             </div>
 
             <div class="form-group">
-              <label for="description">Membership Type description</label>
+              <label for="description">{{ 'MEMBERSHIPS.MEMBERSHIP_DESCRIPTION' | translate}}</label>
               <textarea name="description" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.description" class="form-control"></textarea>
             </div>
 
@@ -185,28 +183,27 @@
             </div>
 
             <div class="form-group">
-              <label for="type">Membership Type type</label>
+              <label for="type">{{ 'MEMBERSHIPS.MEMBERSHIP_TYPE' | translate}}</label>
               <input type="text" name="type" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.type" class="form-control">
             </div>
 
             <div class="form-group">
-              <label for="validityPeriodNumber">Number of Months</label>
+              <label for="validityPeriodNumber">{{ 'MEMBERSHIPS.MEMBERSHIP_DURATION' | translate}}</label>
               <input type="number" name="validityPeriodNumber" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityPeriodNumber" class="form-control">
             </div>
             <div class="form-group">
-              <label for="validityUnitOfTime">Number of Months</label>
               <select name="validityUnitOfTime" [disabled]="!isAdminOrCoach" required [(ngModel)]="editMembershipType.validityUnitOfTime" class="form-control">
-                <option value="DAY">DAY</option>
-                <option value="MONTH">MONTH</option>
-                <option value="YEAR">YEAR</option>
+                <option value="DAY">{{ 'MEMBERSHIPS.DURATION_UNIT.DAY' | translate}}</option>
+                <option value="MONTH">{{ 'MEMBERSHIPS.DURATION_UNIT.MONTH' | translate}}</option>
+                <option value="YEAR">{{ 'MEMBERSHIPS.DURATION_UNIT.YEAR' | translate}}</option>
               </select>
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditMembershipTypeModalButton">Close</button>
-        <button type="button" (click)="onUpdateMembershipType()" [disabled]="editMembershipTypeForm.invalid || !isAdminOrCoach" class="btn btn-primary">Save changes</button>
+        <button class="btn btn-secondary" data-dismiss="modal" id="closeEditMembershipTypeModalButton" type="button">{{ 'MEMBERSHIPS.CLOSE' | translate}}</button>
+        <button (click)="onUpdateMembershipType()" [disabled]="editMembershipTypeForm.invalid || !isAdminOrCoach" class="btn btn-primary" type="button">{{ 'MEMBERSHIPS.SAVE' | translate}}</button>
       </div>
     </div>
   </div>
@@ -300,11 +297,11 @@
               <div class="card">
                 <div class="d-flex justify-content-between p-3">
                   <div class="d-flex flex-column">
-                    <span>Membership type:  {{selectedMembershipType?.name}}</span>
+                    <span>Membership type:  {{selectedMembershipType.name}}</span>
                   </div>
                   <div class="mt-1">
-                    <sup class="super-price">{{selectedMembershipType?.price}} $</sup>
-                    <span class="super-month">/{{selectedMembershipType?.validityPeriodNumber}} {{selectedMembershipType?.validityUnitOfTime}}</span>
+                    <sup class="super-price">{{selectedMembershipType.price}} $</sup>
+                    <span class="super-month">/{{selectedMembershipType.validityPeriodNumber}} {{selectedMembershipType.validityUnitOfTime}}</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between p-3">
@@ -317,7 +314,7 @@
                 </div>
                 <div class="p-3">
                   <button type="submit" id="payment-btn" class="btn btn-primary btn-block payment-button">Pay</button>
-                  <button type="button" id="closePaymentFormButton" class="btn btn-danger btn-block cancel-button" data-dismiss="modal" (click)="cancelPaymentIntent()">Close</button>
+                  <button (click)="cancelPaymentIntent()" class="btn btn-danger btn-block cancel-button" data-dismiss="modal" id="closePaymentFormButton" type="button">{{ 'MEMBERSHIPS.CLOSE' | translate}}</button>
                 </div>
               </div>
               </form>
