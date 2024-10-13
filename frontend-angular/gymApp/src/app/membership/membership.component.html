@@ -5,7 +5,7 @@
     <!--             (ngModelChange)="searchWorkout(searchInput.value)" type="search" placeholder="Search users...">-->
     <!--    </form>-->
     <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#addMembershipModal" *ngIf="isAdminOrCoach">
-      <i class="fa fa-plus"></i>New Membership
+      <i class="fa fa-plus"></i>{{ 'MEMBERSHIPS.ADD_MEMBERSHIP' | translate}}
     </button>
   </div>
   <div class="btn-group">
@@ -18,22 +18,22 @@
   <table class="table table-hover">
     <thead class="table-borderless">
     <tr class="text-center">
-      <th [hidden]="!isAdmin" >Id</th>
-      <th>Membership name</th>
-      <th class="d-none d-md-table-cell">Membership description</th>
-      <th>Membership type</th>
-      <th class="d-none d-lg-table-cell">Membership price</th>
-      <th class="d-none d-md-table-cell">Validity period</th>
+      <th [hidden]="!isAdmin" >{{ 'MEMBERSHIPS.ID' | translate}}</th>
+      <th>{{ 'MEMBERSHIPS.MEMBERSHIP_NAME' | translate}}</th>
+      <th class="d-none d-md-table-cell">{{ 'MEMBERSHIPS.MEMBERSHIP_DESCRIPTION' | translate}}</th>
+      <th>{{ 'MEMBERSHIPS.MEMBERSHIP_TYPE' | translate}}</th>
+      <th class="d-none d-lg-table-cell">{{ 'MEMBERSHIPS.MEMBERSHIP_PRICE' | translate}}</th>
+      <th class="d-none d-md-table-cell">{{ 'MEMBERSHIPS.MEMBERSHIP_DURATION' | translate}}</th>
     </tr>
     </thead>
     <tbody *ngFor="let appMembership of memberships ">
     <tr class="text-center">
       <td (click)="onSelectMembership(appMembership)" [hidden]="!isAdmin">{{appMembership?.id}}</td>
-      <td (click)="onSelectMembership(appMembership)">{{appMembership?.name}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.NAME.' + appMembership?.name | translate}}</td>
       <td (click)="onSelectMembership(appMembership)" class="d-none d-md-table-cell">{{appMembership?.description}}</td>
-      <td (click)="onSelectMembership(appMembership)">{{appMembership?.type}}</td>
+      <td (click)="onSelectMembership(appMembership)">{{'MEMBERSHIPS.TYPE.' + appMembership?.type | translate}}</td>
       <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.price}}$</td>
-      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.validityPeriodNumber}}{{appMembership?.validityUnitOfTime}}</td>
+      <td (click)="onSelectMembership(appMembership)" class="d-none d-lg-table-cell">{{appMembership?.validityPeriodNumber}}{{'MEMBERSHIPS.DURATION_UNIT.' + appMembership?.validityUnitOfTime | translate}}</td>
       <td class="">
         <div class="btn-group">
           <button  (click)="onPayForMembership(appMembership)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
