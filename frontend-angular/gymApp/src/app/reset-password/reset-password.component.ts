@@ -2,12 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../service/authentication.service";
-import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../enum/notification-type.enum";
 import {User, UserResetPassword} from "../model/user_model";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {UserService} from "../service/user.service";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
+import {NotificationService} from "../service/notification.service";
 
 @Component({
   selector: 'app-reset-password',
@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private userService: UserService,
               private authenticationService: AuthenticationService,
-              private notifier: NotifierService) { }
+              private notificationService: NotificationService,) { }
 
   ngOnInit(): void {
   }
@@ -49,9 +49,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   private sendErrorNotification(notificationType: NotificationType, message: string) {
     if(message){
-      this.notifier.notify(notificationType,message);
+      this.notificationService.notify(notificationType,message);
     } else {
-      this.notifier.notify(notificationType,"An error occured")
+      this.notificationService.notify(notificationType,"An error occured")
     }
   }
 
