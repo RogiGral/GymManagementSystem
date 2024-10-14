@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {NotificationService} from "../service/notification.service";
 import {AuthenticationService} from "../service/authentication.service";
 import {Role} from "../enum/role.enum";
@@ -19,10 +19,10 @@ import {IUserWorkout} from "../model/workout_model";
 export class MembershipComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
-  public refreshing: boolean;
-  public memberships: IMembershipType[];
-  public selectedMembershipType: IMembershipType;
-  private currentMembershipType: any;
+  public refreshing: boolean = false;
+  public memberships: IMembershipType[] = [];
+  public selectedMembershipType: IMembershipType = new IMembershipType();
+  private currentMembershipType: string = '';
   public editMembershipType = new IMembershipType();
   public todayDate = new Date();
   public paymentIntentData: any;
@@ -30,7 +30,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
   constructor(
     private membershipService: MembershipService,
     private notificationService: NotificationService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +53,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
           if (showNotification) {
             this.sendNotification(NotificationType.SUCCESS, `${response.length} membership(s) loaded successfully.`);
           }
+          this.cdRef.detectChanges();
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
@@ -76,7 +78,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
   }
 
   public onAddNewMembershipType(newMembership: NgForm): void {
-    const formData = this.membershipService.createMembershipTypeFormDate(null,newMembership.value);
+    const formData = this.membershipService.createMembershipTypeFormDate('',newMembership.value);
     this.subscriptions.push(
       this.membershipService.addMembershipType(formData).subscribe(
         (response: IMembershipType) => {

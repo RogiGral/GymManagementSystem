@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {AuthenticationService} from "./service/authentication.service";
 import {UserService} from "./service/user.service";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
@@ -23,6 +23,8 @@ import {WorkoutService} from "./service/workout.service";
 import {MembershipService} from "./service/membership.service";
 import {ScoreService} from "./service/score.service";
 import {NgxPaginationModule} from "ngx-pagination";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
 @NgModule({
   declarations: [
@@ -43,11 +45,22 @@ import {NgxPaginationModule} from "ngx-pagination";
     HttpClientModule,
     NotificationModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [NotificationService, AuthenticationService, UserService,WorkoutService,MembershipService,ScoreService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

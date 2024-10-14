@@ -1,0 +1,125 @@
+{
+  "NAVBAR": {
+    "GYM_PORTAL_TITLE": "PowerHour Gym Management Portal",
+    "NO_MEMBERSHIP_MESSAGE": "User has no membership assigned to his account",
+    "GYM_MANAGEMENT_TOOL": "Gym management tool",
+    "USER_WORKOUT_SCORE": "POWER points",
+    "USERS": "Users",
+    "VALIDATE": " Validate",
+    "WORKOUTS": "Workouts",
+    "MEMBERSHIPS": "Memberships",
+    "SETTINGS": "Settings",
+    "WELCOME": "Welcome",
+    "LANGUAGE" : {
+      "EN": "English",
+      "PL": "Polish"
+    }
+  },
+  "USERS": {
+    "TABLE": {
+      "BUTTON": {
+        "ADD_USER": "Add User",
+        "EDIT_USER": "Edit User",
+        "DELETE_USER": "Delete User",
+        "CLOSE": "Close",
+        "SAVE": "Save"
+      },
+      "BADGE": {
+        "STATUS": "Status",
+        "ACTIVE": "Active",
+        "LOCKED": "Account Locked",
+        "UNLOCKED": "Account Unlocked",
+        "INACTIVE": "Inactive"
+      },
+      "PHOTO": "Photo",
+      "USER_ID": "User ID",
+      "NAME": "First Name",
+      "SURNAME": "Last Name",
+      "USERNAME": "Username",
+      "EMAIL": "Email",
+      "PHONE": "Phone",
+      "BIRTHDATE": "Birthdate",
+      "ACTIONS": "Actions",
+      "JOIN_DATE": "Join Date",
+      "LAST_LOGIN": "Last Login",
+      "STATUS": "Status",
+      "CHECKBOX": {
+        "ACTIVE": "Active",
+        "LOCKED": "Locked",
+        "INACTIVE": "Inactive",
+        "UNLOCKED": "Unlocked"
+      },
+      "ROLE": {
+        "NAME": "Role",
+        "ADMIN": "Administrator",
+        "COACH": "Coach",
+        "USER": "User"
+      }
+    }
+  },
+  "MEMBERSHIPS" : {
+    "ADD_MEMBERSHIP": "Add membership",
+    "MEMBERSHIP_NAME": "Membership name",
+    "MEMBERSHIP_DESCRIPTION": "Description",
+    "MEMBERSHIP_TYPE": "Type",
+    "MEMBERSHIP_PRICE": "Price",
+    "MEMBERSHIP_DURATION": "Duration",
+    "NAME" : {
+      "MORNING": "Morning",
+      "LIFETIME": "Lifetime",
+      "AFTERNOON": "Afternoon"
+    },
+    "TYPE" : {
+      "MORNING": "Morning",
+      "LIFETIME": "Lifetime",
+      "AFTERNOON": "Afternoon"
+    },
+    "DURATION_UNIT": {
+      "DAY": "Day",
+      "WEEK": "Week",
+      "MONTH": "Month",
+      "YEAR": "Year"
+    },
+    "CLOSE": "Close",
+    "SAVE": "Save"
+  },
+  "WORKOUTS": {
+    "TABLE" : {
+      "BUTTON": {
+        "ADD_WORKOUT": "Add workout",
+        "YOUR_WORKOUTS": "Your workouts",
+        "TRAINER_SCHEDULE": "Trainer schedule"
+      },
+      "TITLE": {
+        "AVAILABLE_WORKOUTS": "Available workouts",
+        "YOUR_WORKOUTS": "Your workouts",
+        "TRAINER_SCHEDULE": "Trainer schedule"
+      },
+      "NAME": "Name",
+      "ROOM_NUMBER": "Room number",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "CAPPACITY": "Cappacity",
+      "PARTICIPANTS_NUMBER": "Participants",
+      "ACTIONS": "",
+      "DESCRIPTION": "Description",
+      "DIFFICULTY" : "Difficulty",
+      "TRAINER_USERNAME": "Trainer",
+      "CLOSE": "Close",
+      "SAVE": "Save"
+    },
+    "ADD_WORKOUT": "Add workout",
+    "EDIT_WORKOUT": "Edit workout",
+    "DELETE_WORKOUT": "Delete workout",
+    "WORKOUT_NAME": "Name",
+    "WORKOUT_DESCRIPTION": "Description",
+    "WORKOUT_SCORE": "POWER points",
+    "DIFFICULTY" : {
+      "BEGINNER": "Beginner",
+      "EASY": "Easy",
+      "MEDIUM": "Medium",
+      "HARD": "Hard ",
+      "VERY_HARD": "Very hard"
+    }
+  }
+}

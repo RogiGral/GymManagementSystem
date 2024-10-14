@@ -1,0 +1,125 @@
+{
+  "NAVBAR": {
+    "GYM_PORTAL_TITLE": "PowerHour narzędzie zarządzania klubem fitness",
+    "NO_MEMBERSHIP_MESSAGE": "Użytkownik nie ma wykupionego członkostwa",
+    "GYM_MANAGEMENT_TOOL": "Narzędzie do zarządzania klubem fitness",
+    "USER_WORKOUT_SCORE": "Punkty POWER",
+    "USERS": "Użytkownicy",
+    "VALIDATE": "Sprawdź karnet",
+    "WORKOUTS": "Treningi",
+    "MEMBERSHIPS": "Członkostwa",
+    "SETTINGS": "Ustawienia",
+    "WELCOME": "Witamy",
+    "LANGUAGE" : {
+      "EN": "Angielski",
+      "PL": "Polski"
+    }
+  },
+  "USERS": {
+    "TABLE": {
+      "BUTTON": {
+        "ADD_USER": "Dodaj użytkownika",
+        "EDIT_USER": "Edytuj użytkownika",
+        "DELETE_USER": "Usuń użytkownika",
+        "CLOSE": "Zamknij",
+        "SAVE": "Zapisz"
+      },
+      "BADGE": {
+        "STATUS": "Status",
+        "ACTIVE": "Aktywny",
+        "LOCKED": "Konto zablokowane",
+        "UNLOCKED": "Konto odblokowane",
+        "INACTIVE": "Nieaktywny"
+      },
+      "PHOTO": "Zdjęcie",
+      "USER_ID": "ID Użytkownika",
+      "NAME": "Imię",
+      "SURNAME": "Nazwisko",
+      "USERNAME": "Nick",
+      "EMAIL": "Email",
+      "PHONE": "Telefon",
+      "BIRTHDATE": "Data urodzenia",
+      "ACTIONS": "Akcje",
+      "JOIN_DATE": "Data dołączenia",
+      "LAST_LOGIN": "Ostatnie logowanie",
+      "STATUS": "Status",
+      "CHECKBOX": {
+        "ACTIVE": "Aktywny",
+        "LOCKED": "Zablokowany",
+        "INACTIVE": "Nieaktywny",
+        "UNLOCKED": "Odblokowany"
+      },
+      "ROLE":{
+        "NAME": "Rola",
+        "ADMIN": "Administrator",
+        "COACH": "Trener",
+        "USER": "Użytkownik"
+      }
+    }
+  },
+  "MEMBERSHIPS": {
+    "ADD_MEMBERSHIP": "Dodaj członkostwo",
+    "MEMBERSHIP_NAME": "Nazwa",
+    "MEMBERSHIP_DESCRIPTION": "Opis",
+    "MEMBERSHIP_TYPE": "Typ",
+    "MEMBERSHIP_PRICE": "Cena",
+    "MEMBERSHIP_DURATION": "Czas trwania",
+    "NAME" : {
+      "MORNING": "Poranne",
+      "AFTERNOON": "Popołudniowe",
+      "LIFETIME": "Dożywotnie"
+    },
+    "TYPE" : {
+      "MORNING": "Poranne",
+      "AFTERNOON": "Popołudniowe",
+      "LIFETIME": "Dożywotnie"
+    },
+    "DURATION_UNIT": {
+      "DAY": "Dzień",
+      "WEEK": "Tydzień",
+      "MONTH": "Miesiąc",
+      "YEAR": "Rok"
+    },
+    "CLOSE": "Zamknij",
+    "SAVE": "Zapisz"
+  },
+  "WORKOUTS": {
+    "TABLE" : {
+      "BUTTON": {
+        "ADD_WORKOUT": "Dodaj trening",
+        "YOUR_WORKOUTS": "Twoje treningi",
+        "TRAINER_SCHEDULE": "Grafik trenera"
+      },
+      "TITLE": {
+        "AVAILABLE_WORKOUTS": "Dostępne treningi",
+        "YOUR_WORKOUTS": "Twoje treningi",
+        "TRAINER_SCHEDULE": "Grafik trenera"
+      },
+      "NAME": "Nazwa",
+      "ROOM_NUMBER": "Numer sali",
+      "START_DATE": "Data rozpoczęcia",
+      "END_DATE": "Data zakończenia",
+      "CAPPACITY": "Pojemność sali",
+      "PARTICIPANTS_NUMBER": "Liczba uczestników",
+      "ACTIONS": "Akcje",
+      "DESCRIPTION": "Opis",
+      "DIFFICULTY" : "Poziom trudności",
+      "TRAINER_USERNAME": "Nick trenera",
+      "CLOSE": "Zamknij",
+      "SAVE": "Zapisz"
+    },
+
+    "EDIT_WORKOUT": "Edytuj trening",
+    "DELETE_WORKOUT": "Usuń trening",
+    "WORKOUT_NAME": "Nazwa",
+    "WORKOUT_DESCRIPTION": "Opis",
+    "WORKOUT_SCORE": "Punkty POWER",
+    "DIFFICULTY" : {
+      "BEGINNER": "Początkujący",
+      "EASY": "Łatwy",
+      "MEDIUM": "Średni",
+      "HARD": "Trudny",
+      "VERY_HARD": "Bardzo trudny"
+    }
+  }
+}

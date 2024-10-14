@@ -22,21 +22,21 @@ import {ScoreService} from "../service/score.service";
 export class WorkoutComponent implements OnInit, OnDestroy {
 
   public refreshing = false;
-  public selectedWorkout: IWorkout;
-  public workouts: IWorkout[];
-  public filteredWorkouts: IWorkout[];
+  public selectedWorkout: IWorkout = new IWorkout();
+  public workouts: IWorkout[] = [];
+  public filteredWorkouts: IWorkout[] = [];
   public editWorkout = new IWorkout();
   public listOfTrainers: User[] = [];
-  public userWorkouts: IUserWorkout[];
-  public trainerWorkouts: IWorkout[];
-  public selectedUserWorkout: IWorkout;
-  public selectedTrainerWorkout: IWorkout;
+  public userWorkouts: IUserWorkout[] = [];
+  public trainerWorkouts: IWorkout[] = [];
+  public selectedUserWorkout: IWorkout = new IWorkout();
+  public selectedTrainerWorkout: IWorkout = new IWorkout();
   public todayDate: string = new Date().toISOString().split('T')[0];
   public selectedDate: string = new Date().toISOString().split('T')[0];
-  public listOfUserJoinedWorkout: User[];
+  public listOfUserJoinedWorkout: User[] = [];
 
   private subscriptions: Subscription[] = [];
-  private currentWorkout: number;
+  private currentWorkout: number = 0;
   public currentWorkoutsPage: number = 1;
   public currentUserWorkoutsPage: number = 1;
   public currentTrainerWorkoutsPage: number = 1;

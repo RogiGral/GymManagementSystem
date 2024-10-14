@@ -50,12 +50,27 @@ body{
 }
 
 .right {
-  background-image: url(https://source.unsplash.com/random/?gym);
   padding: 0;
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
   position: relative;
+  animation: changeBackground 15s infinite; /* 15s total time for all images */
+}
+
+@keyframes changeBackground {
+  0% {
+    background-image: url('./assets/images/loginRight1.jpg');
+  }
+  33% {
+    background-image: url('./assets/images/loginRight2.jpg');
+  }
+  66% {
+    background-image: url('./assets/images/loginRight3.jpg');
+  }
+  100% {
+    background-image: url('./assets/images/loginRight1.jpg'); /* Loop back to the first image */
+  }
 }
 
 .main-wrapper {
