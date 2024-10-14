@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../service/authentication.service";
-import {NotifierService} from "angular-notifier";
 import {User} from "../model/user_model";
 import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {NotificationType} from "../enum/notification-type.enum";
+import {NotificationService} from "../service/notification.service";
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
-              private notifier: NotifierService) { }
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.showLoading = false;
@@ -57,9 +57,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private sendErrorNotification(notificationType: NotificationType, message: string) {
     if(message){
-      this.notifier.notify(notificationType,message);
+      this.notificationService.notify(notificationType,message);
     } else {
-      this.notifier.notify(notificationType,"An error occured")
+      this.notificationService.notify(notificationType,"An error occured")
     }
   }
 }
