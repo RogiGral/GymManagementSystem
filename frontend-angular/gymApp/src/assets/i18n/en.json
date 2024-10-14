@@ -15,16 +15,47 @@
       "PL": "Polish"
     }
   },
-  "USER" : {
-    "ADD_USER": "Add user",
-    "EDIT_USER": "Edit user",
-    "DELETE_USER": "Delete user",
-    "USER_NAME": "User name",
-    "USER_SURNAME": "User surname",
-    "LAST_NAME": "Last name",
-    "USER_EMAIL": "Email",
-    "USER_PHONE": "Phone",
-    "USER_BIRTHDATE": "Birthdate"
+  "USERS": {
+    "TABLE": {
+      "BUTTON": {
+        "ADD_USER": "Add User",
+        "EDIT_USER": "Edit User",
+        "DELETE_USER": "Delete User",
+        "CLOSE": "Close",
+        "SAVE": "Save"
+      },
+      "BADGE": {
+        "STATUS": "Status",
+        "ACTIVE": "Active",
+        "LOCKED": "Account Locked",
+        "UNLOCKED": "Account Unlocked",
+        "INACTIVE": "Inactive"
+      },
+      "PHOTO": "Photo",
+      "USER_ID": "User ID",
+      "NAME": "First Name",
+      "SURNAME": "Last Name",
+      "USERNAME": "Username",
+      "EMAIL": "Email",
+      "PHONE": "Phone",
+      "BIRTHDATE": "Birthdate",
+      "ACTIONS": "Actions",
+      "JOIN_DATE": "Join Date",
+      "LAST_LOGIN": "Last Login",
+      "STATUS": "Status",
+      "CHECKBOX": {
+        "ACTIVE": "Active",
+        "LOCKED": "Locked",
+        "INACTIVE": "Inactive",
+        "UNLOCKED": "Unlocked"
+      },
+      "ROLE": {
+        "NAME": "Role",
+        "ADMIN": "Administrator",
+        "COACH": "Coach",
+        "USER": "User"
+      }
+    }
   },
   "MEMBERSHIPS" : {
     "ADD_MEMBERSHIP": "Add membership",

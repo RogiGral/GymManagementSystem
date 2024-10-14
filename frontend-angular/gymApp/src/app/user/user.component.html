@@ -5,7 +5,7 @@
              (ngModelChange)="searchUsers(searchInput.value)" aria-label="Search" placeholder="Search users..." type="search">
     </form>
     <button class="btn btn-info" data-target="#addUserModal" data-toggle="modal" type="button">
-      <i class="fa fa-plus"></i> New User
+      <i class="fa fa-plus"></i> {{'USERS.TABLE.BUTTON.ADD_USER' | translate}}
     </button>
   </div>
   <div class="btn-group">
@@ -19,15 +19,15 @@
   <table class="table table-hover">
     <thead class="table-borderless">
     <tr class="text-center">
-      <th class="d-none d-md-table-cell">Photo</th>
-      <th [hidden]="!isAdmin" class="d-none d-lg-table-cell">Id</th>
-      <th class="d-none d-md-table-cell">User ID</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th class="d-none d-md-table-cell">Username</th>
-      <th class="d-none d-lg-table-cell">Email</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th class="d-none d-md-table-cell">{{'USERS.TABLE.PHOTO' | translate}}</th>
+      <th [hidden]="!isAdmin" class="d-none d-lg-table-cell">ID</th>
+      <th class="d-none d-md-table-cell">{{'USERS.TABLE.USER_ID' | translate}}</th>
+      <th>{{'USERS.TABLE.NAME' | translate}}</th>
+      <th>{{'USERS.TABLE.SURNAME' | translate}}</th>
+      <th class="d-none d-md-table-cell">{{'USERS.TABLE.USERNAME' | translate}}</th>
+      <th class="d-none d-lg-table-cell">{{'USERS.TABLE.EMAIL' | translate}}</th>
+      <th>{{'USERS.TABLE.STATUS' | translate}}</th>
+      <th>{{'USERS.TABLE.ACTIONS' | translate}}</th>
     </tr>
     </thead>
     <tbody *ngFor="let appUser of users | paginate: { itemsPerPage: 5, currentPage: currentPage, id:'userPaginationId' }">
@@ -42,8 +42,8 @@
       <td (click)="onSelectUser(appUser)" class="d-none d-md-table-cell">{{appUser.username}}</td>
       <td (click)="onSelectUser(appUser)" class="d-none d-lg-table-cell">{{appUser.email}}</td>
       <td (click)="onSelectUser(appUser)">
-        <span [hidden]="!appUser.active" class="badge badge-success">Active</span>
-        <span [hidden]="appUser.active" class="badge badge-danger">Inactive</span>
+        <span [hidden]="!appUser.active" class="badge badge-success">{{'USERS.TABLE.BADGE.ACTIVE' | translate}}</span>
+        <span [hidden]="appUser.active" class="badge badge-danger">{{'USERS.TABLE.BADGE.INACTIVE' | translate}}</span>
       </td>
       <td>
         <div class="btn-group">
@@ -93,16 +93,16 @@
                     <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser.firstName}}
                       {{selectedUser.lastName}}</h6>
                     <p class="mb-1">{{selectedUser.username}}</p>
-                    <div class="">Status:
-                      <span [hidden]="!selectedUser.active" class="badge badge-success">Active</span>
-                      <span [hidden]="selectedUser.active" class="badge badge-danger">Inactive</span>
+                    <div class="">{{'USERS.TABLE.BADGE.STATUS' | translate}}:
+                      <span [hidden]="!selectedUser.active" class="badge badge-success">{{'USERS.TABLE.BADGE.ACTIVE' | translate}}</span>
+                      <span [hidden]="selectedUser.active" class="badge badge-danger">{{'USERS.TABLE.BADGE.INACTIVE' | translate}}</span>
                     </div>
                     <div *ngIf="selectedUser.lastLoginDateDisplay" class="text-muted"><small>Last
                       Login: {{selectedUser.lastLoginDateDisplay | date: 'medium'}}</small>
                     </div>
                   </div>
                   <div class="text-center text-sm-right">
-                    <div class="text-muted"><small>Joined {{selectedUser.joinDate | date: 'mediumDate'}}</small></div>
+                    <div class="text-muted"><small>{{'USERS.TABLE.JOIN_DATE' | translate}}: {{selectedUser.joinDate | date: 'mediumDate'}}</small></div>
                   </div>
                 </div>
               </div>
@@ -121,12 +121,12 @@
                     <span [hidden]="selectedUser.isNotLocked">
                       <i class="fa fa-unlock float-right" style="color: green;">
                       </i>
-                      Account Unlocked
+                      {{'USERS.TABLE.BADGE.UNLOCKED' | translate}}
                     </span>
                   <span [hidden]="!selectedUser.isNotLocked">
                       <i class="fa fa-lock float-right" style="color: red;">
                       </i>
-                        Account Locked
+                    {{'USERS.TABLE.BADGE.LOCKED' | translate}}
                     </span>
               </li>
             </ul>
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">{{'USERS.TABLE.BUTTON.CLOSE' | translate}}</button>
       </div>
     </div>
   </div>
@@ -146,7 +146,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center">New User</h5>
+        <h5 class="modal-title text-center">{{'USERS.TABLE.BUTTON.ADD_USER' | translate}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -155,40 +155,40 @@
         <div>
           <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
             <div class="form-group">
-              <label for="firstName">First Name</label>
+              <label for="firstName">{{'USERS.TABLE.NAME' | translate}}</label>
               <input type="text" name="firstName" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="lastName">Last Name</label>
+              <label for="lastName">{{'USERS.TABLE.SURNAME' | translate}}</label>
               <input type="text" name="lastName" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="username">Username</label>
+              <label for="username">{{'USERS.TABLE.USERNAME' | translate}}</label>
               <input type="text" name="username" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="email">Email</label>
+              <label for="email">{{'USERS.TABLE.EMAIL' | translate}}</label>
               <input type="email" name="email" required ngModel class="form-control">
             </div>
             <div class="form-group">
-              <label for="authority">Role</label>
+              <label for="authority">{{'USERS.TABLE.ROLE.NAME' | translate}}</label>
               <select name="role" required ngModel="ROLE_USER" class="form-control">
-                <option value="ROLE_USER">USER</option>
-                <option value="ROLE_COACH">COACH</option>
-                <option value="ROLE_ADMIN">ADMIN</option>
+                <option value="ROLE_USER">{{'USERS.TABLE.ROLE.USER' | translate}}</option>
+                <option value="ROLE_COACH">{{'USERS.TABLE.ROLE.COACH' | translate}}</option>
+                <option value="ROLE_ADMIN">{{'USERS.TABLE.ROLE.ADMIN' | translate}}</option>
               </select>
             </div>
             <fieldset class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
                   <input type="checkbox" name="active" ngModel class="form-check-input">
-                  Acitve
+                  {{'USERS.TABLE.CHECKBOX.ACTIVE' | translate}}
                 </label>
               </div>
               <div class="form-check disabled">
                 <label class="form-check-label">
                   <input type="checkbox" name="isNotLocked" ngModel class="form-check-input">
-                  Unlocked
+                  {{'USERS.TABLE.CHECKBOX.UNLOCKED' | translate}}
                 </label>
               </div>
             </fieldset>
@@ -197,9 +197,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-user-close">Close</button>
-        <button type="button" (click)="saveNewUser()" [disabled]="newUserForm.invalid" class="btn btn-primary">Save
-          changes
+        <button class="btn btn-secondary" data-dismiss="modal" id="new-user-close" type="button">{{'USERS.TABLE.BUTTON.CLOSE' | translate}}</button>
+        <button (click)="saveNewUser()" [disabled]="newUserForm.invalid" class="btn btn-primary" type="button">{{'USERS.TABLE.BUTTON.SAVE' | translate}}
         </button>
       </div>
     </div>
@@ -224,36 +223,36 @@
         <div class="">
           <form #editUserForm="ngForm">
             <div class="form-group">
-              <label for="firstName">First Name</label>
+              <label for="firstName">{{'USERS.TABLE.NAME' | translate}}</label>
               <input type="text" name="firstName" [disabled]="!isAdminOrCoach" required
                      [(ngModel)]="editUser.firstName" class="form-control">
             </div>
             <div class="form-group">
-              <label for="lastName">Last Name</label>
+              <label for="lastName">{{'USERS.TABLE.SURNAME' | translate}}</label>
               <input type="text" name="lastName" [disabled]="!isAdminOrCoach" required
                      [(ngModel)]="editUser.lastName" class="form-control">
             </div>
             <div class="form-group">
-              <label for="username">Username</label>
+              <label for="username">{{'USERS.TABLE.USERNAME' | translate}}</label>
               <input type="text" name="username" [disabled]="!isAdminOrCoach" required
                      [(ngModel)]="editUser.username" class="form-control">
             </div>
             <div class="form-group">
-              <label for="email">Email</label>
+              <label for="email">{{'USERS.TABLE.EMAIL' | translate}}</label>
               <input type="email" name="email" [disabled]="!isAdminOrCoach" required [(ngModel)]="editUser.email"
                      class="form-control">
             </div>
             <div class="form-group">
-              <label for="authority">Role <small [hidden]="isAdminOrCoach">(read only)</small></label>
+              <label for="authority">{{'USERS.TABLE.ROLE.NAME' | translate}}<small [hidden]="isAdminOrCoach">(read only)</small></label>
               <select name="role" [disabled]="!isAdminOrCoach" required [(ngModel)]="editUser.role" class="form-control">
-                <option value="ROLE_USER">USER</option>
-                <option value="ROLE_COACH">COACH</option>
-                <option value="ROLE_ADMIN">ADMIN</option>
+                <option value="ROLE_USER">{{'USERS.TABLE.ROLE.USER' | translate}}</option>
+                <option value="ROLE_COACH">{{'USERS.TABLE.ROLE.COACH' | translate}}</option>
+                <option value="ROLE_ADMIN">{{'USERS.TABLE.ROLE.ADMIN' | translate}}</option>
               </select>
             </div>
             <div class="input-group mb-2">
               <div class="input-group-prepend">
-                <span class="input-group-text">Profile Picture </span>
+                <span class="input-group-text">{{'USERS.TABLE.PHOTO' | translate}}</span>
               </div>
               <div class="custom-file">
                 <input type="file" accept="image/*" [disabled]="!isAdminOrCoach" name="profileImage"
@@ -266,14 +265,14 @@
                 <label class="form-check-label">
                   <input name="active" type="checkbox" [disabled]="!isCoach" [(ngModel)]="editUser.active"
                          class="form-check-input">
-                  Acitve <small [hidden]="isCoach">(read only)</small>
+                  {{'USERS.TABLE.CHECKBOX.ACTIVE' | translate}} <small [hidden]="isCoach">(read only)</small>
                 </label>
               </div>
               <div class="form-check disabled">
                 <label class="form-check-label">
                   <input name="locked" type="checkbox" [disabled]="!isCoach" [(ngModel)]="editUser.isNotLocked"
                          class="form-check-input">
-                  Unlocked <small [hidden]="isCoach">(read only)</small>
+                  {{'USERS.TABLE.CHECKBOX.UNLOCKED' | translate}} <small [hidden]="isCoach">(read only)</small>
                 </label>
               </div>
             </fieldset>
@@ -281,8 +280,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Close</button>
-        <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid || !isAdminOrCoach" class="btn btn-primary">Save changes</button>
+        <button class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton" type="button">{{'USERS.TABLE.BUTTON.CLOSE' | translate}}</button>
+        <button (click)="onUpdateUser()" [disabled]="editUserForm.invalid || !isAdminOrCoach" class="btn btn-primary" type="button">{{'USERS.TABLE.BUTTON.SAVE' | translate}}</button>
       </div>
     </div>
   </div>

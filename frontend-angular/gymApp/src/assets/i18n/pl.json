@@ -16,14 +16,46 @@
     }
   },
   "USERS": {
-    "ADD_USER": "Dodaj użytkownika",
-    "EDIT_USER": "Edytuj użytkownika",
-    "DELETE_USER": "Usuń użytkownika",
-    "USER_NAME": "Imię",
-    "USER_SURNAME": "Nazwisko",
-    "USER_EMAIL": "Email",
-    "USER_PHONE": "Telefon",
-    "USER_BIRTHDATE": "Data urodzenia"
+    "TABLE": {
+      "BUTTON": {
+        "ADD_USER": "Dodaj użytkownika",
+        "EDIT_USER": "Edytuj użytkownika",
+        "DELETE_USER": "Usuń użytkownika",
+        "CLOSE": "Zamknij",
+        "SAVE": "Zapisz"
+      },
+      "BADGE": {
+        "STATUS": "Status",
+        "ACTIVE": "Aktywny",
+        "LOCKED": "Konto zablokowane",
+        "UNLOCKED": "Konto odblokowane",
+        "INACTIVE": "Nieaktywny"
+      },
+      "PHOTO": "Zdjęcie",
+      "USER_ID": "ID Użytkownika",
+      "NAME": "Imię",
+      "SURNAME": "Nazwisko",
+      "USERNAME": "Nick",
+      "EMAIL": "Email",
+      "PHONE": "Telefon",
+      "BIRTHDATE": "Data urodzenia",
+      "ACTIONS": "Akcje",
+      "JOIN_DATE": "Data dołączenia",
+      "LAST_LOGIN": "Ostatnie logowanie",
+      "STATUS": "Status",
+      "CHECKBOX": {
+        "ACTIVE": "Aktywny",
+        "LOCKED": "Zablokowany",
+        "INACTIVE": "Nieaktywny",
+        "UNLOCKED": "Odblokowany"
+      },
+      "ROLE":{
+        "NAME": "Rola",
+        "ADMIN": "Administrator",
+        "COACH": "Trener",
+        "USER": "Użytkownik"
+      }
+    }
   },
   "MEMBERSHIPS": {
     "ADD_MEMBERSHIP": "Dodaj członkostwo",
