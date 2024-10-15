@@ -1,6 +1,12 @@
 @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css';
 @import 'https://use.fontawesome.com/releases/v6.1.1/css/all.css';
-
+@import "node_modules/angular-notifier/styles/core.css";
+@import "node_modules/angular-notifier/styles/themes/theme-material.css";
+@import "node_modules/angular-notifier/styles/types/type-default.css";
+@import "node_modules/angular-notifier/styles/types/type-error.css";
+@import "node_modules/angular-notifier/styles/types/type-warning.css";
+@import "node_modules/angular-notifier/styles/types/type-info.css";
+@import "node_modules/angular-notifier/styles/types/type-success.css";
 body{
   margin-top:20px;
   background: #f6f9fc;
