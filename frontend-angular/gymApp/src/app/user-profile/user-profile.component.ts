@@ -12,6 +12,7 @@ import {CustomHttpResponse} from "../model/custom-http-response_model";
 import {Subscription} from "rxjs";
 import {MembershipService} from "../service/membership.service";
 import {IUserMembership} from "../model/membership_model";
+import {CryptoService} from "../service/crypto.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -23,12 +24,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public userMembership: IUserMembership;
 
   public user: User;
+  public hashedUserId: string;
+  public generatedQRCode: string | null = null;
   private subscriptions: Subscription[] = [];
 
   constructor(private notificationService: NotificationService,
               private authenticationService: AuthenticationService,
               private membershipService: MembershipService,
               private userService: UserService,
+              private cryptoService: CryptoService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -38,6 +42,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.userMembership = response
       }
     )
+    this.cryptoService.encryptData(JSON.stringify({user: this.user.userId}))
+      .then(encodedData => {
+        this.hashedUserId = encodedData;
+      })
+      .catch(error => {
+        this.sendNotification(NotificationType.ERROR, 'Error hashing user ID:' +  error);
+      });
+
   }
 
   ngOnDestroy(): void {

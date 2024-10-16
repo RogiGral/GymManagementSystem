@@ -25,6 +25,8 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {NotifierModule, NotifierOptions} from "angular-notifier";
+import { QrcodeScannerComponent } from './qrcode-scanner/qrcode-scanner.component';
+import {QRCodeModule} from "angularx-qrcode";
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -78,7 +80,8 @@ const customNotifierOptions: NotifierOptions = {
     WorkoutComponent,
     MembershipComponent,
     UserProfileComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    QrcodeScannerComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +89,7 @@ const customNotifierOptions: NotifierOptions = {
     HttpClientModule,
     FormsModule,
     NgxPaginationModule,
+    QRCodeModule,
     NotifierModule.withConfig(customNotifierOptions),
     TranslateModule.forRoot({
       loader: {

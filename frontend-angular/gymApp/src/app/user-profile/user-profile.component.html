@@ -76,6 +76,38 @@
                       </div>
                     </ng-template>
                   </div>
+                  <div class="tab-content pt-3">
+                    <div class="row">
+                      <!-- Column for QR Code -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-header bg-primary text-white">
+                            <i class="fa fa-qrcode"></i> Your QR-code
+                          </div>
+                          <div class="card-body">
+                            <qrcode [errorCorrectionLevel]="'H'" [qrdata]="hashedUserId" [scale]="0" [width]="256"></qrcode>
+                            <p>Hashed User ID (SHA-256): {{ hashedUserId }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Column for Buttons -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-header bg-primary text-white">
+                            <i class="fa fa-cog"></i> Actions
+                          </div>
+                          <div class="card-body">
+                            <button class="btn btn-outline-primary btn-block">
+                              <i class="fa fa-refresh"></i> Renew QR Code
+                            </button>
+                            <button class="btn btn-outline-danger btn-block">
+                              <i class="fa fa-trash"></i> Delete QR Code
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

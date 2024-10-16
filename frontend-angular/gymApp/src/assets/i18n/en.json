@@ -15,6 +15,16 @@
       "PL": "Polish"
     }
   },
+  "QRCODE": {
+    "SCANNER": {
+      "TABLE": {
+        "VIDEO": "Camera",
+        "ACTIONS": "Options",
+        "START": "Start",
+        "STOP": "Stop"
+      }
+    }
+  },
   "USERS": {
     "TABLE": {
       "BUTTON": {

@@ -29,7 +29,7 @@ export class UserComponent implements OnInit, OnDestroy {
   private fileName: string = '';
   private currentUsername: string = '';
 
-  constructor(private  userService: UserService,
+  constructor(private userService: UserService,
               private notificationService: NotificationService,
               private authenticationService: AuthenticationService,
               private router: Router) { }

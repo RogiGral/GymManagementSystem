@@ -15,6 +15,16 @@
       "PL": "Polski"
     }
   },
+  "QRCODE": {
+    "SCANNER": {
+      "TABLE": {
+        "VIDEO": "Obraz",
+        "ACTIONS": "Opcje",
+        "START": "Start",
+        "STOP": "Stop"
+      }
+    }
+  },
   "USERS": {
     "TABLE": {
       "BUTTON": {
