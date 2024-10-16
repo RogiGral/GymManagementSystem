@@ -6,7 +6,8 @@ public class Authority {
     public static final String[] USER_AUTHORITIES = {
             "user:read",
             "workout:read",
-            "membershipType:read"
+            "membershipType:read",
+            "qrcode:create"
     };
     public static final String[] COACH_AUTHORITIES = {
             "user:read",
@@ -15,7 +16,9 @@ public class Authority {
             "workout:read",
             "workout:create",
             "workout:update",
-            "workout:delete"
+            "workout:delete",
+            "qrcode:read",
+            "qrcode:create"
     };
     public static final String[] ADMIN_AUTHORITIES = {
             "user:read",
@@ -29,6 +32,8 @@ public class Authority {
             "membershipType:read",
             "membershipType:create",
             "membershipType:update",
-            "membershipType:delete"
+            "membershipType:delete",
+            "qrcode:read",
+            "qrcode:create"
     };
 }
