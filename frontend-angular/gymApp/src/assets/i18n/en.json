@@ -10,9 +10,20 @@
     "MEMBERSHIPS": "Memberships",
     "SETTINGS": "Settings",
     "WELCOME": "Welcome",
+    "SCHEDULE": "Schedule",
     "LANGUAGE" : {
       "EN": "English",
       "PL": "Polish"
+    }
+  },
+  "QRCODE": {
+    "SCANNER": {
+      "TABLE": {
+        "VIDEO": "Camera",
+        "ACTIONS": "Options",
+        "START": "Start",
+        "STOP": "Stop"
+      }
     }
   },
   "USERS": {

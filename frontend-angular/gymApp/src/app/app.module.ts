@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -7,7 +7,6 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/h
 import {AuthenticationService} from "./service/authentication.service";
 import {UserService} from "./service/user.service";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
-import {NotificationModule} from "./notification.module";
 import {NotificationService} from "./service/notification.service";
 import {LoginComponent} from './login/login.component';
 import {UserComponent} from './user/user.component';
@@ -25,6 +24,52 @@ import {ScoreService} from "./service/score.service";
 import {NgxPaginationModule} from "ngx-pagination";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {NotifierModule, NotifierOptions} from "angular-notifier";
+import { QrcodeScannerComponent } from './qrcode-scanner/qrcode-scanner.component';
+import {QRCodeModule} from "angularx-qrcode";
+import { CoachScheduleComponent } from './coach-schedule/coach-schedule.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+    horizontal: {
+      position: 'left',
+      distance: 12
+    },
+    vertical: {
+      position: 'top',
+      distance: 12,
+      gap: 10
+    }
+  },
+  theme: 'material',
+  behaviour: {
+    autoHide: 5000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 4
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 300,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 300,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 300,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
 
 @NgModule({
   declarations: [
@@ -37,15 +82,19 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
     WorkoutComponent,
     MembershipComponent,
     UserProfileComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    QrcodeScannerComponent,
+    CoachScheduleComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    NotificationModule,
     FormsModule,
     NgxPaginationModule,
+    QRCodeModule,
+    NotifierModule.withConfig(customNotifierOptions),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -54,8 +103,16 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
       },
     }),
   ],
-  providers: [NotificationService, AuthenticationService, UserService,WorkoutService,MembershipService,ScoreService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  exports: [NotifierModule],
+  providers: [
+    NotificationService,
+    AuthenticationService,
+    UserService,
+    WorkoutService,
+    MembershipService,
+    ScoreService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

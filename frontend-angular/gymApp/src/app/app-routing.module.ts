@@ -10,6 +10,8 @@ import {WorkoutComponent} from "./workout/workout.component";
 import {MembershipComponent} from "./membership/membership.component";
 import {MainComponent} from "./main/main.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {QrcodeScannerComponent} from "./qrcode-scanner/qrcode-scanner.component";
+import {CoachScheduleComponent} from "./coach-schedule/coach-schedule.component";
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
@@ -21,10 +23,10 @@ const routes: Routes = [
       {path: 'user_profile', component: UserProfileComponent, canActivate: [AuthenticationGuard]},
       {path: 'workouts', component: WorkoutComponent, canActivate: [AuthenticationGuard]},
       {path: 'memberships', component: MembershipComponent, canActivate: [AuthenticationGuard]},
+      {path: 'barcode-scanner', component: QrcodeScannerComponent, canActivate: [AuthenticationGuard]},
+      {path: 'coach-schedule', component: CoachScheduleComponent, canActivate: [AuthenticationGuard]},
     ]
   },
-
-
   {path: '', redirectTo: '/landing-page', pathMatch: 'full'}
 ];
 

@@ -23,4 +23,6 @@ public interface UserService {
     void resetPassword(String email) throws EmailNotFoundException;
     void setNewPassword(String email,String oldPassword,String newPassword) throws EmailNotFoundException, WrongOldPasswordException;
     User updateProfileImage(String username, MultipartFile profileImage) throws EmailExistException, UsernameExistException, IOException, NotAnImageFileException, UserNotFoundException;
+
+    User findUserByCustomerId(String identifier) throws UserNotFoundException;
 }

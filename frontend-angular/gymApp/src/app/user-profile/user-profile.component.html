@@ -48,8 +48,8 @@
                             <i class="fa fa-calendar-times-o"></i> Valid till: <strong>{{userMembership.endDate | date:'mediumDate'}}</strong>
                           </p>
                           <p>
-                            <span [hidden]="isActive()" class="badge badge-success">Active</span>
-                            <span [hidden]="!isActive()" class="badge badge-danger">Inactive</span>
+                            <span [hidden]="!isActive()" class="badge badge-success">Active</span>
+                            <span [hidden]="isActive()" class="badge badge-danger">Inactive</span>
                           </p>
                         </div>
 
@@ -75,6 +75,38 @@
                         </div>
                       </div>
                     </ng-template>
+                  </div>
+                  <div class="tab-content pt-3">
+                    <div class="row">
+                      <!-- Column for QR Code -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-header bg-primary text-white">
+                            <i class="fa fa-qrcode"></i> Your QR-code
+                          </div>
+                          <div class="card-body">
+                            <qrcode [errorCorrectionLevel]="'H'" [qrdata]="qrCodeUUID" [scale]="0" [width]="256"></qrcode>
+                            <p>Qr code is valid for: {{this.remainingTime}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Column for Buttons -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-header bg-primary text-white">
+                            <i class="fa fa-cog"></i> Actions
+                          </div>
+                          <div class="card-body">
+                            <button (click)="renewQrCode()" class="btn btn-outline-primary btn-block">
+                              <i class="fa fa-refresh"></i> Renew QR Code
+                            </button>
+                            <button class="btn btn-outline-danger btn-block">
+                              <i class="fa fa-trash"></i> Delete QR Code
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

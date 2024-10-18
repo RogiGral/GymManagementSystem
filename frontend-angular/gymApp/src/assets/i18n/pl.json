@@ -9,10 +9,21 @@
     "WORKOUTS": "Treningi",
     "MEMBERSHIPS": "Członkostwa",
     "SETTINGS": "Ustawienia",
+    "SCHEDULE": "Grafik",
     "WELCOME": "Witamy",
     "LANGUAGE" : {
       "EN": "Angielski",
       "PL": "Polski"
+    }
+  },
+  "QRCODE": {
+    "SCANNER": {
+      "TABLE": {
+        "VIDEO": "Obraz",
+        "ACTIONS": "Opcje",
+        "START": "Start",
+        "STOP": "Stop"
+      }
     }
   },
   "USERS": {

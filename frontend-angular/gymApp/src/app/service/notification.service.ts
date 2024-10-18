@@ -6,7 +6,12 @@ import {NotifierService} from "angular-notifier";
 })
 export class NotificationService {
 
-  constructor(private notifier: NotifierService) { }
+  private readonly notifier: NotifierService;
+
+  constructor(private notifierService: NotifierService) {
+
+    this.notifier = notifierService;
+  }
 
   public notify(type: string, message: string){
     this.notifier.notify(type,message);
