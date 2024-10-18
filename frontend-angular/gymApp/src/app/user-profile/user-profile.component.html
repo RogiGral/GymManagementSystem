@@ -48,8 +48,8 @@
                             <i class="fa fa-calendar-times-o"></i> Valid till: <strong>{{userMembership.endDate | date:'mediumDate'}}</strong>
                           </p>
                           <p>
-                            <span [hidden]="isActive()" class="badge badge-success">Active</span>
-                            <span [hidden]="!isActive()" class="badge badge-danger">Inactive</span>
+                            <span [hidden]="!isActive()" class="badge badge-success">Active</span>
+                            <span [hidden]="isActive()" class="badge badge-danger">Inactive</span>
                           </p>
                         </div>
 
@@ -85,8 +85,8 @@
                             <i class="fa fa-qrcode"></i> Your QR-code
                           </div>
                           <div class="card-body">
-                            <qrcode [errorCorrectionLevel]="'H'" [qrdata]="hashedUserId" [scale]="0" [width]="256"></qrcode>
-                            <p>Hashed User ID (SHA-256): {{ hashedUserId }}</p>
+                            <qrcode [errorCorrectionLevel]="'H'" [qrdata]="qrCodeUUID" [scale]="0" [width]="256"></qrcode>
+                            <p>Qr code is valid for: {{this.remainingTime}}</p>
                           </div>
                         </div>
                       </div>
@@ -97,7 +97,7 @@
                             <i class="fa fa-cog"></i> Actions
                           </div>
                           <div class="card-body">
-                            <button class="btn btn-outline-primary btn-block">
+                            <button (click)="renewQrCode()" class="btn btn-outline-primary btn-block">
                               <i class="fa fa-refresh"></i> Renew QR Code
                             </button>
                             <button class="btn btn-outline-danger btn-block">

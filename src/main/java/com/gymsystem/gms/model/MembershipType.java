@@ -4,7 +4,6 @@ import com.gymsystem.gms.enumeration.UnitOfTime;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor

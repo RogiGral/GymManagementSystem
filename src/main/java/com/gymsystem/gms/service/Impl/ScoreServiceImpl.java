@@ -1,7 +1,7 @@
 package com.gymsystem.gms.service.Impl;
 
 import com.gymsystem.gms.exceptions.model.UserNotFoundException;
-import com.gymsystem.gms.model.Score;
+
 import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.repository.ScoreRepository;
 import com.gymsystem.gms.repository.UserRepository;

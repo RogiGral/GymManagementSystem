@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -27,6 +27,8 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {NotifierModule, NotifierOptions} from "angular-notifier";
 import { QrcodeScannerComponent } from './qrcode-scanner/qrcode-scanner.component';
 import {QRCodeModule} from "angularx-qrcode";
+import { CoachScheduleComponent } from './coach-schedule/coach-schedule.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -81,10 +83,12 @@ const customNotifierOptions: NotifierOptions = {
     MembershipComponent,
     UserProfileComponent,
     ResetPasswordComponent,
-    QrcodeScannerComponent
+    QrcodeScannerComponent,
+    CoachScheduleComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -100,8 +104,15 @@ const customNotifierOptions: NotifierOptions = {
     }),
   ],
   exports: [NotifierModule],
-  providers: [NotificationService, AuthenticationService, UserService,WorkoutService,MembershipService,ScoreService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [
+    NotificationService,
+    AuthenticationService,
+    UserService,
+    WorkoutService,
+    MembershipService,
+    ScoreService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

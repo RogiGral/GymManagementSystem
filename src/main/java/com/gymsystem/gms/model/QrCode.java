@@ -27,7 +27,8 @@ public class QrCode extends AuditRecords implements Serializable {
     @Column(nullable = false)
     private String uuid;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String encryptedData;
 
     @Column(nullable = false)

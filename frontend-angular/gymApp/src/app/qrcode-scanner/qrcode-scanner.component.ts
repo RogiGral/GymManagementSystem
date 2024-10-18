@@ -1,9 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-//import {BarcodeFormat} from "@zxing/library";
 import jsQR from 'jsqr';
 import {Role} from "../enum/role.enum";
 import {AuthenticationService} from "../service/authentication.service";
-import {CryptoService} from "../service/crypto.service";
+//import {CryptoService} from "../service/crypto.service";
+import {QrcodeService} from "../service/qrcode.service";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -13,12 +14,14 @@ import {CryptoService} from "../service/crypto.service";
 export class QrcodeScannerComponent implements OnInit {
   @ViewChild('video') video: ElementRef;
   @ViewChild('canvas') canvas: ElementRef;
-  qrResult: string = '';
+  qrResult: any = { active: false, user: ''} ;
   videoStream: any;
 
   constructor(
     private authenticationService: AuthenticationService,
-    private cryptoService: CryptoService
+    private userService: UserService,
+    //private cryptoService: CryptoService,
+    private qrcodeService: QrcodeService
   ) { }
 
   public get isAdmin(): boolean {
@@ -61,17 +64,17 @@ export class QrcodeScannerComponent implements OnInit {
       canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
 
       const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height)?.data;
 
       if (code) {
-        this.cryptoService.decryptData(JSON.stringify(code))
-          .then(encodedData => {
-            this.qrResult = encodedData;
+        this.qrcodeService.getQrcode(code).subscribe((result) => {
+          console.log(JSON.parse(result.encryptedData))
+          this.qrResult = JSON.parse(result.encryptedData);
+          this.userService.getUser(this.qrResult.user).subscribe((user) => {
+            this.qrResult.user = user.firstName + ' ' + user.lastName;
           })
-          .catch(error => {
-            console.log(error)
-          });
-        console.log('QR Code detected: ', this.qrResult);
+        })
+
       } else {
         requestAnimationFrame(this.scan.bind(this)); // Continue scanning
       }
@@ -83,6 +86,14 @@ export class QrcodeScannerComponent implements OnInit {
   onStopVideo() {
     if (this.videoStream) {
       this.videoStream.getTracks().forEach((track: any) => track.stop());
+    }
+  }
+
+  isActive(){
+    if(this.qrResult.active){
+      return true
+    } else {
+      return false
     }
   }
 

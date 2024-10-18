@@ -5,6 +5,7 @@ import com.gymsystem.gms.exceptions.model.*;
 import com.gymsystem.gms.model.Score;
 import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserPrincipal;
+import com.gymsystem.gms.repository.ScoreRepository;
 import com.gymsystem.gms.repository.UserMembershipRepository;
 import com.gymsystem.gms.repository.UserRepository;
 import com.gymsystem.gms.repository.UserWorkoutRepository;
@@ -36,6 +37,7 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,6 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private UserWorkoutRepository userWorkoutRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private LoginAttemptServiceImpl loginAttemptService;
+    private ScoreRepository scoreRepository;
 
     @Value("${api.stripe.key}")
     private String stripeApiKey;
@@ -72,12 +75,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,UserMembershipRepository userMembershipRepository,UserWorkoutRepository userWorkoutRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptServiceImpl loginAttemptService) {
+    public UserServiceImpl(UserRepository userRepository,ScoreRepository scoreRepository, UserMembershipRepository userMembershipRepository,UserWorkoutRepository userWorkoutRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptServiceImpl loginAttemptService) {
         this.userRepository = userRepository;
         this.userWorkoutRepository = userWorkoutRepository;
         this.userMembershipRepository = userMembershipRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptService = loginAttemptService;
+        this.scoreRepository = scoreRepository;
     }
 
     @Override
@@ -101,6 +105,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User register(String firstName, String lastName, String username, String email) throws UsernameNotFoundException, EmailExistException, UsernameExistException, UserNotFoundException, StripeException {
         validateNewUsernameAndEmail(StringUtils.EMPTY,username,email);
         User user = new User();
+
+        Score score = new Score();
+        score.setValue(new BigDecimal("0"));// Set the score value or other fields
+        scoreRepository.save(score);
+
         user.setUserId(generateCustomerId(firstName + lastName, email));
         String password = generatePassword();
         String encodedPassword = encodedPassword(password);
@@ -112,6 +121,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(encodedPassword);
         user.setActive(true);
         user.setNotLocked(true);
+        user.setScore(score);
         user.setRole(ROLE_USER.toString());
         user.setAuthorities(ROLE_USER.getAuthorities());
         user.setProfileImageUrl(getTemporaryProfileImageUrl(username));
@@ -126,6 +136,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         validateNewUsernameAndEmail(EMPTY, username, email);
         User user = new User();
         Score score = new Score();
+        score.setValue(new BigDecimal("0")); // Set the score value or other fields
+        scoreRepository.save(score);
         String password = generatePassword();
         String encodedPassword = encodedPassword(password);
         user.setUserId(generateCustomerId(firstName + lastName, email));
@@ -210,6 +222,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         saveProfileImage(user, profileImage);
         return user;
     }
+
+    @Override
+    public User findUserByCustomerId(String userId) throws UserNotFoundException {
+        User user = userRepository.findUserByUserId(userId).orElseThrow(() -> new UserNotFoundException(NO_USER_FOUND + userId));
+        return user;
+    }
+
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();

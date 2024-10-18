@@ -1,9 +1,7 @@
 package com.gymsystem.gms.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gymsystem.gms.constraints.SecurityConstant;
 import com.gymsystem.gms.model.HttpResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
@@ -12,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.Locale;
+
 
 import static com.gymsystem.gms.constraints.SecurityConstant.FORBIDDEN_MESSAGE;
 import static org.springframework.http.HttpStatus.FORBIDDEN;

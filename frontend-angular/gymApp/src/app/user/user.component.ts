@@ -10,6 +10,7 @@ import {AuthenticationService} from "../service/authentication.service";
 import {Router} from "@angular/router";
 import {Role} from "../enum/role.enum";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
+import {QrcodeService} from "../service/qrcode.service";
 
 @Component({
   selector: 'app-user',
@@ -116,6 +117,7 @@ export class UserComponent implements OnInit, OnDestroy {
     this.currentUsername = editUser.username;
     this.clickButton('openUserEdit');
   }
+
 
   public searchUsers(searchTerm: string): void {
     const results: User[] = [];

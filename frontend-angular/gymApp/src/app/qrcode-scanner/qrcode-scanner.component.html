@@ -20,6 +20,10 @@
           <button (click)="onStartVideo()" class="btn btn-outline-info"><i class="fas fa-play">{{'QRCODE.SCANNER.TABLE.START' | translate}}</i></button>
           <button (click)="onStopVideo()" class="btn btn-outline-danger"><i class="fas fa-stop">{{'QRCODE.SCANNER.TABLE.STOP' | translate}}</i></button>
         </div>
+        <p>
+          <span [hidden]="!isActive()" class="badge badge-success">Active</span>
+          <span [hidden]="isActive()" class="badge badge-danger">Inactive</span>
+        </p>
       </td>
     </tr>
     </tbody>

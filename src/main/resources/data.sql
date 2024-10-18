@@ -58,7 +58,7 @@ VALUES (
         '$2a$10$uRPOhCOIikRM9i6f7s4ECe.cGi33zUsB11bOqaZKSwuwDUvX8YoVu',
         'http://localhost:8081/user/image/profile/marcin_gym',
         'ROLE_COACH',
-        'cus_Q1bsMWy21w1CK8',
+        'cus_M1bSw5T64K1CK8',
         'marcin_gym',
         3
        );
