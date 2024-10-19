@@ -25,6 +25,7 @@ export class CoachScheduleComponent implements OnInit, OnDestroy {
   public refreshing = false
   public selectedWorkout: IWorkout = new IWorkout()
   public workouts: IWorkout[] = []
+  public hours = Array.from({ length: 17 }, (_, i) => i + 8);
   public listOfTrainers: User[] = []
   public trainerWorkouts: IWorkout[] = []
   public selectedTrainerWorkout: IWorkout = new IWorkout()
@@ -96,6 +97,17 @@ export class CoachScheduleComponent implements OnInit, OnDestroy {
         }
       ),
     )
+  }
+
+
+  calculateGridRow(workout: any): number {
+    const startHour = new Date(workout.workoutStartDate).getHours();
+    return startHour - 7; // To align with the grid rows starting from 8:00
+  }
+
+  getHourFromDate(dateString: string): number {
+    const date = new Date(dateString);
+    return date.getHours();
   }
 
   goToPreviousDay() {

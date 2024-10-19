@@ -1,5 +1,3 @@
-
-
 <div class="today-container">
   <div class="date-navigation">
     <button (click)="goToPreviousDay()" class="btn btn-outline-primary">Previous</button>
@@ -7,15 +5,18 @@
     <button (click)="goToNextDay()" class="btn btn-outline-primary">Next</button>
   </div>
 
-  <div class="today-workouts" >
-    <div *ngIf="todayWorkouts.length > 0">
-      <div (click)="onSelectTrainerWorkout(workout)" *ngFor="let workout of todayWorkouts" class="workout-item" >
-        <div>{{ workout.workoutName }}</div>
-        <div>{{ workout.workoutStartDate | date: 'shortTime' }} - {{ workout.workoutEndDate | date: 'shortTime' }}</div>
-        <div>{{ workout.roomNumber }} - {{workout.participantsNumber}} / {{workout.capacity}}</div>
+  <div class="today-workouts-grid">
+    <div *ngFor="let hour of hours" class="time-slot">
+      <div class="time-label">{{ hour }}:00</div>
+      <div (click)="onSelectTrainerWorkout(workout)" *ngFor="let workout of todayWorkouts" [style.grid-row-start]="calculateGridRow(workout)" class="workout-slot">
+        <div *ngIf="getHourFromDate(workout.workoutStartDate) === hour">
+          <div>{{ workout.workoutName }}</div>
+          <div>{{ workout.workoutStartDate | date: 'shortTime' }} - {{ workout.workoutEndDate | date: 'shortTime' }}</div>
+          <div>{{ workout.roomNumber }} - {{workout.participantsNumber}} / {{workout.capacity}}</div>
+        </div>
       </div>
     </div>
-    <div *ngIf="todayWorkouts.length === 0" >
+    <div *ngIf="todayWorkouts.length === 0">
       <p>No workouts scheduled for this day.</p>
     </div>
   </div>
