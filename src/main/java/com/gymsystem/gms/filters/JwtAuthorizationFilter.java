@@ -15,9 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static com.gymsystem.gms.constraints.SecurityConstant.*;
-import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpStatus.*;
+import static com.gymsystem.gms.constraints.SecurityConstant.OPTIONS_HTTP_METHOD;
+import static com.gymsystem.gms.constraints.SecurityConstant.TOKEN_PREFIX;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.OK;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {

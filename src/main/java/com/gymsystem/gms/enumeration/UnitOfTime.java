@@ -1,7 +1,6 @@
 package com.gymsystem.gms.enumeration;
 
 
-import static com.gymsystem.gms.constraints.Authority.*;
 import static com.gymsystem.gms.constraints.UnitOfTimeConst.*;
 
 public enum UnitOfTime {

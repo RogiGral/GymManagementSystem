@@ -1,7 +1,6 @@
 package com.gymsystem.gms.service.Impl;
 
 import com.gymsystem.gms.enumeration.Role;
-import com.gymsystem.gms.enumeration.UnitOfTime;
 import com.gymsystem.gms.enumeration.WorkoutDifficulty;
 import com.gymsystem.gms.exceptions.model.UserNotFoundException;
 import com.gymsystem.gms.exceptions.model.WorkoutDateException;
@@ -17,16 +16,14 @@ import com.gymsystem.gms.service.WorkoutService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import static com.gymsystem.gms.constraints.UserImplConstant.*;
+import static com.gymsystem.gms.constraints.UserImplConstant.NO_TRAINER_FOUND_BY_USERNAME;
+import static com.gymsystem.gms.constraints.UserImplConstant.USER_IS_NOT_TRAINER;
 import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
 
 @Service

@@ -3,7 +3,6 @@ package com.gymsystem.gms.configuration;
 import com.gymsystem.gms.filters.JwtAccessDeniedHandler;
 import com.gymsystem.gms.filters.JwtAuthenticationEntryPoint;
 import com.gymsystem.gms.filters.JwtAuthorizationFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.gymsystem.gms.constraints.SecurityConstant.*;
-import static org.springframework.security.config.http.SessionCreationPolicy.*;
+import static com.gymsystem.gms.constraints.SecurityConstant.PUBLIC_URLS;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
 @Configuration

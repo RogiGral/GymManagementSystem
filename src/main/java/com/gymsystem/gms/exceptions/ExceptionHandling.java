@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestController
 public class ExceptionHandling extends ErrorProperties {

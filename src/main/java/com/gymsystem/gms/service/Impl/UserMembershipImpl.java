@@ -15,14 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
-import java.lang.reflect.Member;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
 
-import static com.gymsystem.gms.constraints.MembershipType.*;
+import static com.gymsystem.gms.constraints.MembershipType.MEMBERSHIP_TYPE_NOT_FOUND;
+import static com.gymsystem.gms.constraints.MembershipType.USER_ALREADY_HAS_MEMBERSHIP;
 import static com.gymsystem.gms.constraints.UserImplConstant.NO_USER_FOUND;
 
 @Service

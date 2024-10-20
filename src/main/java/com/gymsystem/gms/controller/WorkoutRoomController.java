@@ -2,20 +2,16 @@ package com.gymsystem.gms.controller;
 
 
 import com.gymsystem.gms.exceptions.ExceptionHandling;
-import com.gymsystem.gms.exceptions.model.*;
+import com.gymsystem.gms.exceptions.model.WorkoutRoomNotFoundException;
 import com.gymsystem.gms.model.HttpResponse;
-import com.gymsystem.gms.model.Workout;
 import com.gymsystem.gms.model.WorkoutRoom;
 import com.gymsystem.gms.service.WorkoutRoomService;
-import com.gymsystem.gms.service.WorkoutService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;

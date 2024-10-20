@@ -2,7 +2,8 @@ package com.gymsystem.gms.controller;
 
 
 import com.gymsystem.gms.exceptions.ExceptionHandling;
-import com.gymsystem.gms.exceptions.model.*;
+import com.gymsystem.gms.exceptions.model.UserMembershipException;
+import com.gymsystem.gms.exceptions.model.UserNotFoundException;
 import com.gymsystem.gms.model.HttpResponse;
 import com.gymsystem.gms.model.MembershipType;
 import com.gymsystem.gms.model.User;
@@ -14,7 +15,6 @@ import com.gymsystem.gms.service.UserService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,8 @@
 package com.gymsystem.gms.service;
 
-import com.gymsystem.gms.exceptions.model.*;
-import com.gymsystem.gms.model.Workout;
+import com.gymsystem.gms.exceptions.model.WorkoutRoomNotFoundException;
 import com.gymsystem.gms.model.WorkoutRoom;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WorkoutRoomService {

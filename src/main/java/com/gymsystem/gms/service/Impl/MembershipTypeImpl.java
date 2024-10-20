@@ -10,18 +10,15 @@ import com.gymsystem.gms.repository.MembershipTypeRepository;
 import com.gymsystem.gms.service.MembershipTypeService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Price;
 import com.stripe.model.Product;
 import com.stripe.param.ProductCreateParams;
 import com.stripe.param.ProductUpdateParams;
-import com.stripe.param.common.EmptyParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.gymsystem.gms.constraints.MembershipType.*;
