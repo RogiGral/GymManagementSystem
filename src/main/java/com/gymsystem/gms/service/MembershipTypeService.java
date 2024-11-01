@@ -6,7 +6,6 @@ import com.gymsystem.gms.exceptions.model.MembershipTypeNotFoundException;
 import com.gymsystem.gms.model.MembershipType;
 import com.stripe.exception.StripeException;
 
-import java.util.Date;
 import java.util.List;
 
 public interface MembershipTypeService {

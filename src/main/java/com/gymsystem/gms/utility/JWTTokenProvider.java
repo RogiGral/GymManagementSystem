@@ -6,8 +6,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.gymsystem.gms.model.UserPrincipal;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.auth0.jwt.algorithms.Algorithm.*;
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.gymsystem.gms.constraints.SecurityConstant.*;
 import static java.util.Arrays.stream;
 

@@ -1,8 +1,6 @@
 package com.gymsystem.gms.enumeration;
 
 
-import com.gymsystem.gms.constraints.Authority.*;
-
 import static com.gymsystem.gms.constraints.Authority.*;
 
 public enum Role {

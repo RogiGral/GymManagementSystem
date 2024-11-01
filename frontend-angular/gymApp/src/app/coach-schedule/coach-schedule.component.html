@@ -1,31 +1,46 @@
+<div class="week-container">
 
-
-<div class="today-container">
   <div class="date-navigation">
-    <button (click)="goToPreviousDay()" class="btn btn-outline-primary">Previous</button>
-    <div class="current-date">{{ currentDate | date: 'fullDate' }}</div>
-    <button (click)="goToNextDay()" class="btn btn-outline-primary">Next</button>
+    <button (click)="goToPreviousWeek()" class="btn btn-outline-primary">Previous Week</button>
+    <div class="current-date">{{ currentWeekStart | date: 'fullDate' }} - {{ currentWeekEnd | date: 'fullDate' }}</div>
+    <button (click)="goToNextWeek()" class="btn btn-outline-primary">Next Week</button>
   </div>
 
-  <div class="today-workouts" >
-    <div *ngIf="todayWorkouts.length > 0">
-      <div (click)="onSelectTrainerWorkout(workout)" *ngFor="let workout of todayWorkouts" class="workout-item" >
-        <div>{{ workout.workoutName }}</div>
-        <div>{{ workout.workoutStartDate | date: 'shortTime' }} - {{ workout.workoutEndDate | date: 'shortTime' }}</div>
-        <div>{{ workout.roomNumber }} - {{workout.participantsNumber}} / {{workout.capacity}}</div>
-      </div>
+  <div class="week-grid">
+    <div class="day-header time-label"></div>
+    <div *ngFor="let day of weekDays" [ngClass]="{'highlight-today': isToday(day.date)}" class="day-header">
+      <strong>{{ day.date | date: 'EEEE' }}</strong>
+      <div>{{ day.date | date: 'MMM d' }}</div>
     </div>
-    <div *ngIf="todayWorkouts.length === 0" >
-      <p>No workouts scheduled for this day.</p>
+
+
+    <div *ngFor="let hour of hours" class="time-row">
+      <div class="time-label">{{ hour }}:00</div>
+      <div *ngFor="let day of weekDays" [ngClass]="{'highlight-today': isToday(day.date)}" class="workout-cell">
+        <div (click)="onEmptyCellClick(day.date, hour)" *ngIf="getWorkoutsForDayAndHour(day.date, hour).length === 0">
+          <!-- Empty cell, trigger the modal -->
+          <div class="empty-cell"></div>
+        </div>
+        <div *ngFor="let workout of getWorkoutsForDayAndHour(day.date, hour)">
+          <div (click)="onWorkoutClick(workout)" class="workout-slot">
+            <div>{{ workout.workoutName }}</div>
+            <div>{{ workout.roomNumber }} - {{ workout.participantsNumber }} / {{ workout.capacity }}</div>
+            <div>{{ workout.workoutStartDate | date: 'shortTime' }} - {{ workout.workoutEndDate | date: 'shortTime' }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Workout Info Modal -->
-<button [hidden]="true" data-target="#viewWorkoutModal" data-toggle="modal" id="open" type="button"></button>
+<button [hidden]="true" data-target="#viewWorkoutuserList" data-toggle="modal" id="openWorkoutUserList" type="button"></button>
+<button [hidden]="true" data-target="#viewWorkoutInfo" data-toggle="modal" id="openWorkoutInfo" type="button"></button>
+<button [hidden]="true" data-target="#viewWorkoutEdit" data-toggle="modal" id="openWorkoutEdit" type="button"></button>
+<button [hidden]="true" data-target="#viewWorkoutDelete" data-toggle="modal" id="openWorkoutDelete" type="button"></button>
 
-<!-- modal user joined workout info -->
-<div aria-hidden="true" aria-labelledby="" class="modal fade bd-example-modal-lg" id="viewWorkoutModal" role="dialog"
+<!-- Modal user joined workout info -->
+<div aria-hidden="true" aria-labelledby="" class="modal fade bd-example-modal-lg" id="viewWorkoutuserList" role="dialog"
      tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -66,3 +81,262 @@
     </div>
   </div>
 </div>
+
+<!-- Modal for Workout Options -->
+<div aria-hidden="true" aria-labelledby="workoutOptionsModalLabel" class="modal fade" id="workoutOptionsModal" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="workoutOptionsModalLabel">Options for {{ selectedWorkout.workoutName }}</h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          <li (click)="viewUsers()" class="list-group-item text-primary">View List of Users</li>
+          <li (click)="viewWorkoutInfo()" class="list-group-item text-primary">View Workout Info</li>
+          <li (click)="editWorkout()" class="list-group-item text-primary">Edit</li>
+          <li (click)="deleteWorkout()" class="list-group-item text-danger">Delete</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal user joined workout info -->
+<div aria-hidden="true" aria-labelledby="" class="modal fade bd-example-modal-lg" id="viewWorkoutInfo" role="dialog"
+     tabindex="-1">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="viewWorkoutInfoTitle">{{selectedWorkout.workoutName}}
+        </h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="card">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.NAME' | translate}}</b>{{selectedWorkout.workoutName}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.ROOM_NUMBER' | translate}}</b>{{selectedWorkout.roomNumber}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.START_DATE' | translate}}</b>{{selectedWorkout.workoutStartDate}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.END_DATE' | translate}}</b>{{selectedWorkout.workoutEndDate}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.TRAINER_USERNAME' | translate}}</b>{{selectedWorkout.trainerUsername}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</b>{{selectedWorkout.capacity}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.PARTICIPANTS_NUMBER' | translate}}</b>{{selectedWorkout.participantsNumber}}
+              </li>
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.DIFFICULTY' | translate}}</b>{{selectedWorkout.workoutDifficulty}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal edit workout -->
+<div aria-hidden="true" aria-labelledby="openWorkoutEditTitle" class="modal draggable fade bd-example-modal-lg"
+     id="viewWorkoutEdit" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Edit {{selectedWorkout.workoutName}}<small [hidden]="isAdmin">
+          (read only)
+        </small></h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <form #editWorkoutForm="ngForm">
+            <div class="form-group">
+              <label for="id">Workout id</label>
+              <input [(ngModel)]="selectedWorkout.id" [disabled]="true" class="form-control" name="id" required type="text">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutName">{{'WORKOUTS.TABLE.NAME' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.workoutName" [disabled]="!isAdminOrCoach" class="form-control" name="workoutName" required type="text">
+            </div>
+
+            <div class="form-group">
+              <label for="roomNumber">{{'WORKOUTS.TABLE.ROOM_NUMBER' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.roomNumber" [disabled]="!isAdminOrCoach" class="form-control" name="roomNumber" required type="number">
+            </div>
+
+            <div class="form-group">
+              <label for="trainerUsername">{{'WORKOUTS.TABLE.TRAINER_USERNAME' | translate}}</label>
+              <select [(ngModel)]="selectedWorkout.trainerUsername" [disabled]="!isAdminOrCoach" class="form-control" name="trainerUsername" required>
+                <option *ngFor="let trainer of listOfTrainers" [value]="trainer.username">{{ trainer.username }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="capacity">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.capacity" [disabled]="!isAdminOrCoach" class="form-control" name="capacity" required type="number">
+            </div>
+
+            <div class="form-group">
+              <label for="participantsNumber">{{'WORKOUTS.TABLE.PARTICIPANTS_NUMBER' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.participantsNumber" [disabled]="!isAdminOrCoach" class="form-control" name="participantsNumber" required type="number">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutStartDate">{{'WORKOUTS.TABLE.START_DATE' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.workoutStartDate" [disabled]="!isAdminOrCoach" class="form-control" name="workoutStartDate" required type="datetime-local">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutEndDate">{{'WORKOUTS.TABLE.END_DATE' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.workoutEndDate" [disabled]="!isAdminOrCoach" class="form-control" name="workoutEndDate" required type="datetime-local">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutDifficulty">{{'WORKOUTS.TABLE.DIFFICULTY' | translate}}</label>
+              <select [(ngModel)]="selectedWorkout.workoutDifficulty" [disabled]="!isAdminOrCoach" class="form-control" name="workoutDifficulty" required>
+                <option value="BEGINNER">{{'WORKOUTS.DIFFICULTY.BEGINNER' | translate}}</option>
+                <option value="EASY">{{'WORKOUTS.DIFFICULTY.EASY' | translate}}</option>
+                <option value="MEDIUM">{{'WORKOUTS.DIFFICULTY.MEDIUM' | translate}}</option>
+                <option value="HARD">{{'WORKOUTS.DIFFICULTY.HARD' | translate}}</option>
+                <option value="VERY_HARD">{{'WORKOUTS.DIFFICULTY.VERY_HARD' | translate}}</option>
+              </select>
+
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal" id="closeEditWorkoutModalButton" type="button">{{'WORKOUTS.TABLE.CLOSE' | translate}}</button>
+        <button (click)="onUpdateWorkout()" [disabled]="editWorkoutForm.invalid || !isAdminOrCoach" class="btn btn-primary" type="button">{{'WORKOUTS.TABLE.SAVE' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal add workout -->
+<div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal draggable fade bd-example-modal-lg" id="addWorkoutModal"
+     role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">New Workout</h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form #newWorkoutForm="ngForm" (ngSubmit)="onAddNewWorkout(newWorkoutForm)">
+            <div class="form-group">
+              <label for="workoutName">{{'WORKOUTS.TABLE.NAME' | translate}}</label>
+              <input class="form-control" name="workoutName" ngModel required type="text">
+            </div>
+            <div class="form-group">
+              <label for="roomNumber">{{'WORKOUTS.TABLE.ROOM_NUMBER' | translate}}</label>
+              <input class="form-control" name="roomNumber" ngModel required type="text">
+            </div>
+            <div class="form-group">
+              <label for="trainerUsername">{{'WORKOUTS.TABLE.TRAINER_USERNAME' | translate}}</label>
+              <select [(ngModel)]="selectedWorkout.trainerUsername" class="form-control" name="trainerUsername" required>
+                <option *ngFor="let trainer of listOfTrainers" [value]="trainer.username">{{ trainer.username }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="capacity">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</label>
+              <input class="form-control" name="capacity" ngModel required type="number">
+            </div>
+            <div class="form-group">
+              <label for="participantsNumber">{{'WORKOUTS.TABLE.PARTICIPANTS_NUMBER' | translate}}</label>
+              <input class="form-control" name="participantsNumber" ngModel required type="number">
+            </div>
+            <div class="form-group">
+              <label for="workoutStartDate">{{'WORKOUTS.TABLE.START_DATE' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.workoutStartDate" class="form-control" disabled name="workoutStartDate" required type="datetime-local">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutEndDate">{{'WORKOUTS.TABLE.END_DATE' | translate}}</label>
+              <input [(ngModel)]="selectedWorkout.workoutEndDate" class="form-control" disabled name="workoutEndDate" required type="datetime-local">
+            </div>
+
+            <div class="form-group">
+              <label for="isCyclical">Cyclical</label>
+              <input class="form-control" name="isCyclical"  ngModel type="checkbox">
+            </div>
+
+            <div class="form-group">
+              <label for="numberOfCycles">Number of cycles</label>
+              <input class="form-control" name="numberOfCycles"  ngModel type="number">
+            </div>
+
+            <div class="form-group">
+              <label for="workoutDifficulty">{{'WORKOUTS.TABLE.DIFFICULTY' | translate}}</label>
+              <select [(ngModel)]="selectedWorkout.workoutDifficulty" [disabled]="!isAdminOrCoach" class="form-control" name="workoutDifficulty" required>
+                <option value="BEGINNER">{{'WORKOUTS.DIFFICULTY.BEGINNER' | translate}}</option>
+                <option value="EASY">{{'WORKOUTS.DIFFICULTY.EASY' | translate}}</option>
+                <option value="MEDIUM">{{'WORKOUTS.DIFFICULTY.MEDIUM' | translate}}</option>
+                <option value="HARD">{{'WORKOUTS.DIFFICULTY.HARD' | translate}}</option>
+                <option value="VERY_HARD">{{'WORKOUTS.DIFFICULTY.VERY_HARD' | translate}}</option>
+              </select>
+            </div>
+
+            <button id="new-workout-save" style="display: none;" type="submit"></button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal" id="new-workout-close" type="button">Close</button>
+        <button (click)="saveNewWorkout()" [disabled]="newWorkoutForm.invalid" class="btn btn-primary" type="button">Save
+          changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Deleting a Workout -->
+<div aria-hidden="true" class="modal fade" id="viewWorkoutDelete" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewWorkoutDeleteTitle">
+          Confirm Deletion
+        </h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Are you sure you want to delete the workout: <strong>{{ selectedWorkout?.workoutName }}</strong>?</p>
+        <div class="d-flex justify-content-center">
+          <button (click)="onDeleteWorkout(selectedWorkout.id)" class="btn btn-danger mr-2" type="button">
+            <i class="fa fa-trash"></i> Yes, Delete
+          </button>
+          <button class="btn btn-secondary" data-dismiss="modal" type="button">
+            <i class="fa fa-times"></i> No, Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

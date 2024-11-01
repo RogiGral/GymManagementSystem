@@ -1,8 +1,6 @@
 package com.gymsystem.gms.service.Impl;
 
-import com.gymsystem.gms.enumeration.Role;
-import com.gymsystem.gms.exceptions.model.*;
-import com.gymsystem.gms.model.User;
+import com.gymsystem.gms.exceptions.model.WorkoutRoomNotFoundException;
 import com.gymsystem.gms.model.UserWorkout;
 import com.gymsystem.gms.model.Workout;
 import com.gymsystem.gms.model.WorkoutRoom;
@@ -11,19 +9,13 @@ import com.gymsystem.gms.repository.UserWorkoutRepository;
 import com.gymsystem.gms.repository.WorkoutRepository;
 import com.gymsystem.gms.repository.WorkoutRoomRepository;
 import com.gymsystem.gms.service.WorkoutRoomService;
-import com.gymsystem.gms.service.WorkoutService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.gymsystem.gms.constraints.UserImplConstant.NO_TRAINER_FOUND_BY_USERNAME;
-import static com.gymsystem.gms.constraints.UserImplConstant.USER_IS_NOT_TRAINER;
-import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
 import static com.gymsystem.gms.constraints.WorkoutRoomConstraints.NO_WORKOUT_ROOM_FOUND_BY_ID;
 
 @Service

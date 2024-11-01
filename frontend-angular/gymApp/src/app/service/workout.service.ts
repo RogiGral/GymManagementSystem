@@ -33,8 +33,8 @@ export class WorkoutService {
   public joinWorkout(formdata: FormData): Observable<IUserWorkout>{
     return this.http.post<IUserWorkout>(`${this.host}/user-workout/add`,formdata)
   }
-  public deleteUserWorkout(userWorkoutId: number): Observable<CustomHttpResponse>{
-    return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userWorkoutId}`)
+  public deleteUserWorkout(userId: number, workoutId:number): Observable<CustomHttpResponse>{
+    return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userId}/${workoutId}`)
   }
   public removeUserFromWorkout(userId: number, workoutId: number): Observable<CustomHttpResponse>{
     return this.http.delete<CustomHttpResponse>(`${this.host}/user-workout/delete/${userId}/${workoutId}`)

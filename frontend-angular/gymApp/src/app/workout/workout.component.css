@@ -1,15 +1,84 @@
-table {
-  border-collapse: collapse;
-  width: 100%;
-  border: 1px solid #ddd; /* Add a 1px border to the table */
+.week-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr); /* 1st column for hours, 7 columns for days */
+  gap: 1px;
 }
 
-th, td {
-  text-align: center; /* Center the text within cells */
-  padding: 8px; /* Add padding for better readability */
-  border: 1px solid #ddd; /* Add a 1px border to cells */
+.day-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ddd;
 }
 
-th {
-  background-color: #f2f2f2; /* Add a background color to header cells if needed */
+.time-row {
+  display: contents; /* To align rows with the header */
+}
+
+.time-label {
+  background-color: #f9f9f9;
+  padding: 10px;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+}
+
+.workout-cell {
+  min-height: 80px; /* Adjust height as needed */
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.workout-slot {
+  background-color: #e6f7ff;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.workout-slot:hover {
+  background-color: #d1e7ff;
+}
+
+.date-navigation {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.highlight-today {
+  background-color: #fff7d1; /* Slightly yellow */
+}
+
+.day-header.highlight-today {
+  background-color: #ffee9f; /* Slightly darker yellow for header */
+}
+
+.workout-cell.highlight-today {
+  background-color: #f1eaca; /* Same light yellow for workout cells */
+}
+
+.empty-cell {
+  height: 110px;
+  background-color: #f9f9f9;
+  border: 1px solid #e9e9e9;
+  cursor: pointer;
+}
+
+.workout-slot {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.joined-workout {
+  background-color: #90ee90; /* A light green color */
+}
+
+.grid-disabled {
+  pointer-events: none; /* Disable all interactions */
+  opacity: 0.5; /* Make the grid look disabled */
+  transition: opacity 0.3s ease;
 }

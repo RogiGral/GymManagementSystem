@@ -1,11 +1,12 @@
 package com.gymsystem.gms.service;
 
-import com.gymsystem.gms.exceptions.model.*;
+import com.gymsystem.gms.exceptions.model.UserIsAlreadyInWorkoutException;
+import com.gymsystem.gms.exceptions.model.UserNotFoundException;
+import com.gymsystem.gms.exceptions.model.WorkoutIsFullException;
+import com.gymsystem.gms.exceptions.model.WorkoutNotFoundException;
 import com.gymsystem.gms.model.User;
 import com.gymsystem.gms.model.UserWorkout;
-import com.gymsystem.gms.model.Workout;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserWorkoutService {

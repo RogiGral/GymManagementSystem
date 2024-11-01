@@ -3,14 +3,8 @@ package com.gymsystem.gms.controller;
 
 import com.gymsystem.gms.exceptions.ExceptionHandling;
 import com.gymsystem.gms.exceptions.model.UserNotFoundException;
-import com.gymsystem.gms.exceptions.model.WorkoutDateException;
-import com.gymsystem.gms.exceptions.model.WorkoutExistException;
-import com.gymsystem.gms.exceptions.model.WorkoutNotFoundException;
 import com.gymsystem.gms.model.HttpResponse;
-import com.gymsystem.gms.model.User;
-import com.gymsystem.gms.model.Workout;
 import com.gymsystem.gms.service.ScoreService;
-import com.gymsystem.gms.service.WorkoutService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 
