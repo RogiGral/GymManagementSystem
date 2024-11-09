@@ -17,14 +17,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
+@SpringBootTest
+@TestPropertySource(properties = {
+        "jwt.secret=test_jwt_secret",
+        "api.stripe.key=test_stripe_key"
+})
+public class WorkoutRoomServiceImplTest {
 
-public class WorkoutRoomServiceImplTests {
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private WorkoutRoomRepository workoutRoomRepository;
@@ -116,7 +120,7 @@ public class WorkoutRoomServiceImplTests {
         // Act & Assert
         Exception exception = assertThrows(WorkoutRoomNotFoundException.class, () ->
                 workoutRoomService.updateWorkoutRoom(roomId, "Old Room Name", newName, capacity));
-        assertEquals("No workout room found for ID: " + roomId, exception.getMessage());
+        assertEquals("No workout found by id: " + roomId, exception.getMessage());
     }
 
     @Test
@@ -155,6 +159,6 @@ public class WorkoutRoomServiceImplTests {
         // Act & Assert
         Exception exception = assertThrows(WorkoutRoomNotFoundException.class, () ->
                 workoutRoomService.deleteWorkoutRoom(roomId));
-        assertEquals("No workout room found for ID: " + roomId, exception.getMessage());
+        assertEquals("No workout found by id: " + roomId, exception.getMessage());
     }
 }
