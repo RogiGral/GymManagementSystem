@@ -1,4 +1,4 @@
-package com.gymsystem.gms.service;
+package com.gymsystem.gms.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class QrCodeServiceTest {
+public class QrCodeServiceImplTests {
 
     @Mock
     private QrCodeRepository qrCodeRepository;
