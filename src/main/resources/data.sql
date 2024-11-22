@@ -18,11 +18,11 @@ VALUES (
         true,
         NOW(),
         NOW(),
-        'admin',
+        'gym',
         '$2a$10$liUOg1YXk8bsYMWB3nDRs.ZnK.NefKzmwVyxFJM/ju9KHnZCte6cK',
         'http://localhost:8081/user/image/profile/admin',
         'ROLE_ADMIN',
-        'cus_Q1bqVY72jiJYEY',
+        'cus_RBtZaZYzfOQr54',
         'admin',
         1
         );
@@ -40,7 +40,7 @@ VALUES (
         '$2a$10$uRPOhCOIikRM9i6f7s4ECe.cGi33zUsB11bOqaZKSwuwDUvX8YoVu',
         'http://localhost:8081/user/image/profile/igor_gym',
         'ROLE_COACH',
-        'cus_Q1bsMWy21w1CK8',
+        'cus_RBtXU7ZmdCfXmr',
         'igor_gym',
         2
         );
@@ -54,23 +54,23 @@ VALUES (
         true,
         NOW(),
         NOW(),
-        'Marcin',
+        'Nowak',
         '$2a$10$uRPOhCOIikRM9i6f7s4ECe.cGi33zUsB11bOqaZKSwuwDUvX8YoVu',
         'http://localhost:8081/user/image/profile/marcin_gym',
         'ROLE_COACH',
-        'cus_M1bSw5T64K1CK8',
+        'cus_RBtaTjr9l8J2oP',
         'marcin_gym',
         3
        );
 
 INSERT INTO MEMBERSHIP_TYPE (ID,DESCRIPTION,MEMBERSHIP_PRODUCT_ID,NAME,PRICE,TYPE,VALIDITY_PERIOD_NUMBER,VALIDITY_UNIT_OF_TIME)
-VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Pozwala wejść urzytkownikowi do klubu w godzinach 6:00 - 15:00','prod_Q1kQog4NkOIye8','MORNING',50,'MORNING',1,1);
+VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Pozwala wejść urzytkownikowi do klubu w godzinach 6:00 - 15:00','prod_RBtgB9mBbBon5n','MORNING',50,'MORNING',1,1);
 
 INSERT INTO MEMBERSHIP_TYPE (ID,DESCRIPTION,MEMBERSHIP_PRODUCT_ID,NAME,PRICE,TYPE,VALIDITY_PERIOD_NUMBER,VALIDITY_UNIT_OF_TIME)
-VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Pozwala wejść urzytkownikowi do klubu  w godzinach 15:00 - 22:00','prod_Q1kQog4NkOIye8','AFTERNOON',100,'AFTERNOON',1,1);
+VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Pozwala wejść urzytkownikowi do klubu  w godzinach 15:00 - 22:00','prod_RBthrrUQqQQjN1','AFTERNOON',100,'AFTERNOON',1,1);
 
 INSERT INTO MEMBERSHIP_TYPE (ID,DESCRIPTION,MEMBERSHIP_PRODUCT_ID,NAME,PRICE,TYPE,VALIDITY_PERIOD_NUMBER,VALIDITY_UNIT_OF_TIME)
-VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Dożywotni wstęp do klubów ','prod_Q1kQog4NkOIye8','LIFETIME',1000,'LIFETIME',9999,2);
+VALUES (NEXTVAL('MEMBERSHIP_TYPE_SEQ'),'Dożywotni wstęp do klubów ','prod_RBtjG2h29Cb8To','LIFETIME',1000,'LIFETIME',9999,2);
 
 
 INSERT INTO USER_MEMBERSHIP (ID,END_DATE,START_DATE,MEMBERSHIP_TYPE_ID,USER_ID)

@@ -65,7 +65,7 @@
         <li class="nav-item move-right active px-2">
           <a (click)="changeTitle('Welcome')" class="nav-link" data-toggle="tab" routerLink="user_profile"><i class="fa fa-user"></i> {{ 'NAVBAR.WELCOME' | translate }}</a>
         </li>
-        <li class="nav-item active px-2">
+        <li [hidden]="!isAdminOrCoach" class="nav-item active px-2">
           <a (click)="changeTitle('Schedule')" class="nav-link" data-toggle="tab" routerLink="coach-schedule"><i class="fa-solid fa-calendar-days"></i> {{ 'NAVBAR.SCHEDULE' | translate }}</a>
         </li>
         <li class="nav-item active px-2">

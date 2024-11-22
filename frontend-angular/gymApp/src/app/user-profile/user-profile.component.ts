@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private qrCodeService: QrcodeService,
               private router: Router) {
-    this.expirationDate = new Date(new Date().getTime() + 2 * 60 * 1000);
+    this.expirationDate = new Date(new Date().getTime() + 10 * 60 * 1000);
   }
 
   ngOnInit(): void {
