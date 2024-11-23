@@ -36,16 +36,13 @@ public class QrCodeServiceImpl implements QrCodeService {
     public QrCode createQrCode(String uuid, String encryptedData) {
         LOGGER.info("Creating QR code with UUID: {}", uuid);
 
-        // Create a new QR code entity
         QrCode qrCode = QrCode.builder()
                 .uuid(uuid)
                 .encryptedData(encryptedData)
                 .build();
 
-        // Set the expiration date to 2 minutes from now
         qrCode.setExpirationDate();
 
-        // Save the QR code to the database
         return qrCodeRepository.save(qrCode);
     }
 

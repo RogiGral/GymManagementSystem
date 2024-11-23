@@ -29,7 +29,7 @@ import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
 @Service
 @Transactional
 public class WorkoutServiceImpl implements WorkoutService {
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private UserRepository userRepository;
     private WorkoutRepository workoutRepository;
     private UserWorkoutRepository userWorkoutRepository;
@@ -105,12 +105,12 @@ public class WorkoutServiceImpl implements WorkoutService {
         if (trainer == null) {
             throw new UserNotFoundException(NO_TRAINER_FOUND_BY_USERNAME + trainerUsername);
         }
-        if(trainer.getRole()==Role.ROLE_COACH.toString()){
+        if(!(trainer.getRole()==Role.ROLE_COACH.toString())){
             throw new UserNotFoundException(USER_IS_NOT_TRAINER  + trainerUsername);
         }
     }
 
-    private void validateStartEndDate(LocalDateTime workoutStartDate, LocalDateTime workoutEndDate) throws WorkoutDateException {
+    public void validateStartEndDate(LocalDateTime workoutStartDate, LocalDateTime workoutEndDate) throws WorkoutDateException {
         if(workoutEndDate==null || workoutStartDate==null)return;
         if(workoutEndDate.isBefore(workoutStartDate)){
             throw new WorkoutDateException(WORKOUT_DATE_INVALID);

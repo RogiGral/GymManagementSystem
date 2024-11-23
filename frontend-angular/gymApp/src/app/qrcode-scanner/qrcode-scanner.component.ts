@@ -71,7 +71,8 @@ export class QrcodeScannerComponent implements OnInit {
           console.log(JSON.parse(result.encryptedData))
           this.qrResult = JSON.parse(result.encryptedData);
           this.userService.getUser(this.qrResult.user).subscribe((user) => {
-            this.qrResult.user = user.firstName + ' ' + user.lastName;
+            this.qrResult.user = user.firstName + ' ' + user.lastName + ' ' + user.active
+            this.qrResult.active = user.active
           })
         })
 

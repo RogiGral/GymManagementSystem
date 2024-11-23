@@ -12,7 +12,7 @@
         <div>
           <video #video height="200" width="300"></video>
           <canvas #canvas style="display:none;"></canvas>
-          <p *ngIf="qrResult">Scanned QR Code: {{ qrResult }}</p>
+          <p *ngIf="qrResult">Scanned QR Code: {{ qrResult.user }}</p>
         </div>
       </td>
       <td>

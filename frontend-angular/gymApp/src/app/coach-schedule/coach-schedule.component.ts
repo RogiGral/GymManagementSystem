@@ -84,6 +84,7 @@ export class CoachScheduleComponent implements OnInit, OnDestroy {
 
   onWorkoutClick(workout: any) {
     this.selectedWorkout = workout;
+    this.selectedTrainerWorkout = workout;
     $('#workoutOptionsModal').modal('show');
   }
 
