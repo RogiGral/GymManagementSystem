@@ -1,0 +1,22 @@
+Praca pisemna:
+
+- zacząć
+
+Aplikajca:
+
+- zakup członkostwa
+- wyświetlenie członkostwa
+- blokada możliwości użycia zapisania się na trening aplikacji bez członkostwa
+- scheduler który odpala się codziennie o np 1 w nocy i czyści baze z workoutów których data zakończenia była 1 dzień temu
+- OPTYMALIZACJA
+
+
+- dodać system punktacji za przebyty trening 
+- dodać system wydawania punktów 
+--- gdy user chce wydać punkty generuje się kod który kasjer/trener wprowadza do systemu i wyśiwetla się mu co user zakupił
+---- po akcepatacji userowi znikają punkty z konta 
+
+
+-- dodać @Entity Score 
+-- dodać repository, controller, service oraz implementacje serwisu
+-- dodać do klasy user pole score które bedzie typu score
