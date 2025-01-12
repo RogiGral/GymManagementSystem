@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 public interface ScoreService {
 
     BigDecimal getUserScore(String username);
-    void addPointsToScore(String username, BigDecimal score) throws UserNotFoundException;
-    void removePointsFromScore(String username, BigDecimal score) throws UserNotFoundException;
+    void addPointsToScore(String username, String score) throws UserNotFoundException;
+    void removePointsFromScore(String username, String score) throws UserNotFoundException;
 }

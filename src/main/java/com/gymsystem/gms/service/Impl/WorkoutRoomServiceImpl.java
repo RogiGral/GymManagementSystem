@@ -4,7 +4,6 @@ import com.gymsystem.gms.exceptions.model.WorkoutRoomNotFoundException;
 import com.gymsystem.gms.model.UserWorkout;
 import com.gymsystem.gms.model.Workout;
 import com.gymsystem.gms.model.WorkoutRoom;
-import com.gymsystem.gms.repository.UserRepository;
 import com.gymsystem.gms.repository.UserWorkoutRepository;
 import com.gymsystem.gms.repository.WorkoutRepository;
 import com.gymsystem.gms.repository.WorkoutRoomRepository;
@@ -21,14 +20,12 @@ import static com.gymsystem.gms.constraints.WorkoutRoomConstraints.NO_WORKOUT_RO
 @Service
 @Transactional
 public class WorkoutRoomServiceImpl implements WorkoutRoomService {
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private UserRepository userRepository;
-    private WorkoutRoomRepository workoutRoomRepository;
-    private UserWorkoutRepository userWorkoutRepository;
-    private WorkoutRepository workoutRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final WorkoutRoomRepository workoutRoomRepository;
+    private final UserWorkoutRepository userWorkoutRepository;
+    private final WorkoutRepository workoutRepository;
 
-    public WorkoutRoomServiceImpl(UserRepository userRepository, WorkoutRepository workoutRepository, WorkoutRoomRepository workoutRoomRepository, UserWorkoutRepository userWorkoutRepository) {
-        this.userRepository = userRepository;
+    public WorkoutRoomServiceImpl( WorkoutRepository workoutRepository, WorkoutRoomRepository workoutRoomRepository, UserWorkoutRepository userWorkoutRepository) {
         this.workoutRoomRepository = workoutRoomRepository;
         this.userWorkoutRepository = userWorkoutRepository;
         this.workoutRepository = workoutRepository;
@@ -45,6 +42,7 @@ public class WorkoutRoomServiceImpl implements WorkoutRoomService {
         workoutRoom.setCapacity(capacity);
         workoutRoom.setWorkoutRoomName(workoutRoomName);
         workoutRoomRepository.save(workoutRoom);
+        LOGGER.info("Workout room has ben created");
         return workoutRoom;
     }
 
@@ -54,6 +52,7 @@ public class WorkoutRoomServiceImpl implements WorkoutRoomService {
         workoutRoom.setCapacity(capacity);
         workoutRoom.setWorkoutRoomName(workoutRoomName);
         workoutRoomRepository.save(workoutRoom);
+        LOGGER.info("Workout room has ben updated");
         return workoutRoom;
     }
 
@@ -69,6 +68,7 @@ public class WorkoutRoomServiceImpl implements WorkoutRoomService {
         });
         workoutRepository.deleteAll(workouts);
         workoutRoomRepository.deleteById(id);
+        LOGGER.info("Workout room and all workouts has been deleted");
     }
 
     private WorkoutRoom findWorkoutRoomById(Long id) throws WorkoutRoomNotFoundException {

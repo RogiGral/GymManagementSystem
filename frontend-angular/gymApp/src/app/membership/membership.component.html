@@ -37,7 +37,7 @@
       <td class="">
         <div class="btn-group">
           <button  (click)="onPayForMembership(appMembership)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
-          <button (click)="onEditMembershipType(appMembership)" class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
+          <button (click)="onEditMembershipType(appMembership)" [hidden]="!isAdmin" class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
           <button (click)="onDeleteMembershipType(appMembership.id)" [hidden]="!isAdmin" class="btn btn-outline-danger"><i
             class="fas fa-trash"></i></button>
         </div>

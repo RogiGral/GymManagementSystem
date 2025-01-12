@@ -4,7 +4,7 @@ import {UserService} from "../service/user.service"
 import {NotificationService} from "../service/notification.service"
 import {AuthenticationService} from "../service/authentication.service"
 import {ScoreService} from "../service/score.service"
-import {IUserWorkout, IWorkout} from "../model/workout_model"
+import {IWorkout} from "../model/workout_model"
 import {User} from "../model/user_model"
 import {Subscription} from "rxjs"
 import {NotificationType} from "../enum/notification-type.enum"
@@ -12,7 +12,6 @@ import {HttpErrorResponse} from "@angular/common/http"
 import {CustomHttpResponse} from "../model/custom-http-response_model"
 import {NgForm} from "@angular/forms"
 import {Role} from "../enum/role.enum"
-import {animate, style, transition, trigger} from '@angular/animations'
 
 declare var $: any;
 
@@ -215,7 +214,7 @@ export class CoachScheduleComponent implements OnInit, OnDestroy {
 
   addPoints(user:User) {
     const workout = this.selectedTrainerWorkout
-    const formData = this.scoreService.createScoreFormData(user.username,100)
+    const formData = this.scoreService.createScoreFormData(user.username,workout.workoutDifficulty)
     this.subscriptions.push(
       this.scoreService.addScore(formData).subscribe(
         (response: CustomHttpResponse) => {
@@ -240,7 +239,7 @@ export class CoachScheduleComponent implements OnInit, OnDestroy {
 
   removePoints(user:User) {
     const workout = this.selectedTrainerWorkout
-    const formData = this.scoreService.createScoreFormData(user.username,100)
+    const formData = this.scoreService.createScoreFormData(user.username,workout.workoutDifficulty)
     this.subscriptions.push(
       this.scoreService.removeScore(formData).subscribe(
         (response: CustomHttpResponse) => {

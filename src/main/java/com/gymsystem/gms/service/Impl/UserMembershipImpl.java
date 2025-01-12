@@ -1,6 +1,5 @@
 package com.gymsystem.gms.service.Impl;
 
-import com.gymsystem.gms.exceptions.model.MembershipTypeNotFoundException;
 import com.gymsystem.gms.exceptions.model.UserMembershipException;
 import com.gymsystem.gms.exceptions.model.UserNotFoundException;
 import com.gymsystem.gms.model.MembershipType;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
 
-import static com.gymsystem.gms.constraints.MembershipType.MEMBERSHIP_TYPE_NOT_FOUND;
 import static com.gymsystem.gms.constraints.MembershipType.USER_ALREADY_HAS_MEMBERSHIP;
 import static com.gymsystem.gms.constraints.UserImplConstant.NO_USER_FOUND;
 
@@ -38,16 +36,9 @@ public class UserMembershipImpl implements UserMembershipService {
 
 
     @Override
-    public UserMembership getUserMembership(Long userId) throws UserNotFoundException, UserMembershipException {
+    public UserMembership getUserMembership(Long userId) throws UserNotFoundException {
         User user = checkIfUserExist(userId);
-        if(user == null){
-            throw new UserNotFoundException(NO_USER_FOUND+"by id: "+userId);
-        }
-        UserMembership userMembership = userMembershipRepository.getUserMembershipByUserId(user);
-        if(userMembership == null){
-            return null;
-        }
-        return userMembership;
+        return userMembershipRepository.getUserMembershipByUserId(user);
     }
 
     @Override
@@ -58,18 +49,11 @@ public class UserMembershipImpl implements UserMembershipService {
         userMembership.setMembershipTypeId(membershipType);
 
         Date startDt = new Date();
-        Date endDt = new Date();
-        switch (membershipType.getValidityUnitOfTime()){
-            case DAY:
-                endDt = DateUtils.addDays(startDt,membershipType.getValidityPeriodNumber());
-                break;
-            case MONTH:
-                endDt = DateUtils.addMonths(startDt,membershipType.getValidityPeriodNumber());
-                break;
-            case YEAR:
-                endDt = DateUtils.addYears(startDt,membershipType.getValidityPeriodNumber());
-                break;
-        }
+        Date endDt = switch (membershipType.getValidityUnitOfTime()) {
+            case DAY -> DateUtils.addDays(startDt, membershipType.getValidityPeriodNumber());
+            case MONTH -> DateUtils.addMonths(startDt, membershipType.getValidityPeriodNumber());
+            case YEAR -> DateUtils.addYears(startDt, membershipType.getValidityPeriodNumber());
+        };
         userMembership.setStartDate(startDt);
         userMembership.setEndDate(endDt);
         userMembershipRepository.save(userMembership);
@@ -85,13 +69,6 @@ public class UserMembershipImpl implements UserMembershipService {
         userMembershipRepository.deleteAllByUserId(user);
     }
 
-    private MembershipType checkIfMembershipTypeExist(Long membershipTypeId) throws MembershipTypeNotFoundException {
-        MembershipType membershipType = membershipTypeRepository.findMembershipTypeById(membershipTypeId);
-        if(membershipType == null){
-            throw new MembershipTypeNotFoundException(MEMBERSHIP_TYPE_NOT_FOUND);
-        }
-        return membershipType;
-    }
 
     private User checkIfUserExist(Long userId) throws UserNotFoundException {
         User user = userRepository.findUserById(userId);

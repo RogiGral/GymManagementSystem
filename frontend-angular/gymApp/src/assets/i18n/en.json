@@ -94,6 +94,42 @@
     "CLOSE": "Close",
     "SAVE": "Save"
   },
+  "COACH_SCHEDULE": {
+    "NAVIGATION": {
+      "PREVIOUS_WEEK": "Previous Week",
+      "NEXT_WEEK": "Next Week"
+    },
+    "OPTIONS": {
+      "TITLE": "Options for",
+      "USERS_LIST": "View List of Users",
+      "WORKOUT_INFO": "View Workout Info",
+      "EDIT": "Edit",
+      "DELETE": "Delete"
+    },
+    "DELETE_MODAL": {
+      "TITLE": "Confirm Deletion",
+      "QUESTION": "Are you sure you want to delete the workout:",
+      "CONFIRM": "Yes, Delete",
+      "CANCEL": "No, Cancel"
+    },
+    "TABLE": {
+      "USER_LIST": {
+        "NAME": "First Name",
+        "SURNAME": "Last Name",
+        "USERNAME": "Username",
+        "ACTIONS": "Actions",
+        "ADD_POINTS": "Add points:",
+        "REMOVE_POINTS": "Remove points:",
+        "POINTS": {
+          "BEGINNER": "10",
+          "EASY": "20",
+          "MEDIUM": "30",
+          "HARD": "40 ",
+          "VERY_HARD": "50"
+        }
+      }
+    }
+  },
   "WORKOUTS": {
     "TABLE" : {
       "BUTTON": {
@@ -110,7 +146,7 @@
       "ROOM_NUMBER": "Room number",
       "START_DATE": "Start date",
       "END_DATE": "End date",
-      "CAPPACITY": "Cappacity",
+      "CAPACITY": "Capacity",
       "PARTICIPANTS_NUMBER": "Participants",
       "ACTIONS": "",
       "DESCRIPTION": "Description",

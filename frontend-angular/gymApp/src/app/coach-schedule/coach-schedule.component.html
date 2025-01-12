@@ -1,9 +1,11 @@
 <div class="week-container">
 
   <div class="date-navigation">
-    <button (click)="goToPreviousWeek()" class="btn btn-outline-primary">Previous Week</button>
+    <button (click)="goToPreviousWeek()" class="btn btn-outline-primary">{{'COACH_SCHEDULE.NAVIGATION.PREVIOUS_WEEK' |
+      translate}}</button>
     <div class="current-date">{{ currentWeekStart | date: 'fullDate' }} - {{ currentWeekEnd | date: 'fullDate' }}</div>
-    <button (click)="goToNextWeek()" class="btn btn-outline-primary">Next Week</button>
+    <button (click)="goToNextWeek()" class="btn btn-outline-primary">{{'COACH_SCHEDULE.NAVIGATION.NEXT_WEEK' |
+      translate}}</button>
   </div>
 
   <div class="week-grid">
@@ -55,10 +57,10 @@
         <table [hidden]="!isAdminOrCoach" class="table table-hover">
           <thead class="table-borderless">
           <tr class="text-center">
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Username</th>
-            <th>Actions</th>
+            <th>{{'COACH_SCHEDULE.TABLE.USER_LIST.NAME' | translate}}</th>
+            <th>{{'COACH_SCHEDULE.TABLE.USER_LIST.SURNAME' | translate}}</th>
+            <th>{{'COACH_SCHEDULE.TABLE.USER_LIST.USERNAME' | translate}}</th>
+            <th>{{'COACH_SCHEDULE.TABLE.USER_LIST.ACTIONS' | translate}}</th>
           </tr>
           </thead>
           <tbody *ngFor="let user of listOfUserJoinedWorkout">
@@ -68,8 +70,8 @@
             <td>{{user.username}}</td>
             <td class="">
               <div class="btn-group">
-                <button (click)="addPoints(user)" class="btn btn-outline-info"><i class="fas fa-plus"></i></button>
-                <button (click)="removePoints(user)" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                <button (click)="addPoints(user)" class="btn btn-outline-info"><i class="fas fa-plus"></i> {{'COACH_SCHEDULE.TABLE.USER_LIST.ADD_POINTS' | translate}} {{'COACH_SCHEDULE.TABLE.USER_LIST.POINTS.' + selectedWorkout.workoutDifficulty | translate}} </button>
+                <button (click)="removePoints(user)" class="btn btn-outline-danger"><i class="fas fa-minus"></i> {{'COACH_SCHEDULE.TABLE.USER_LIST.REMOVE_POINTS' | translate}} {{'COACH_SCHEDULE.TABLE.USER_LIST.POINTS.' + selectedWorkout.workoutDifficulty| translate}} </button>
               </div>
             </td>
           </tbody>
@@ -94,10 +96,10 @@
       </div>
       <div class="modal-body">
         <ul class="list-group">
-          <li (click)="viewUsers()" class="list-group-item text-primary">View List of Users</li>
-          <li (click)="viewWorkoutInfo()" class="list-group-item text-primary">View Workout Info</li>
-          <li (click)="editWorkout()" class="list-group-item text-primary">Edit</li>
-          <li (click)="deleteWorkout()" class="list-group-item text-danger">Delete</li>
+          <li (click)="viewUsers()" class="list-group-item text-primary">{{'COACH_SCHEDULE.OPTIONS.USERS_LIST' | translate}}</li>
+          <li (click)="viewWorkoutInfo()" class="list-group-item text-primary">{{'COACH_SCHEDULE.OPTIONS.WORKOUT_INFO' | translate}}</li>
+          <li (click)="editWorkout()" class="list-group-item text-primary">{{'COACH_SCHEDULE.OPTIONS.EDIT' | translate}}</li>
+          <li (click)="deleteWorkout()" class="list-group-item text-danger">{{'COACH_SCHEDULE.OPTIONS.DELETE' | translate}}</li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -134,7 +136,7 @@
               </li>
               <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.TRAINER_USERNAME' | translate}}</b>{{selectedWorkout.trainerUsername}}
               </li>
-              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</b>{{selectedWorkout.capacity}}
+              <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.CAPACITY' | translate}}</b>{{selectedWorkout.capacity}}
               </li>
               <li class="list-group-item"><b class="float-right">{{'WORKOUTS.TABLE.PARTICIPANTS_NUMBER' | translate}}</b>{{selectedWorkout.participantsNumber}}
               </li>
@@ -191,7 +193,7 @@
             </div>
 
             <div class="form-group">
-              <label for="capacity">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</label>
+              <label for="capacity">{{'WORKOUTS.TABLE.CAPACITY' | translate}}</label>
               <input [(ngModel)]="selectedWorkout.capacity" [disabled]="!isAdminOrCoach" class="form-control" name="capacity" required type="number">
             </div>
 
@@ -261,7 +263,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="capacity">{{'WORKOUTS.TABLE.CAPPACITY' | translate}}</label>
+              <label for="capacity">{{'WORKOUTS.TABLE.CAPACITY' | translate}}</label>
               <input class="form-control" name="capacity" ngModel required type="number">
             </div>
             <div class="form-group">
@@ -319,20 +321,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewWorkoutDeleteTitle">
-          Confirm Deletion
+          {{'COACH_SCHEDULE.DELETE_MODAL.TITLE' | translate}}
         </h5>
         <button aria-label="Close" class="close" data-dismiss="modal" type="button">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body text-center">
-        <p>Are you sure you want to delete the workout: <strong>{{ selectedWorkout?.workoutName }}</strong>?</p>
+        <p>{{'COACH_SCHEDULE.DELETE_MODAL.QUESTION' | translate}} <strong>{{ selectedWorkout?.workoutName }}</strong>?</p>
         <div class="d-flex justify-content-center">
           <button (click)="onDeleteWorkout(selectedWorkout.id)" class="btn btn-danger mr-2" type="button">
-            <i class="fa fa-trash"></i> Yes, Delete
+            <i class="fa fa-trash"></i> {{'COACH_SCHEDULE.DELETE_MODAL.CONFIRM' | translate}}
           </button>
           <button class="btn btn-secondary" data-dismiss="modal" type="button">
-            <i class="fa fa-times"></i> No, Cancel
+            <i class="fa fa-times"></i> {{'COACH_SCHEDULE.DELETE_MODAL.CANCEL' | translate}}
           </button>
         </div>
       </div>

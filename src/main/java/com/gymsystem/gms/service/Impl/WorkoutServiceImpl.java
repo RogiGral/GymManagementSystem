@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.gymsystem.gms.constraints.UserImplConstant.NO_TRAINER_FOUND_BY_USERNAME;
 import static com.gymsystem.gms.constraints.UserImplConstant.USER_IS_NOT_TRAINER;
@@ -30,9 +31,9 @@ import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
 @Transactional
 public class WorkoutServiceImpl implements WorkoutService {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private UserRepository userRepository;
-    private WorkoutRepository workoutRepository;
-    private UserWorkoutRepository userWorkoutRepository;
+    private final UserRepository userRepository;
+    private final WorkoutRepository workoutRepository;
+    private final UserWorkoutRepository userWorkoutRepository;
 
     public WorkoutServiceImpl(UserRepository userRepository, WorkoutRepository workoutRepository, UserWorkoutRepository userWorkoutRepository) {
         this.userRepository = userRepository;
@@ -61,6 +62,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setWorkoutDifficulty(getWorkoutDifficultyEnumName(workoutDifficulty));
 
         workoutRepository.save(workout);
+        LOGGER.info("Workout has been created");
         //wyslij mail do trenera odnosnie treningu; docelowo dodać do kalenarza
         return workout;
     }
@@ -80,6 +82,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setParticipantsNumber(newParticipantsNumber);
         workout.setWorkoutDifficulty(getWorkoutDifficultyEnumName(newWorkoutDifficulty));
         workoutRepository.save(workout);
+        LOGGER.info("Workout has been updated");
         return workout;
     }
 
@@ -90,6 +93,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         List<UserWorkout> userWorkoutsList = userWorkoutRepository.findAllByWorkoutId(workoutId);
         userWorkoutRepository.deleteAll(userWorkoutsList);
         workoutRepository.deleteById(id);
+        LOGGER.info("Workout has been deleted");
     }
 
     private Workout findWorkoutById(Long id) throws WorkoutNotFoundException {
@@ -105,7 +109,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         if (trainer == null) {
             throw new UserNotFoundException(NO_TRAINER_FOUND_BY_USERNAME + trainerUsername);
         }
-        if(!(trainer.getRole()==Role.ROLE_COACH.toString())){
+        if(!(Objects.equals(trainer.getRole(), Role.ROLE_COACH.toString()))){
             throw new UserNotFoundException(USER_IS_NOT_TRAINER  + trainerUsername);
         }
     }
@@ -117,20 +121,18 @@ public class WorkoutServiceImpl implements WorkoutService {
         }
     }
 
-    private Workout checkIfWorkoutExists(String currentWorkout, String workoutName, String trainerUsername, String roomNumber, LocalDateTime workoutStartDate, LocalDateTime workoutEndDate) throws WorkoutExistException {
+    private void checkIfWorkoutExists(String currentWorkout, String workoutName, String trainerUsername, String roomNumber, LocalDateTime workoutStartDate, LocalDateTime workoutEndDate) throws WorkoutExistException {
         if(currentWorkout.isEmpty()){
             Workout workout = workoutRepository.findWorkoutByWorkoutNameAndRoomNumberAndWorkoutEndDateAndWorkoutStartDateAndTrainerUsername(workoutName,roomNumber,workoutEndDate,workoutStartDate,trainerUsername);
             if (workout != null) {
                 throw new WorkoutExistException(WORKOUT_ALREADY_EXISTS + workoutName);
             }
-            return workout;
         }
         else{
             Workout workout = workoutRepository.findWorkoutByWorkoutNameAndRoomNumberAndWorkoutEndDateAndWorkoutStartDateAndTrainerUsername(currentWorkout,roomNumber,workoutEndDate,workoutStartDate,trainerUsername);
             if (workout != null) {
                 throw new WorkoutExistException(WORKOUT_ALREADY_EXISTS + workoutName);
             }
-            return workout;
         }
     }
 

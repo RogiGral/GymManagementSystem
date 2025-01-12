@@ -94,6 +94,42 @@
     "CLOSE": "Zamknij",
     "SAVE": "Zapisz"
   },
+  "COACH_SCHEDULE": {
+    "NAVIGATION": {
+      "PREVIOUS_WEEK": "Poprzedni tydzień",
+      "NEXT_WEEK": "Następny tydzień"
+    },
+    "OPTIONS": {
+      "TITLE": "Opcje",
+      "USERS_LIST": "Lista użytkowników",
+      "WORKOUT_INFO": "Informacje o treningu",
+      "EDIT": "Edytuj trening",
+      "DELETE": "Usuń trening"
+    },
+    "DELETE_MODAL": {
+      "TITLE": "Potwierdź usunięcie",
+      "QUESTION": "Czy napewno chcesz usunąć treinig: ",
+      "CONFIRM": "Tak, usuń",
+      "CANCEL": "Nie, anuluj"
+    },
+    "TABLE": {
+      "USER_LIST": {
+        "NAME": "Imie",
+        "SURNAME": "Nazwisko",
+        "USERNAME": "Nazwa użytkownika",
+        "ACTIONS": "Akcje",
+        "ADD_POINTS": "Przyznaj punkty",
+        "REMOVE_POINTS": "Odejmij punkty",
+        "POINTS": {
+          "BEGINNER": "10",
+          "EASY": "20",
+          "MEDIUM": "30",
+          "HARD": "40 ",
+          "VERY_HARD": "50"
+        }
+      }
+    }
+  },
   "WORKOUTS": {
     "TABLE" : {
       "BUTTON": {
@@ -110,7 +146,7 @@
       "ROOM_NUMBER": "Numer sali",
       "START_DATE": "Data rozpoczęcia",
       "END_DATE": "Data zakończenia",
-      "CAPPACITY": "Pojemność sali",
+      "CAPACITY": "Pojemność sali",
       "PARTICIPANTS_NUMBER": "Liczba uczestników",
       "ACTIONS": "Akcje",
       "DESCRIPTION": "Opis",

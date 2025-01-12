@@ -132,7 +132,6 @@ public class MembershipTypeImpl implements MembershipTypeService {
                         .setCurrency("pln")
                         .build())
                 .build();
-        Product product = Product.create(params);
-        return product;
+        return Product.create(params);
     }
 }

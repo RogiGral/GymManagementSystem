@@ -35,8 +35,7 @@ public class StripeServiceImpl implements StripeService {
                 .setPaymentMethod("pm_card_visa")
                 .setCustomer(customerId)
                 .build();
-        PaymentIntent paymentIntent = PaymentIntent.create(params);
-        return paymentIntent;
+        return PaymentIntent.create(params);
     }
 
     @Override
@@ -46,15 +45,13 @@ public class StripeServiceImpl implements StripeService {
                 PaymentIntentConfirmParams.builder()
                         .setReturnUrl("https://www.example.com")
                         .build();
-        PaymentIntent paymentIntent = resource.confirm(params);
-        return paymentIntent;
+        return resource.confirm(params);
     }
 
     @Override
     public PaymentIntent cancelPaymentIntent(String paymentIntentId) throws StripeException {
         PaymentIntent resource = PaymentIntent.retrieve(paymentIntentId);
         PaymentIntentCancelParams params = PaymentIntentCancelParams.builder().build();
-        PaymentIntent paymentIntent = resource.cancel(params);
-        return paymentIntent;
+        return resource.cancel(params);
     }
 }

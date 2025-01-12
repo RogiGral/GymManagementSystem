@@ -18,7 +18,7 @@ public class AuthFailListener {
         Object principal = event.getAuthentication().getPrincipal();
         if(principal instanceof String){
             String username = (String) event.getAuthentication().getPrincipal();
-            loginAttemptService.addUserToLoginAttemptAcche(username);
+            loginAttemptService.addUserToLoginAttemptCache(username);
         }
     }
 }

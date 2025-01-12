@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IUserWorkout, IWorkout} from "../model/workout_model";
 import {CustomHttpResponse} from "../model/custom-http-response_model";
-import {User} from "../model/user_model";
-import {IScore} from "../model/score_model";
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +22,10 @@ export class ScoreService {
   public removeScore(formdata: FormData): Observable<CustomHttpResponse>{
     return this.http.post<CustomHttpResponse>(`${this.host}/score/remove`,formdata);
   }
-  createScoreFormData(username: string, score: number | null): FormData {
+  createScoreFormData(username: string, difficulty: string): FormData {
     const formData = new FormData();
     formData.append('username', username);
-    if(score!=null){
-      formData.append('score', score.toString());
-    }
+    formData.append('difficulty', difficulty);
     return formData;
   }
 

@@ -35,18 +35,18 @@ public class ScoreController extends ExceptionHandling {
     @PreAuthorize("hasAnyAuthority('workout:update')") //comment for testing
     public ResponseEntity<HttpResponse> addToUserScore(
             @RequestParam("username") String  username,
-            @RequestParam("score") BigDecimal score
+            @RequestParam("difficulty") String difficulty
     ) throws UserNotFoundException {
-        scoreService.addPointsToScore(username,score);
+        scoreService.addPointsToScore(username,difficulty);
         return response(OK, "POINTS_ADDED_TO_SCORE");
     }
     @PostMapping("/remove")
     @PreAuthorize("hasAnyAuthority('workout:update')") //comment for testing
     public ResponseEntity<HttpResponse> removeUserScore(
             @RequestParam("username") String  username,
-            @RequestParam("score") BigDecimal score
+            @RequestParam("difficulty") String  difficulty
     ) throws UserNotFoundException {
-        scoreService.removePointsFromScore(username,score);
+        scoreService.removePointsFromScore(username,difficulty);
         return response(OK, "POINTS_REMOVED_TO_SCORE");
     }
 

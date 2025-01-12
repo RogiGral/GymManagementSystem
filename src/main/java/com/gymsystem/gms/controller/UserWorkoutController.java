@@ -46,18 +46,18 @@ public class UserWorkoutController extends ExceptionHandling {
     @DeleteMapping("/delete/{userWorkoutId}")
     public ResponseEntity<HttpResponse> leaveWorkout(@PathVariable("userWorkoutId") Long userWorkoutId) throws WorkoutNotFoundException {
             userWorkoutService.deleteUserWorkout(userWorkoutId);
-        return response(OK, "USER_LEFT_WORKOUT");
+        return response("USER_LEFT_WORKOUT");
     }
     @DeleteMapping("/delete/{userId}/{workoutId}")
     public ResponseEntity<HttpResponse> removeUserFromWorkout(@PathVariable("userId") Long userId,
                                                               @PathVariable("workoutId") Long workoutId) throws WorkoutNotFoundException, UserNotFoundException {
         userWorkoutService.deleteUserWorkout(userId,workoutId);
-        return response(OK, "USER_REMOVED_FROM_WORKOUT");
+        return response("USER_REMOVED_FROM_WORKOUT");
     }
 
-    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
-        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),
-                message), httpStatus);
+    private ResponseEntity<HttpResponse> response(String message) {
+        return new ResponseEntity<>(new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase().toUpperCase(),
+                message), HttpStatus.OK);
     }
 
 

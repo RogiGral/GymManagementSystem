@@ -25,10 +25,10 @@ import static com.gymsystem.gms.constraints.WorkoutConstraint.*;
 @Transactional
 public class UserWorkoutServiceImpl implements UserWorkoutService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private UserRepository userRepository;
-    private WorkoutRepository workoutRepository;
-    private UserWorkoutRepository userWorkoutRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final UserRepository userRepository;
+    private final WorkoutRepository workoutRepository;
+    private final UserWorkoutRepository userWorkoutRepository;
 
     public UserWorkoutServiceImpl(UserRepository userRepository, WorkoutRepository workoutRepository, UserWorkoutRepository userWorkoutRepository) {
         this.userRepository = userRepository;

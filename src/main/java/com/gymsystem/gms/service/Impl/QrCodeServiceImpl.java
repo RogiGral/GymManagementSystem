@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Transactional
 public class QrCodeServiceImpl implements QrCodeService {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
     private final QrCodeRepository qrCodeRepository;
 
     @Autowired

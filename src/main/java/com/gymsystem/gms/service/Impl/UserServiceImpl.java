@@ -57,13 +57,13 @@ import static org.springframework.http.MediaType.*;
 @Qualifier("userDetailsService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private UserRepository userRepository;
-    private UserMembershipRepository userMembershipRepository;
-    private UserWorkoutRepository userWorkoutRepository;
-    private BCryptPasswordEncoder passwordEncoder;
-    private LoginAttemptServiceImpl loginAttemptService;
-    private ScoreRepository scoreRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final UserRepository userRepository;
+    private final UserMembershipRepository userMembershipRepository;
+    private final UserWorkoutRepository userWorkoutRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final LoginAttemptServiceImpl loginAttemptService;
+    private final ScoreRepository scoreRepository;
 
     @Value("${api.stripe.key}")
     private String stripeApiKey;
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsernameOrEmail(username,username);
         if(user == null){
-            LOGGER.error(NO_USER_FOUND_BY_USERNAME+username);
+            LOGGER.error(NO_USER_FOUND_BY_USERNAME + "{}", username);
             throw new UsernameNotFoundException(NO_USER_FOUND_BY_USERNAME+username);
         } else {
             validateLoginAttempt(user);
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setLastLoginDate(new Date());
             userRepository.save(user);
             UserPrincipal userPrincipal = new UserPrincipal(user);
-            LOGGER.info("user found by username: "+username);
+            LOGGER.info("User found by username: {}", username);
             return userPrincipal;
         }
     }
@@ -224,8 +224,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findUserByCustomerId(String userId) throws UserNotFoundException {
-        User user = userRepository.findUserByUserId(userId).orElseThrow(() -> new UserNotFoundException(NO_USER_FOUND + userId));
-        return user;
+        return userRepository.findUserByUserId(userId).orElseThrow(() -> new UserNotFoundException(NO_USER_FOUND + userId));
     }
 
     @Override
@@ -294,13 +293,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
             if(!Files.exists(userFolder)) {
                 Files.createDirectories(userFolder);
-                LOGGER.info(DIRECTORY_CREATED + userFolder);
+                LOGGER.info(DIRECTORY_CREATED + "{}", userFolder);
             }
             Files.deleteIfExists(Paths.get(userFolder + user.getUsername() + DOT + JPG_EXTENSION));
             Files.copy(profileFile.getInputStream(), userFolder.resolve(user.getUsername() + DOT + JPG_EXTENSION), REPLACE_EXISTING);
             user.setProfileImageUrl(setProfileImageUrl(user.getUsername()));
             userRepository.save(user);
-            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + profileFile.getOriginalFilename());
+            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + "{}", profileFile.getOriginalFilename());
         }
     }
 
@@ -352,12 +351,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private void validateLoginAttempt(User user) {
         String username = user.getUsername();
         if(user.isNotLocked()){
-            if(loginAttemptService.hasExceededMaxAttempts(username)){
-                user.setNotLocked(false);
-            }
-            else{
-                user.setNotLocked(true);
-            }
+            user.setNotLocked(!loginAttemptService.hasExceededMaxAttempts(username));
         }else {
             loginAttemptService.evicUserFromLoginAttemptCache(username);
         }
