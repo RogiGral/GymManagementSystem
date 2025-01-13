@@ -12,6 +12,7 @@ public class EmailConstant {
     public static final String SMTP_AUTH = "mail.smtp.auth";
     public static final String SMTP_PORT = "mail.smtp.port";
     public static final int DEFAULT_PORT = 465;
+    public static final String LOGIN_URL = "http://localhost:4200/login";
     public static final String SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
     public static final String SMTP_STARTTLS_REQUIRED = "mail.smtp.starttls.required";
 }

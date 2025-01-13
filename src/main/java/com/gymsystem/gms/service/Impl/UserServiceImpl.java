@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +46,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import static com.gymsystem.gms.constraints.EmailConstant.*;
 import static com.gymsystem.gms.constraints.FileConstant.*;
@@ -307,19 +311,85 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username + FORWARD_SLASH
                 + username + DOT + JPG_EXTENSION).toUriString();
     }
-    private void sendEmailWithPassword(String password, String email){
+    private void sendEmailWithPassword(String temporaryPassword, String email){
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(SMTP_HOST);
         mailSender.setPort(DEFAULT_PORT);
         mailSender.setUsername(USERNAME);
         mailSender.setPassword(PASSWORD);
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(FROM_EMAIL);
-        mailMessage.setTo(email);
-        mailMessage.setSubject("Welcome in our gym, here is your password");
-        mailMessage.setText("Your password is: "+password);
-        mailSender.send(mailMessage);
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(email);
+            helper.setSubject("Your Temporary Gym Access Password");
+
+            String htmlContent = """
+            <html>
+            <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background-color: #f7f7f7; padding: 20px;">
+                    <h1 style="color: #333; text-align: center;">Welcome to Our Gym! 🏋️‍♂️</h1>
+                    <div style="background-color: white; padding: 20px; border-radius: 5px; margin-top: 20px;">
+                        <p>Hello,</p>
+                        
+                        <p>Your temporary password for gym access has been created.</p>
+                        
+                        <div style="background-color: #f8f8f8; 
+                                  padding: 15px; 
+                                  border-left: 4px solid #4CAF50; 
+                                  margin: 20px 0;">
+                            <p style="margin: 0;"><strong>Temporary Password:</strong> %s</p>
+                        </div>
+                        
+                        <p><strong>⚠️ IMPORTANT: For your security:</strong></p>
+                        <ul>
+                            <li>Change this password immediately after your first login</li>
+                            <li>This temporary password will expire in 24 hours</li>
+                            <li>Delete this email after changing your password</li>
+                            <li>Never share your password with anyone</li>
+                        </ul>
+                        
+                        <div style="text-align: center; margin: 30px 0;">
+                            <a href="%s" 
+                               style="background-color: #4CAF50; 
+                                      color: white; 
+                                      padding: 12px 25px; 
+                                      text-decoration: none; 
+                                      border-radius: 3px; 
+                                      display: inline-block;">
+                                Login to Your Account
+                            </a>
+                        </div>
+                        
+                        <p>If you didn't request this password, please contact us immediately.</p>
+                        
+                        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                        
+                        <p style="color: #666; font-size: 14px;">
+                            Need help? Contact our support team at support@gym.com
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; color: #666; font-size: 12px;">
+                        <p>Our Gym Name</p>
+                        <p>123 Fitness Street, Gym City, GC 12345</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """.formatted(temporaryPassword, LOGIN_URL);
+
+            helper.setText(htmlContent, true);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send password email", e);
+        }
     }
 
     private Role getRoleEnumName(String role) {
